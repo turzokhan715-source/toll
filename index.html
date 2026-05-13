@@ -3,63 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Longisir VIP Graph Portal</title>
+    <title>Longisir Premium Portal</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: #05060f; min-height: 100vh; color: #fff; display: flex; justify-content: center; padding: 20px; }
-        .container { width: 100%; max-width: 900px; }
+        
+        body { background: #05060f; min-height: 100vh; color: #fff; display: flex; justify-content: center; overflow-x: hidden; }
+        .container { width: 100%; max-width: 1000px; padding: 40px 20px; }
         .hidden { display: none; }
-        .card-main { background: #ffffff; color: #1e293b; border-radius: 24px; padding: 30px; min-height: 600px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); position: relative; }
-        .top-nav { display: flex; justify-content: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 50px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
-        .tab-btn { padding: 12px 24px; border-radius: 50px; border: none; background: transparent; color: #fff; font-weight: 800; cursor: pointer; }
+
+        /* --- Home Page (As per image_2b4615.png) --- */
+        .header { text-align: center; margin-bottom: 60px; }
+        .header h1 { font-size: 56px; font-weight: 800; letter-spacing: -1px; margin-bottom: 10px; }
+        .header p { color: #94a3b8; letter-spacing: 2px; font-size: 14px; font-weight: 600; }
+        
+        .home-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 40px; }
+        .tool-card { 
+            background: #0f111a; border: 1px solid #1e293b; border-radius: 24px; padding: 50px 30px; 
+            text-align: center; cursor: pointer; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tool-card:hover { border-color: #4f46e5; box-shadow: 0 0 30px rgba(79, 70, 229, 0.2); transform: translateY(-5px); }
+        .tool-card span { font-size: 32px; display: block; margin-bottom: 20px; }
+        .tool-card h3 { font-size: 22px; font-weight: 700; color: #f8fafc; }
+
+        /* --- Tool UI --- */
+        .card-inner { background: #ffffff; color: #1e293b; border-radius: 30px; padding: 35px; min-height: 600px; box-shadow: 0 25px 60px rgba(0,0,0,0.6); position: relative; }
+        .back-btn { background: #4f46e5; color: #fff; padding: 12px 24px; border-radius: 14px; border: none; cursor: pointer; font-weight: 700; margin-bottom: 20px; transition: 0.3s; }
+        .back-btn:hover { background: #3730a3; }
+
+        .top-nav { display: flex; justify-content: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 50px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); }
+        .tab-btn { padding: 12px 25px; border-radius: 50px; border: none; background: transparent; color: #fff; font-weight: 800; cursor: pointer; }
         .tab-btn.active { background: #fff; color: #4f46e5; box-shadow: 0 0 20px #fff; }
-        .back-home { background: #4f46e5; border: none; color: #fff; padding: 10px 20px; border-radius: 12px; cursor: pointer; margin-bottom: 15px; font-weight: 700; }
-        .label-text { display: block; font-size: 12px; font-weight: 800; color: #64748b; margin: 15px 0 8px; text-transform: uppercase; }
-        .input-field { width: 100%; padding: 16px; border-radius: 16px; border: 2px solid #e2e8f0; font-size: 15px; outline: none; background: #f8fafc; }
-        .btn-action { width: 100%; padding: 18px; border-radius: 16px; border: none; background: #1e293b; color: #fff; font-weight: 800; margin: 20px 0; cursor: pointer; font-size: 16px; }
-        .btn-action:hover { background: #4f46e5; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(79,70,229,0.3); }
-        .result-console { background: #0f172a; color: #38bdf8; border-radius: 16px; padding: 20px; height: 350px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 14px; border: 1px solid #1e293b; }
+
+        .label { display: block; font-size: 12px; font-weight: 800; color: #64748b; margin: 15px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .input-box { width: 100%; padding: 18px; border-radius: 18px; border: 2px solid #e2e8f0; font-size: 16px; outline: none; background: #f8fafc; transition: 0.3s; }
+        .input-box:focus { border-color: #4f46e5; background: #fff; }
+
+        .action-btn { width: 100%; padding: 20px; border-radius: 18px; border: none; background: #1e293b; color: #fff; font-weight: 800; cursor: pointer; font-size: 16px; margin: 20px 0; transition: 0.3s; }
+        .action-btn:hover { background: #4f46e5; transform: scale(1.01); }
+
+        /* --- Checker Result Design --- */
+        .res-console { background: #0b0e14; color: #38bdf8; border-radius: 20px; padding: 20px; height: 350px; overflow-y: auto; font-family: 'Courier New', monospace; border: 1px solid #1e293b; font-size: 14px; }
         .status-live { color: #22c55e; font-weight: bold; }
         .status-die { color: #ef4444; font-weight: bold; }
-        .home-wrap { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 50px; }
-        .tool-card { background: rgba(255,255,255,0.03); padding: 40px; text-align: center; width: 270px; border-radius: 32px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
-        .tool-card:hover { border-color: #4f46e5; box-shadow: 0 0 20px rgba(79,70,229,0.2); }
+
+        /* --- Counter/Percent Bar --- */
+        .stat-bar { display: flex; gap: 15px; margin-top: 15px; background: #f1f5f9; padding: 15px; border-radius: 15px; border: 1px solid #e2e8f0; }
+        .stat-item { flex: 1; text-align: center; }
+        .stat-val { display: block; font-size: 18px; font-weight: 800; }
+        .stat-label { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; }
+
     </style>
 </head>
 <body>
 
 <div class="container">
+    <!-- HOME SCREEN -->
     <div id="home-screen">
-        <div style="text-align:center; padding-top:40px; margin-bottom: 40px;">
-            <h1 style="font-size:48px;">Longisir Portal</h1>
-            <p style="opacity:0.5;">GRAPH API ENABLED TOOLS</p>
+        <div class="header">
+            <h1>Longisir Portal</h1>
+            <p>GRAPH API ENABLED TOOLS</p>
         </div>
-        <div class="home-wrap">
-            <div class="tool-card" onclick="switchUI('2fa')"><span>🔐</span><br><br><h3 style="color:#fff;">2FA Auth</h3></div>
-            <div class="tool-card" onclick="switchUI('mail')"><span>📧</span><br><br><h3 style="color:#fff;">Mail API</h3></div>
-            <div class="tool-card" onclick="switchUI('live')"><span>✅</span><br><br><h3 style="color:#fff;">Live Checker</h3></div>
+        <div class="home-grid">
+            <div class="tool-card" onclick="openUI('2fa')">
+                <span>🔐</span>
+                <h3>2FA Auth</h3>
+            </div>
+            <div class="tool-card" onclick="openUI('mail')">
+                <span>📧</span>
+                <h3>Mail API</h3>
+            </div>
+            <div class="tool-card" onclick="openUI('live')">
+                <span>✅</span>
+                <h3>Live Checker</h3>
+            </div>
         </div>
     </div>
 
+    <!-- TOOL SCREEN -->
     <div id="tool-screen" class="hidden">
-        <button class="back-home" onclick="backHome()">← BACK</button>
+        <button class="back-btn" onclick="goHome()">← BACK TO HOME</button>
         <div class="top-nav">
-            <button class="tab-btn" id="btn-2fa" onclick="tabTo('2fa')">2FA</button>
-            <button class="tab-btn" id="btn-mail" onclick="tabTo('mail')">MAIL</button>
+            <button class="tab-btn" id="btn-2fa" onclick="tabTo('2fa')">2FA AUTH</button>
+            <button class="tab-btn" id="btn-mail" onclick="tabTo('mail')">MAIL API</button>
             <button class="tab-btn" id="btn-live" onclick="tabTo('live')">LIVE CHECKER</button>
         </div>
-        <div class="card-main">
+
+        <div class="card-inner">
+            <!-- LIVE CHECKER (SUPER FAST) -->
             <div id="box-live" class="hidden">
-                <h2>Real-Time Live Checker</h2>
-                <span class="label-text">UID List</span>
-                <textarea id="input-live" class="input-field" rows="8" placeholder="Paste UIDs here..."></textarea>
-                <button class="btn-action" id="start-btn" onclick="checkLiveWithToken()">START GRAPH CHECK</button>
-                <div class="result-console" id="console-live">Waiting for UIDs...</div>
+                <h2 style="margin-bottom:10px;">Fast Graph Checker</h2>
+                <span class="label">Input UIDs (Unlimited)</span>
+                <textarea id="uid-input" class="input-box" rows="7" placeholder="Paste UIDs here..."></textarea>
+                <button class="action-btn" id="check-btn" onclick="startFastCheck()">START SUPER FAST CHECK</button>
+                
+                <div class="res-console" id="live-console">Waiting for UIDs...</div>
+                
+                <div class="stat-bar">
+                    <div class="stat-item" style="color:#22c55e;">
+                        <span class="stat-val" id="count-live">0</span>
+                        <span class="stat-label">Live ID</span>
+                    </div>
+                    <div class="stat-item" style="color:#ef4444;">
+                        <span class="stat-val" id="count-die">0</span>
+                        <span class="stat-label">Die ID</span>
+                    </div>
+                    <div class="stat-item" style="color:#4f46e5;">
+                        <span class="stat-val" id="count-total">0</span>
+                        <span class="stat-label">Total Checked</span>
+                    </div>
+                </div>
             </div>
-            <!-- Other tools placeholder -->
-            <div id="box-2fa" class="hidden"><h2>2FA Tool Ready</h2></div>
-            <div id="box-mail" class="hidden"><h2>Mail Tool Ready</h2></div>
+
+            <div id="box-2fa" class="hidden"><h2>2FA Tool - Ready</h2></div>
+            <div id="box-mail" class="hidden"><h2>Mail Tool - Ready</h2></div>
         </div>
     </div>
 </div>
@@ -67,49 +124,82 @@
 <script>
     const FB_TOKEN = "EAAWrCpZAm2fgBRTm17e0OCyDjMshOCpyWWfWXb4PL8F3c9SHqR1f9dziNmyoqIlj3fRPARrBk8LzE72Ee8uomQHL36wqnMplZBmT3yZB6rBXgZAn6pBjG5w3KZCnDM5XuAHMbbPWl2lyj6ZAY5WZBpFUNPq12VjDxhDD0ixlkaMmqpT93pZCmbPiDVq5WgvU8irNiy1IkPDmtwcjERkCSecDsDa4MoFKDhNO";
 
-    function switchUI(t) { document.getElementById('home-screen').classList.add('hidden'); document.getElementById('tool-screen').classList.remove('hidden'); tabTo(t); }
-    function backHome() { document.getElementById('tool-screen').classList.add('hidden'); document.getElementById('home-screen').classList.remove('hidden'); }
-    function tabTo(t) { 
-        ['2fa', 'mail', 'live'].forEach(x => { document.getElementById('box-'+x).classList.add('hidden'); document.getElementById('btn-'+x).classList.remove('active'); });
-        document.getElementById('box-'+t).classList.remove('hidden'); document.getElementById('btn-'+t).classList.add('active');
+    function openUI(t) {
+        document.getElementById('home-screen').classList.add('hidden');
+        document.getElementById('tool-screen').classList.remove('hidden');
+        tabTo(t);
     }
 
-    async function checkLiveWithToken() {
-        const input = document.getElementById('input-live').value.trim();
+    function goHome() {
+        document.getElementById('tool-screen').classList.add('hidden');
+        document.getElementById('home-screen').classList.remove('hidden');
+    }
+
+    function tabTo(t) {
+        ['2fa', 'mail', 'live'].forEach(x => {
+            document.getElementById('box-'+x).classList.add('hidden');
+            document.getElementById('btn-'+x).classList.remove('active');
+        });
+        document.getElementById('box-'+t).classList.remove('hidden');
+        document.getElementById('btn-'+t).classList.add('active');
+    }
+
+    // --- SUPER FAST CHECKER LOGIC ---
+    async function startFastCheck() {
+        const input = document.getElementById('uid-input').value.trim();
         if(!input) return;
-        const uids = input.split('\n');
-        const consoleBox = document.getElementById('console-live');
-        const startBtn = document.getElementById('start-btn');
         
-        startBtn.disabled = true;
-        startBtn.innerText = "CHECKING...";
-        consoleBox.innerHTML = "Initializing Graph API Connection...<br>";
+        const uids = input.split('\n').map(u => u.trim()).filter(u => u);
+        const consoleBox = document.getElementById('live-console');
+        const btn = document.getElementById('check-btn');
 
-        let resultsHTML = "";
+        // Reset Stats
+        let liveCount = 0; let dieCount = 0;
+        document.getElementById('count-live').innerText = "0";
+        document.getElementById('count-die').innerText = "0";
+        document.getElementById('count-total').innerText = uids.length;
 
-        for(let i=0; i<uids.length; i++) {
-            const uid = uids[i].trim();
-            if(!uid) continue;
+        btn.disabled = true;
+        btn.innerText = "CHECKING IN PROGRESS...";
+        consoleBox.innerHTML = "Initializing Parallel Requests...<br>";
 
+        // Fast Parallel Processing
+        const promises = uids.map(async (uid, index) => {
             try {
-                // ফেসবুক গ্রাফ এপিআই দিয়ে প্রোফাইল পিকচার রিকোয়েস্ট পাঠানো
-                const response = await fetch(`https://graph.facebook.com/${uid}/picture?type=normal&access_token=${FB_TOKEN}`);
+                // Graph API Check
+                const res = await fetch(`https://graph.facebook.com/${uid}/picture?type=normal&access_token=${FB_TOKEN}`);
                 
-                // যদি রেসপন্স ওকে থাকে তবে আইডি লাইভ
-                if(response.ok) {
-                    resultsHTML += `<div>[${i+1}] ID: ${uid} —> <span class="status-live">ACTIVE ✅</span></div>`;
+                // Logic Fix: ছবি না আসলে বা এরর দিলে সেটি Die
+                const isLive = res.ok && res.url.includes('fbcdn'); 
+                
+                let resultLine = "";
+                if(isLive) {
+                    liveCount++;
+                    resultLine = `<div>[${index+1}] ID: ${uid} —> <span class="status-live">LIVE ✅</span></div>`;
                 } else {
-                    resultsHTML += `<div>[${i+1}] ID: ${uid} —> <span class="status-die">BLOCKED/DIE ❌</span></div>`;
+                    dieCount++;
+                    resultLine = `<div>[${index+1}] ID: ${uid} —> <span class="status-die">DIE ❌</span></div>`;
                 }
-            } catch (err) {
-                resultsHTML += `<div>[${i+1}] ID: ${uid} —> <span style="color:orange;">LIMIT/ERROR ⚠️</span></div>`;
-            }
-            consoleBox.innerHTML = resultsHTML; // রিয়েল টাইমে আপডেট হবে
-        }
+                
+                // Update Console & Bar
+                consoleBox.innerHTML += resultLine;
+                document.getElementById('count-live').innerText = liveCount;
+                document.getElementById('count-die').innerText = dieCount;
+                consoleBox.scrollTop = consoleBox.scrollHeight;
 
-        startBtn.disabled = false;
-        startBtn.innerText = "START GRAPH CHECK";
+            } catch (e) {
+                dieCount++;
+                consoleBox.innerHTML += `<div>[${index+1}] ID: ${uid} —> <span class="status-die">ERROR ❌</span></div>`;
+            }
+        });
+
+        await Promise.all(promises);
+        
+        btn.disabled = false;
+        btn.innerText = "START SUPER FAST CHECK";
+        consoleBox.innerHTML += "<br>--- CHECK COMPLETED ---";
     }
 </script>
+
 </body>
 </html>
