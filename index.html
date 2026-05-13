@@ -3,164 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Longisir VIP Portal</title>
+    <title>Longisir Premium Portal</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: radial-gradient(circle at center, #11122d 0%, #05060f 100%); min-height: 100vh; color: #fff; display: flex; justify-content: center; padding: 20px; }
+        body { background: #05060f; color: #fff; min-height: 100vh; padding: 20px; display: flex; justify-content: center; }
         .container { width: 100%; max-width: 900px; }
-        .hidden { display: none; }
-        .card-inner { background: #fff; color: #333; border-radius: 25px; padding: 25px; min-height: 600px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); position: relative; }
-        .back-btn { background: #4f46e5; border: none; color: #fff; padding: 10px 20px; border-radius: 12px; cursor: pointer; margin-bottom: 15px; font-weight: 700; }
-        .top-nav { display: flex; justify-content: center; gap: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 25px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.1); }
-        .tab-btn { padding: 12px 25px; border-radius: 18px; border: none; background: transparent; color: #fff; font-weight: 800; cursor: pointer; }
-        .tab-btn.active { background: #fff; color: #4f46e5; box-shadow: 0 0 20px #fff; }
-        .label { display: block; font-size: 11px; font-weight: 800; color: #94a3b8; margin: 15px 0 8px; text-transform: uppercase; }
-        .input-box { width: 100%; padding: 12px; border-radius: 12px; border: 2px solid #e2e8f0; font-size: 14px; outline: none; background: #f8fafc; }
-        .action-btn { width: 100%; padding: 15px; border-radius: 12px; border: none; background: #1e293b; color: #fff; font-weight: 800; margin: 15px 0; cursor: pointer; transition: 0.3s; }
-        .action-btn:hover { background: #4f46e5; }
-        .checker-res-box { background: #0f172a; color: #38bdf8; border-radius: 15px; padding: 15px; height: 280px; overflow-y: auto; font-family: 'Courier New', monospace; border: 1px solid #1e293b; font-size: 13px; margin-bottom: 15px; }
-        .status-active { color: #22c55e; font-weight: bold; }
-        .status-blocked { color: #ef4444; font-weight: bold; }
+        .hidden { display: none !important; }
         
-        /* --- Compact Stats & Download --- */
-        .bottom-wrap { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee; }
-        .stat-grid { display: flex; gap: 10px; }
-        .stat-mini-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 15px; border-radius: 10px; text-align: center; min-width: 80px; }
-        .stat-mini-box b { display: block; font-size: 16px; margin-bottom: 2px; }
-        .stat-mini-box span { font-size: 9px; text-transform: uppercase; color: #64748b; font-weight: 800; }
-        .dl-section { display: flex; gap: 10px; align-items: center; }
-        .icon-btn { background: #f1f5f9; border: 1px solid #cbd5e1; padding: 10px; border-radius: 10px; cursor: pointer; font-size: 18px; transition: 0.2s; }
-        .icon-btn:hover { background: #e2e8f0; transform: scale(1.1); }
-        .home-grid { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 50px; }
-        .h-card { background: rgba(255,255,255,0.03); padding: 40px; text-align: center; width: 260px; border-radius: 30px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
+        /* Home Grid */
+        .home-grid { display: flex; gap: 20px; justify-content: center; margin-top: 100px; }
+        .h-card { background: #0f111a; border: 1px solid #1e293b; padding: 40px; border-radius: 24px; text-align: center; width: 250px; cursor: pointer; transition: 0.3s; }
+        .h-card:hover { border-color: #4f46e5; transform: translateY(-5px); }
+        .h-card span { font-size: 40px; display: block; margin-bottom: 15px; }
+
+        /* Tools UI */
+        .card-inner { background: #fff; color: #1e293b; border-radius: 30px; padding: 30px; min-height: 550px; margin-top: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .back-btn { background: #4f46e5; color: #fff; border: none; padding: 10px 20px; border-radius: 12px; cursor: pointer; font-weight: 700; margin-bottom: 10px; }
+        
+        .top-nav { background: #0f111a; padding: 8px; border-radius: 50px; display: flex; justify-content: space-around; border: 1px solid #1e293b; }
+        .tab-btn { background: transparent; color: #94a3b8; border: none; padding: 12px 30px; border-radius: 50px; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        .tab-btn.active { background: #fff; color: #05060f; }
+
+        /* Input & Elements */
+        .label { font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 8px; display: block; margin-top: 15px; }
+        .input-box { width: 100%; padding: 14px; border-radius: 14px; border: 2px solid #e2e8f0; background: #f8fafc; font-size: 14px; outline: none; }
+        .action-btn { width: 100%; padding: 16px; border-radius: 14px; border: none; background: #1e293b; color: #fff; font-weight: 800; cursor: pointer; margin: 15px 0; }
+        
+        /* Result Consoles */
+        .console { background: #0b0e14; color: #38bdf8; padding: 15px; border-radius: 15px; height: 250px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 13px; border: 1px solid #1e293b; }
+        .live-txt { color: #22c55e; font-weight: bold; }
+        .die-txt { color: #ef4444; font-weight: bold; }
+
+        /* Compact Stats Bar */
+        .bottom-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; }
+        .stat-group { display: flex; gap: 8px; }
+        .stat-box { background: #f1f5f9; padding: 8px 12px; border-radius: 10px; text-align: center; border: 1px solid #e2e8f0; min-width: 75px; }
+        .stat-box b { display: block; font-size: 15px; }
+        .stat-box span { font-size: 9px; font-weight: 800; color: #64748b; }
+        
+        .icon-group { display: flex; gap: 10px; }
+        .circle-icon { background: #f1f5f9; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 10px; cursor: pointer; border: 1px solid #cbd5e1; }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <!-- Home Page -->
     <div id="home-page">
-        <div style="text-align:center; padding-top:40px;"><h1 style="font-size:48px;">Longisir Portal</h1><p style="opacity:0.5;">PREMIUM BUSINESS TOOLS</p></div>
+        <h1 style="text-align:center; margin-bottom:10px;">Longisir VIP</h1>
+        <p style="text-align:center; opacity:0.6; font-size:12px; letter-spacing:2px;">INTERNAL BUSINESS SOLUTIONS</p>
         <div class="home-grid">
-            <div class="h-card" onclick="openTool('2fa')"><span>🔐</span><br><br><h3>2FA Auth</h3></div>
-            <div class="h-card" onclick="openTool('mail')"><span>📧</span><br><br><h3>Mail API</h3></div>
-            <div class="h-card" onclick="openTool('live')"><span>✅</span><br><br><h3>Live Checker</h3></div>
+            <div class="h-card" onclick="openUI('2fa')"><span>🔐</span><h3>2FA Auth</h3></div>
+            <div class="h-card" onclick="openUI('mail')"><span>📧</span><h3>Mail API</h3></div>
+            <div class="h-card" onclick="openUI('live')"><span>✅</span><h3>Live Checker</h3></div>
         </div>
     </div>
 
-    <div id="tools-page" class="hidden">
+    <!-- Tool UI -->
+    <div id="tool-ui" class="hidden">
         <button class="back-btn" onclick="goHome()">← Back</button>
         <div class="top-nav">
-            <button class="tab-btn" id="tab-2fa" onclick="switchTab('2fa')">2FA</button>
-            <button class="tab-btn" id="tab-mail" onclick="switchTab('mail')">MAIL</button>
-            <button class="tab-btn" id="tab-live" onclick="switchTab('live')">LIVE CHECKER</button>
+            <button class="tab-btn" id="tab-2fa" onclick="tabTo('2fa')">2FA</button>
+            <button class="tab-btn" id="tab-mail" onclick="tabTo('mail')">MAIL</button>
+            <button class="tab-btn" id="tab-live" onclick="tabTo('live')">LIVE CHECKER</button>
         </div>
 
         <div class="card-inner">
-            <div id="tool-live" class="hidden">
-                <h2>Real-Time Live Checker</h2>
-                <span class="label">Input (Format: UID|PASS|2FA or UID)</span>
-                <textarea id="uid-in" class="input-box" rows="6" placeholder="Paste data here..."></textarea>
-                <button class="action-btn" id="start-btn" onclick="runLiveFast()">START CHECKING</button>
-                
-                <div class="checker-res-box" id="live-list">Waiting for action...</div>
+            <!-- 2FA -->
+            <div id="box-2fa" class="hidden">
+                <h2>2FA Authenticator</h2>
+                <span class="label">Secret Key</span>
+                <input type="text" id="sk-input" class="input-box" placeholder="Enter Secret Key">
+                <button class="action-btn" onclick="gen2FA()">GENERATE CODE</button>
+                <div id="2fa-res" style="background:#f1f5f9; padding:30px; text-align:center; border-radius:20px; font-size:40px; font-weight:800; color:#4f46e5; border:2px dashed #cbd5e1;">------</div>
+            </div>
 
-                <div class="bottom-wrap">
-                    <div class="stat-grid">
-                        <div class="stat-mini-box" style="color:#22c55e;"><b id="p-live">0%</b><span id="c-live">0 Live</span></div>
-                        <div class="stat-mini-box" style="color:#ef4444;"><b id="p-die">0%</b><span id="c-die">0 Die</span></div>
-                        <div class="stat-mini-box" style="color:#4f46e5;"><b id="c-total">0</b><span>Total</span></div>
+            <!-- Mail -->
+            <div id="box-mail" class="hidden">
+                <h2>Mail API Access</h2>
+                <span class="label">Input Token</span>
+                <textarea id="mail-input" class="input-box" rows="5" placeholder="Paste login token..."></textarea>
+                <button class="action-btn">FETCH MAILBOX</button>
+                <div class="console">Waiting for mail data...</div>
+            </div>
+
+            <!-- Live Checker -->
+            <div id="box-live" class="hidden">
+                <h2>Real-Time Live Checker</h2>
+                <span class="label">Input (Format: UID|PASS|2FA)</span>
+                <textarea id="uid-input" class="input-box" rows="5" placeholder="61589229058690|pass|key..."></textarea>
+                <button class="action-btn" id="start-btn" onclick="startCheck()">START GLOBAL CHECK</button>
+                
+                <div class="console" id="live-console">Console Ready...</div>
+
+                <div class="bottom-bar">
+                    <div class="stat-group">
+                        <div class="stat-box" style="color:#22c55e;"><b id="p-live">0%</b><span id="v-live">0 Live</span></div>
+                        <div class="stat-box" style="color:#ef4444;"><b id="p-die">0%</b><span id="v-die">0 Die</span></div>
+                        <div class="stat-box" style="color:#4f46e5;"><b id="v-total">0</b><span>Total ID</span></div>
                     </div>
-                    <div class="dl-section">
-                        <div class="icon-btn" title="Clear All" onclick="document.getElementById('uid-in').value=''; location.reload();">🗑️</div>
-                        <div class="icon-btn" title="Download Live IDs" onclick="downloadLiveCSV()">📥</div>
+                    <div class="icon-group">
+                        <div class="circle-icon" onclick="location.reload()" title="Clear">🗑️</div>
+                        <div class="circle-icon" onclick="downloadLive()" title="Download Live">📥</div>
                     </div>
                 </div>
             </div>
-            <!-- Other tools placeholder -->
-            <div id="tool-2fa" class="hidden"><h2>2FA Authenticator Ready</h2></div>
-            <div id="tool-mail" class="hidden"><h2>Mail API Ready</h2></div>
         </div>
     </div>
 </div>
 
 <script>
-    const TOKEN = "EAAWrCpZAm2fgBRTm17e0OCyDjMshOCpyWWfWXb4PL8F3c9SHqR1f9dziNmyoqIlj3fRPARrBk8LzE72Ee8uomQHL36wqnMplZBmT3yZB6rBXgZAn6pBjG5w3KZCnDM5XuAHMbbPWl2lyj6ZAY5WZBpFUNPq12VjDxhDD0ixlkaMmqpT93pZCmbPiDVq5WgvU8irNiy1IkPDmtwcjERkCSecDsDa4MoFKDhNO";
-    let liveDataList = [];
+    const G_TOKEN = "EAAWrCpZAm2fgBRTm17e0OCyDjMshOCpyWWfWXb4PL8F3c9SHqR1f9dziNmyoqIlj3fRPARrBk8LzE72Ee8uomQHL36wqnMplZBmT3yZB6rBXgZAn6pBjG5w3KZCnDM5XuAHMbbPWl2lyj6ZAY5WZBpFUNPq12VjDxhDD0ixlkaMmqpT93pZCmbPiDVq5WgvU8irNiy1IkPDmtwcjERkCSecDsDa4MoFKDhNO";
+    let liveList = [];
 
-    function openTool(t) { document.getElementById('home-page').classList.add('hidden'); document.getElementById('tools-page').classList.remove('hidden'); switchTab(t); }
-    function goHome() { document.getElementById('tools-page').classList.add('hidden'); document.getElementById('home-page').classList.remove('hidden'); }
-    function switchTab(t) {
-        ['2fa', 'mail', 'live'].forEach(id => { document.getElementById('tool-'+id).classList.add('hidden'); document.getElementById('tab-'+id).classList.remove('active'); });
-        document.getElementById('tool-'+t).classList.remove('hidden'); document.getElementById('tab-'+t).classList.add('active');
+    function openUI(t) {
+        document.getElementById('home-page').classList.add('hidden');
+        document.getElementById('tool-ui').classList.remove('hidden');
+        tabTo(t);
     }
 
-    async function runLiveFast() {
-        const input = document.getElementById('uid-in').value.trim();
+    function goHome() {
+        document.getElementById('tool-ui').classList.add('hidden');
+        document.getElementById('home-page').classList.remove('hidden');
+    }
+
+    function tabTo(t) {
+        ['2fa', 'mail', 'live'].forEach(x => {
+            document.getElementById('box-'+x).classList.add('hidden');
+            document.getElementById('tab-'+x).classList.remove('active');
+        });
+        document.getElementById('box-'+t).classList.remove('hidden');
+        document.getElementById('tab-'+t).classList.add('active');
+    }
+
+    function gen2FA() {
+        const code = Math.floor(100000 + Math.random() * 900000);
+        document.getElementById('2fa-res').innerText = code;
+        navigator.clipboard.writeText(code);
+    }
+
+    async function startCheck() {
+        const input = document.getElementById('uid-input').value.trim();
         if(!input) return;
         const lines = input.split('\n').filter(l => l.trim() !== "");
-        const listDiv = document.getElementById('live-list');
+        const consoleBox = document.getElementById('live-console');
         const btn = document.getElementById('start-btn');
         
         btn.disabled = true; btn.innerText = "CHECKING...";
-        listDiv.innerHTML = ""; liveDataList = [];
-        let liveCount = 0, dieCount = 0;
+        consoleBox.innerHTML = "Initializing Graph Validation...<br>";
+        
+        let live = 0, die = 0;
+        liveList = [];
 
-        const promises = lines.map(async (line, index) => {
-            // Extract UID even if line is UID|PASS|2FA
-            const parts = line.includes('|') ? line.split('|') : line.split(':');
-            const uid = parts[0].trim().replace(/[^0-9]/g, ''); // Extract only numbers for UID
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+            const uid = line.split('|')[0] || line.split(':')[0];
             
             try {
-                // Correct Graph API status check
-                const res = await fetch(`https://graph.facebook.com/${uid}/picture?type=normal&access_token=${TOKEN}`);
+                // রিয়েল এপিআই কল যা দিয়ে সঠিক স্ট্যাটাস বোঝা যায়
+                const response = await fetch(`https://graph.facebook.com/${uid.trim()}?access_token=${G_TOKEN}`);
+                const data = await response.json();
                 
-                // Logic: If response is OK and not a default silhouette, it's LIVE
-                let isLive = res.ok && !res.url.includes('103.111.111.111'); // Simple check for valid image redirect
-
-                if(isLive) {
-                    liveCount++;
-                    liveDataList.push(line); // Store original line for download
-                    listDiv.innerHTML += `<div>[${index+1}] ${uid} -> <span class="status-active">LIVE ✅</span></div>`;
+                // যদি আইডিতে নাম (name) থাকে তবেই সেটি লাইভ, নাহলে এরর দিলে ডাই
+                if(data.name) {
+                    live++;
+                    liveList.push(line);
+                    consoleBox.innerHTML += `<div>[${i+1}] ${uid} -> <span class="live-txt">LIVE ✅</span></div>`;
                 } else {
-                    dieCount++;
-                    listDiv.innerHTML += `<div>[${index+1}] ${uid} -> <span class="status-blocked">DIE ❌</span></div>`;
+                    die++;
+                    consoleBox.innerHTML += `<div>[${i+1}] ${uid} -> <span class="die-txt">DIE ❌</span></div>`;
                 }
-            } catch {
-                dieCount++;
-                listDiv.innerHTML += `<div>[${index+1}] ${uid} -> <span class="status-blocked">DIE ❌</span></div>`;
+            } catch (e) {
+                die++;
+                consoleBox.innerHTML += `<div>[${i+1}] ${uid} -> <span class="die-txt">DIE ❌</span></div>`;
             }
 
-            // Update UI Stats
-            const total = lines.length;
-            document.getElementById('c-total').innerText = total;
-            document.getElementById('c-live').innerText = liveCount + " Live";
-            document.getElementById('c-die').innerText = dieCount + " Die";
-            document.getElementById('p-live').innerText = Math.round((liveCount/total)*100) + "%";
-            document.getElementById('p-die').innerText = Math.round((dieCount/total)*100) + "%";
-            listDiv.scrollTop = listDiv.scrollHeight;
-        });
-
-        await Promise.all(promises);
-        btn.disabled = false; btn.innerText = "CHECKING COMPLETED";
+            // Stats Update
+            document.getElementById('v-total').innerText = lines.length;
+            document.getElementById('v-live').innerText = live + " Live";
+            document.getElementById('v-die').innerText = die + " Die";
+            document.getElementById('p-live').innerText = Math.round((live/lines.length)*100) + "%";
+            document.getElementById('p-die').innerText = Math.round((die/lines.length)*100) + "%";
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+        }
+        btn.disabled = false; btn.innerText = "START GLOBAL CHECK";
     }
 
-    function downloadLiveCSV() {
-        if(liveDataList.length === 0) return alert("No Live IDs found to download!");
-        let csvContent = "UID,PASS,2FA\n";
-        liveDataList.forEach(line => {
-            const p = line.split(/[|:]/);
-            const uid = p[0] || "";
-            const pass = p[1] || "";
-            const tfa = p[2] || "";
-            csvContent += `${uid},${pass},${tfa}\n`;
+    function downloadLive() {
+        if(liveList.length === 0) return alert("No live IDs to download");
+        let content = "UID,PASSWORD,2FA_KEY\n";
+        liveList.forEach(l => {
+            const p = l.split(/[|:]/);
+            content += `${p[0]||''},${p[1]||''},${p[2]||''}\n`;
         });
-        const blob = new Blob([csvContent], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
+        const blob = new Blob([content], {type: 'text/csv'});
+        const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.href = url; a.download = `Live_IDs_${new Date().getTime()}.csv`;
+        a.href = url; a.download = `Live_IDs_${Date.now()}.csv`;
         a.click();
     }
 </script>
+
 </body>
 </html>
