@@ -263,47 +263,31 @@
         const input = document.getElementById('uid-in').value.trim();
         const listDiv = document.getElementById('live-list');
         
+        // Check if input is empty
         if(!input) {
-            listDiv.innerHTML = '<span style="color:
-;">ERROR: No UID data found. Please enter at least one UID.</span>';
+            listDiv.innerHTML = 'Error: No UID data found.';
             return;
         }
         
         const uids = input.split('\n').filter(uid => uid.trim() !== '');
         
+        // Check if there are valid UIDs
         if(uids.length === 0) {
-            listDiv.innerHTML = '<span style="color:
-;">ERROR: No valid UID found.</span>';
+            listDiv.innerHTML = 'Error: No UID data found.';
             return;
         }
         
-        listDiv.innerHTML = 'System Booting... <br>Connecting to server...<br>Checking ' + uids.length + ' UIDs...';
+        listDiv.innerHTML = 'System Booting... <br>Connecting to server...';
 
         setTimeout(() => {
-            let html = '<div style="margin-bottom:15px; color:
-; font-weight:bold;">═══════════════════════════════════</div>';
-            html += '<div style="margin-bottom:10px; color:
-;">✓ Connection Established</div>';
-            html += '<div style="margin-bottom:15px; color:
-;">Total UIDs: ' + uids.length + '</div>';
-            html += '<div style="margin-bottom:15px; color:
-; font-weight:bold;">═══════════════════════════════════</div>';
-            
+            let html = '';
             uids.forEach((uid, index) => {
                 const cleanUid = uid.trim();
-                // Logic: 70% Active, 30% Blocked
+                // Logic: 70% Active, 30% Blocked based on random
                 const isActive = Math.random() > 0.3; 
-                const status = isActive 
-                    ? '<span class="status-active">ACTIVE ✅</span>' 
-                    : '<span class="status-blocked">BLOCKED ❌</span>';
-                html += `<div style="margin-bottom:8px;">[${index + 1}] ID: ${cleanUid} —> STATUS: ${status}</div>`;
+                const status = isActive ? '<span class="status-active">ACTIVE ✅</span>' : '<span class="status-blocked">BLOCKED ❌</span>';
+                html += `<div>[${index + 1}] ID: ${cleanUid} —> STATUS: ${status}</div>`;
             });
-            
-            html += '<div style="margin-top:15px; color:
-; font-weight:bold;">═══════════════════════════════════</div>';
-            html += '<div style="margin-top:10px; color:
-;">✓ Check Complete</div>';
-            
             listDiv.innerHTML = html;
         }, 1500);
     }
@@ -318,6 +302,5 @@
     }
 </script>
 
-</body>
+</body>  
 </html>
-
