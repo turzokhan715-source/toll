@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>FB & IG OTP Extractor</title>
+    <title>Outlook → FB/IG OTP Extractor</title>
     <style>
         * {
             margin: 0;
@@ -11,6 +11,7 @@
         }
         body {
             background: linear-gradient(135deg, 
+, 
 , 
 );
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -34,6 +35,7 @@
         }
         .header h1 {
             background: linear-gradient(135deg, 
+, 
 , 
 );
             -webkit-background-clip: text;
@@ -101,32 +103,6 @@
 ;
         }
         
-        .mode-toggle {
-            background: 
-;
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-            border-left: 4px solid 
-;
-        }
-        .mode-toggle label {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            color: 
-;
-        }
-        .mode-toggle input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-        
         .input-section {
             margin-bottom: 20px;
         }
@@ -143,7 +119,7 @@
             padding: 15px;
             border: 2px solid #ddd;
             border-radius: 12px;
-            font-size: 14px;
+            font-size: 13px;
             font-family: 'Courier New', monospace;
             resize: vertical;
             transition: all 0.3s;
@@ -152,7 +128,7 @@
             border-color: 
 ;
             outline: none;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
         }
         .btn-group {
             display: flex;
@@ -177,7 +153,7 @@
         }
         .btn-extract:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 25px rgba(0, 120, 212, 0.4);
         }
         .btn-extract:active {
             transform: translateY(0);
@@ -193,6 +169,31 @@
         }
         .result-section {
             margin-top: 25px;
+        }
+        .data-display {
+            background: 
+;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            font-family: monospace;
+        }
+        .data-row {
+            padding: 8px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+            border-left: 3px solid 
+;
+            word-break: break-all;
+        }
+        .data-label {
+            font-weight: bold;
+            color: 
+;
+            display: inline-block;
+            min-width: 80px;
         }
         .platform-detected {
             padding: 15px;
@@ -224,28 +225,6 @@
             color: 
 ;
             border-left: 5px solid 
-;
-        }
-        .platform-detected.error {
-            background: linear-gradient(135deg, 
-, 
-);
-            color: 
-;
-            border-left: 5px solid 
-;
-        }
-        .email-box {
-            background: 
-;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            text-align: center;
-            font-weight: 600;
-            color: 
-;
-            border-left: 4px solid 
 ;
         }
         .code-container {
@@ -352,8 +331,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🔐 FB & IG OTP Extractor</h1>
-            <p>Select Platform & Extract Verification Code</p>
+            <h1>📧 Outlook → FB/IG OTP</h1>
+            <p>Extract Facebook/Instagram codes from Outlook/Hotmail data</p>
         </div>
         
         <!-- TAB SELECTION -->
@@ -366,21 +345,17 @@
             </div>
         </div>
         
-        <!-- MODE TOGGLE -->
-        <div class="mode-toggle">
-            <label>
-                <input type="checkbox" id="strictMode">
-                <span>🔒 Strict Mode (Verify email domain)</span>
-            </label>
-        </div>
-        
         <div class="input-section">
-            <label>📋 Paste Your Email Data Here:</label>
-            <textarea id="emailInput" placeholder="Paste your email data here...
+            <label>📋 Paste Outlook/Hotmail Data:</label>
+            <textarea id="emailInput" placeholder="Paste your Outlook/Hotmail data here...
 
-Select platform above (Facebook or Instagram) then paste your email data.
-Strict Mode OFF: Extracts code from any email
-Strict Mode ON: Only extracts from confirmed FB/IG emails"></textarea>
+Supports:
+• Pipe-separated format: email|password|token|uuid
+• Plain email text
+• API responses
+• Any format containing FB/IG codes
+
+Will extract Facebook or Instagram verification codes!"></textarea>
         </div>
         
         <div class="btn-group">
@@ -389,12 +364,19 @@ Strict Mode ON: Only extracts from confirmed FB/IG emails"></textarea>
         </div>
         
         <div class="result-section">
-            <div class="platform-detected waiting" id="platformDisplay">
-                ⏳ Select platform and paste data...
+            <div class="data-display" id="dataDisplay" style="display:none;">
+                <div class="data-row">
+                    <span class="data-label">📧 Email:</span>
+                    <span id="emailOut">-</span>
+                </div>
+                <div class="data-row">
+                    <span class="data-label">🔑 Password:</span>
+                    <span id="passOut">-</span>
+                </div>
             </div>
             
-            <div class="email-box" id="emailDisplay">
-                📧 No email detected yet
+            <div class="platform-detected waiting" id="platformDisplay">
+                ⏳ Select platform and paste data...
             </div>
             
             <div class="code-container">
@@ -405,14 +387,14 @@ Strict Mode ON: Only extracts from confirmed FB/IG emails"></textarea>
         </div>
         
         <div class="info-panel">
-            <h3>✨ How to Use</h3>
+            <h3>✨ How It Works</h3>
             <ul>
-                <li>Select platform: Facebook or Instagram</li>
-                <li>Toggle Strict Mode ON/OFF as needed</li>
-                <li>Paste your email data</li>
-                <li>Click "Extract OTP Code"</li>
-                <li>Code auto-copies to clipboard</li>
-                <li>Supports any digit length (4-8 digits)</li>
+                <li>Select Facebook or Instagram tab</li>
+                <li>Paste Outlook/Hotmail email data (any format)</li>
+                <li>Extracts confirmation/reset/verification codes</li>
+                <li>Works with pipe-separated format</li>
+                <li>Auto-copies code to clipboard</li>
+                <li>Supports 4-8 digit codes</li>
             </ul>
         </div>
     </div>
@@ -434,31 +416,29 @@ Strict Mode ON: Only extracts from confirmed FB/IG emails"></textarea>
                 igTab.className = 'tab-button active ig';
             }
             
-            // Update display
             var platformDisplay = document.getElementById('platformDisplay');
             platformDisplay.className = 'platform-detected waiting';
             
             if(platform === 'facebook') {
-                platformDisplay.innerText = '📘 Facebook mode selected';
+                platformDisplay.innerText = '📘 Facebook mode - paste Outlook data with FB code';
             } else {
-                platformDisplay.innerText = '📷 Instagram mode selected';
+                platformDisplay.innerText = '📷 Instagram mode - paste Outlook data with IG code';
             }
         }
         
         function clearAll() {
             document.getElementById('emailInput').value = '';
-            document.getElementById('emailDisplay').innerText = '📧 No email detected yet';
+            document.getElementById('dataDisplay').style.display = 'none';
             document.getElementById('codeDisplay').className = 'code-display waiting';
             document.getElementById('codeDisplay').innerText = '------';
             document.getElementById('copyMsg').innerText = '';
             
-            // Reset platform display
             var platformDisplay = document.getElementById('platformDisplay');
             platformDisplay.className = 'platform-detected waiting';
             if(selectedPlatform === 'facebook') {
-                platformDisplay.innerText = '📘 Facebook mode selected';
+                platformDisplay.innerText = '📘 Facebook mode - paste Outlook data with FB code';
             } else {
-                platformDisplay.innerText = '📷 Instagram mode selected';
+                platformDisplay.innerText = '📷 Instagram mode - paste Outlook data with IG code';
             }
         }
         
@@ -466,80 +446,44 @@ Strict Mode ON: Only extracts from confirmed FB/IG emails"></textarea>
             var input = document.getElementById('emailInput').value.trim();
             
             if(!input) {
-                alert('⚠️ Please paste email data first!');
+                alert('⚠️ Please paste data first!');
                 return;
             }
             
-            // Reset display
             document.getElementById('codeDisplay').className = 'code-display waiting';
             document.getElementById('codeDisplay').innerText = 'SEARCHING...';
             document.getElementById('copyMsg').innerText = '';
             
-            var inputLower = input.toLowerCase();
-            var strictMode = document.getElementById('strictMode').checked;
+            // Parse pipe-separated format
+            var parts = input.split('|');
+            var email = '';
+            var password = '';
             
-            // Extract email address
-            var emailRegex = /[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
-            var emails = input.match(emailRegex);
-            var detectedEmail = '';
-            
-            if(emails && emails.length > 0) {
-                detectedEmail = emails[0].toLowerCase();
-                document.getElementById('emailDisplay').innerText = '📧 Email: ' + emails[0];
-            } else {
-                document.getElementById('emailDisplay').innerText = '📧 No email found';
+            if(parts.length >= 1) {
+                email = parts[0].trim();
+                document.getElementById('emailOut').innerText = email;
             }
             
+            if(parts.length >= 2) {
+                password = parts[1].trim();
+                document.getElementById('passOut').innerText = password;
+            }
+            
+            if(email || password) {
+                document.getElementById('dataDisplay').style.display = 'block';
+            }
+            
+            // Display platform
             var platformDisplay = document.getElementById('platformDisplay');
-            
-            // STRICT MODE CHECK
-            if(strictMode) {
-                var isCorrectPlatform = false;
-                
-                if(selectedPlatform === 'facebook') {
-                    if(detectedEmail.includes('facebookmail.com') || 
-                       detectedEmail.includes('facebook.com') ||
-                       detectedEmail.includes('fb.com') ||
-                       inputLower.includes('facebook') || 
-                       inputLower.includes(' fb ') ||
-                       inputLower.includes('meta')) {
-                        isCorrectPlatform = true;
-                    }
-                } else if(selectedPlatform === 'instagram') {
-                    if(detectedEmail.includes('instagram.com') || 
-                       detectedEmail.includes('ig.com') ||
-                       inputLower.includes('instagram') || 
-                       inputLower.includes(' ig ')) {
-                        isCorrectPlatform = true;
-                    }
-                }
-                
-                if(!isCorrectPlatform) {
-                    platformDisplay.className = 'platform-detected error';
-                    
-                    if(selectedPlatform === 'facebook') {
-                        platformDisplay.innerText = '❌ NOT a Facebook email! Turn OFF Strict Mode or paste FB email.';
-                    } else {
-                        platformDisplay.innerText = '❌ NOT an Instagram email! Turn OFF Strict Mode or paste IG email.';
-                    }
-                    
-                    document.getElementById('codeDisplay').className = 'code-display error';
-                    document.getElementById('codeDisplay').innerText = 'WRONG PLATFORM';
-                    document.getElementById('copyMsg').innerText = '❌ Email does not match selected platform (Strict Mode ON)';
-                    return;
-                }
-            }
-            
-            // Display selected platform
             if(selectedPlatform === 'facebook') {
                 platformDisplay.className = 'platform-detected fb';
-                platformDisplay.innerText = '✅ Extracting Facebook Code';
+                platformDisplay.innerText = '✅ Extracting Facebook Code from Outlook data';
             } else {
                 platformDisplay.className = 'platform-detected ig';
-                platformDisplay.innerText = '✅ Extracting Instagram Code';
+                platformDisplay.innerText = '✅ Extracting Instagram Code from Outlook data';
             }
             
-            // EXTRACT OTP
+            // EXTRACT OTP - Find ALL digit sequences
             var otp = null;
             var allNumbers = input.match(/\d+/g);
             
@@ -550,11 +494,13 @@ Strict Mode ON: Only extracts from confirmed FB/IG emails"></textarea>
                     var num = allNumbers[i];
                     var len = num.length;
                     
+                    // Accept 4-8 digit codes
                     if(len >= 4 && len <= 8) {
                         validOTPs.push(num);
                     }
                 }
                 
+                // Take the LAST valid code (usually the OTP)
                 if(validOTPs.length > 0) {
                     otp = validOTPs[validOTPs.length - 1];
                 }
@@ -570,7 +516,12 @@ Strict Mode ON: Only extracts from confirmed FB/IG emails"></textarea>
                 
                 navigator.clipboard.writeText(otp).then(function() {
                     copyMsg.className = 'copy-indicator success';
-                    copyMsg.innerText = '✓ Code copied to clipboard: ' + otp;
+                    
+                    if(selectedPlatform === 'facebook') {
+                        copyMsg.innerText = '✓ Facebook code copied: ' + otp;
+                    } else {
+                        copyMsg.innerText = '✓ Instagram code copied: ' + otp;
+                    }
                     
                     setTimeout(function() {
                         copyMsg.innerText = '';
@@ -584,7 +535,7 @@ Strict Mode ON: Only extracts from confirmed FB/IG emails"></textarea>
                 codeDisplay.className = 'code-display error';
                 codeDisplay.innerText = 'NO CODE FOUND';
                 copyMsg.className = 'copy-indicator';
-                copyMsg.innerText = '❌ No OTP code detected';
+                copyMsg.innerText = '❌ No OTP code detected in the data';
             }
         }
         
@@ -596,7 +547,7 @@ Strict Mode ON: Only extracts from confirmed FB/IG emails"></textarea>
         // Click to copy
         document.getElementById('codeDisplay').addEventListener('click', function() {
             var code = this.innerText;
-            if(code !== '------' && code !== 'SEARCHING...' && code !== 'NO CODE FOUND' && code !== 'WRONG PLATFORM') {
+            if(code !== '------' && code !== 'SEARCHING...' && code !== 'NO CODE FOUND') {
                 navigator.clipboard.writeText(code);
                 var copyMsg = document.getElementById('copyMsg');
                 copyMsg.className = 'copy-indicator success';
@@ -609,3 +560,4 @@ Strict Mode ON: Only extracts from confirmed FB/IG emails"></textarea>
     </script>
 </body>
 </html>
+
