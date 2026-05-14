@@ -3,25 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Mail OTP Extractor - Premium</title>
+    <title>API Mail OTP Extractor</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
-        
-        :root { 
-            --primary: 
-; 
-            --primary-dark: 
-;
-            --secondary: 
-;
-            --bg: #03050a; 
-            --card-bg: 
-; 
-            --text-gray: 
-; 
-            --glow: 0 0 25px rgba(139, 92, 246, 0.6);
-            --glow-green: 0 0 20px rgba(16, 185, 129, 0.6);
-        }
         
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         
@@ -35,34 +19,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            overflow-x: hidden;
-        }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
         }
         
         .container { 
             max-width: 600px; 
             width: 100%;
-            position: relative; 
-            z-index: 1;
-            animation: fadeInUp 0.8s ease;
-        }
-        
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
         }
         
         .header {
@@ -73,15 +34,16 @@
         .header h1 {
             font-size: 42px;
             font-weight: 900;
-            background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
+            background: linear-gradient(135deg, #fff 0%, 
+ 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
-            letter-spacing: -1px;
         }
         
         .header p {
-            color: var(--text-gray);
+            color: 
+;
             font-size: 14px;
             font-weight: 600;
             letter-spacing: 2px;
@@ -94,27 +56,15 @@
  100%);
             border-radius: 30px;
             padding: 40px;
-            box-shadow: 0 25px 70px rgba(0,0,0,0.6), 0 0 0 1px rgba(139, 92, 246, 0.2);
-            animation: scaleIn 0.5s ease 0.2s both;
-        }
-        
-        @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        
-        .tool-header {
-            margin-bottom: 30px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.6);
         }
         
         .tool-header h2 {
             font-size: 28px;
-            color: var(--primary);
+            color: 
+;
             font-weight: 900;
             margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
         
         .tool-header p {
@@ -122,10 +72,7 @@
 ;
             font-size: 14px;
             font-weight: 600;
-        }
-        
-        .input-section {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
         
         .input-label {
@@ -136,7 +83,6 @@
             margin-bottom: 10px;
             display: block;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
         
         .input-s {
@@ -145,18 +91,20 @@
             border-radius: 12px;
             border: 2px solid 
 ;
-            background: #f8fafc;
+            background: 
+;
             outline: none;
             font-weight: 600;
             font-size: 14px;
-            transition: all 0.3s ease;
             color: 
 ;
             resize: vertical;
+            margin-bottom: 15px;
         }
         
         .input-s:focus {
-            border-color: var(--primary);
+            border-color: 
+;
             box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
             background: #fff;
         }
@@ -171,43 +119,15 @@
             font-size: 14px;
             text-transform: uppercase;
             color: #fff;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            box-shadow: var(--glow);
+            background: linear-gradient(135deg, 
+ 0%, 
+ 100%);
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.6);
             transition: all 0.3s ease;
-            letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        
-        .btn:hover::before {
-            width: 400px;
-            height: 400px;
         }
         
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4);
-        }
-        
-        .btn:active {
-            transform: translateY(0);
-        }
-        
-        .result-section {
-            margin-top: 30px;
         }
         
         .mail-display {
@@ -218,12 +138,12 @@
             border-radius: 12px;
             text-align: center;
             font-weight: 900;
-            margin-bottom: 20px;
+            margin: 20px 0;
             border: 2px solid 
 ;
             font-size: 16px;
-            color: var(--primary);
-            transition: all 0.3s ease;
+            color: 
+;
             min-height: 60px;
             display: flex;
             align-items: center;
@@ -247,37 +167,19 @@
             padding: 40px;
             border-radius: 20px;
             text-align: center;
-            border: 3px solid var(--primary);
-            box-shadow: var(--glow), inset 0 2px 15px rgba(0, 0, 0, 0.5);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .code-box::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(139, 92, 246, 0.1), transparent);
-            animation: shimmer 3s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+            border: 3px solid 
+;
+            box-shadow: 0 0 25px rgba(139, 92, 246, 0.6);
         }
         
         .code-label {
             font-size: 11px;
-            color: var(--text-gray);
+            color: 
+;
             letter-spacing: 2px;
             margin-bottom: 15px;
             font-weight: 700;
             text-transform: uppercase;
-            position: relative;
-            z-index: 1;
         }
         
         .code-value {
@@ -287,22 +189,14 @@
             font-weight: 900;
             letter-spacing: 8px;
             margin: 10px 0;
-            animation: pulse 2s ease infinite;
-            position: relative;
-            z-index: 1;
             text-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
         }
         
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
         .code-value.waiting {
-            color: var(--text-gray);
+            color: 
+;
             font-size: 24px;
             letter-spacing: 2px;
-            animation: none;
             text-shadow: none;
         }
         
@@ -313,8 +207,6 @@
             font-weight: 800;
             margin-top: 15px;
             height: 20px;
-            position: relative;
-            z-index: 1;
         }
         
         .info-box {
@@ -326,7 +218,8 @@
         }
         
         .info-box h3 {
-            color: var(--primary);
+            color: 
+;
             font-size: 16px;
             margin-bottom: 12px;
             font-weight: 900;
@@ -355,12 +248,6 @@
 ;
             font-weight: 900;
         }
-        
-        @media (max-width: 768px) {
-            .header h1 { font-size: 32px; }
-            .tool-box { padding: 25px; }
-            .code-value { font-size: 42px; letter-spacing: 4px; }
-        }
     </style>
 </head>
 <body>
@@ -377,29 +264,30 @@
             <p>Paste your Outlook/Hotmail data below to extract email and OTP code</p>
         </div>
         
-        <div class="input-section">
-            <label class="input-label">📋 Paste Email Data</label>
-            <textarea 
-                id="mail-in" 
-                class="input-s" 
-                rows="6" 
-                placeholder="Paste your email content here...&#10;&#10;Example:&#10;From: noreply@service.com&#10;Your verification code is: 123456&#10;Email: user@outlook.com"
-                oninput="extractData()"
-            ></textarea>
-        </div>
+        <label class="input-label">📋 Paste Email Data</label>
+        <textarea 
+            id="mail-in" 
+            class="input-s" 
+            rows="6" 
+            placeholder="Paste your email content here...
+
+Example:
+From: noreply@service.com
+Your verification code is: 123456
+Email: user@outlook.com"
+            oninput="extractData()"
+        ></textarea>
         
         <button class="btn" onclick="extractData()">🔍 Extract Data</button>
         
-        <div class="result-section">
-            <div class="mail-display" id="mail-out">
-                🔍 Waiting for email data...
-            </div>
-            
-            <div class="code-box">
-                <div class="code-label">🔐 Verification Code</div>
-                <div class="code-value waiting" id="mail-code">Waiting...</div>
-                <div class="copy-status" id="copy-status"></div>
-            </div>
+        <div class="mail-display" id="mail-out">
+            🔍 Waiting for email data...
+        </div>
+        
+        <div class="code-box">
+            <div class="code-label">🔐 Verification Code</div>
+            <div class="code-value waiting" id="mail-code">Waiting...</div>
+            <div class="copy-status" id="copy-status"></div>
         </div>
         
         <div class="info-box">
@@ -441,10 +329,10 @@
             document.getElementById('mail-out').classList.remove('found');
         }
         
-        // Extract OTP Code - Multiple patterns
+        // Extract OTP Code
         let code = null;
         
-        // Pattern 1: "code: 123456" or "Code is 123456" or "OTP: 123456"
+        // Pattern 1: "code: 123456" or "Code is 123456"
         let pattern1 = val.match(/(?:code|otp|verification|pin|token)[\s:is]+(\d{4,8})/i);
         if(pattern1) code = pattern1[1];
         
@@ -454,16 +342,10 @@
             if(pattern2) code = pattern2[1];
         }
         
-        // Pattern 3: 4 digits (fallback)
+        // Pattern 3: 4 digits
         if(!code) {
             let pattern3 = val.match(/\b(\d{4})\b/);
             if(pattern3) code = pattern3[1];
-        }
-        
-        // Pattern 4: 8 digits
-        if(!code) {
-            let pattern4 = val.match(/\b(\d{8})\b/);
-            if(pattern4) code = pattern4[1];
         }
         
         // Display code
@@ -471,14 +353,12 @@
             document.getElementById('mail-code').innerText = code;
             document.getElementById('mail-code').classList.remove('waiting');
             
-            // Auto copy to clipboard
+            // Auto copy
             navigator.clipboard.writeText(code).then(() => {
-                document.getElementById('copy-status').innerText = '✓ Code auto-copied to clipboard!';
+                document.getElementById('copy-status').innerText = '✓ Code auto-copied!';
                 setTimeout(() => {
                     document.getElementById('copy-status').innerText = '';
                 }, 3000);
-            }).catch(() => {
-                document.getElementById('copy-status').innerText = '⚠ Click to copy: ' + code;
             });
         } else {
             document.getElementById('mail-code').innerText = '❌ No code found';
