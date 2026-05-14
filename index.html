@@ -46,7 +46,7 @@
             margin-bottom: 30px;
         }
 
-        /* Input Area for Outlook/Mail Data */
+        /* 1. Fast Box (Input) */
         .input-area {
             width: 100%;
             height: 150px;
@@ -55,38 +55,59 @@
             border: 2px solid #f1f5f9;
             background: #f8fafc;
             font-weight: 600;
-            font-size: 15px;
-            margin-bottom: 20px;
+            font-size: 14px;
+            margin-bottom: 15px;
             outline: none;
             resize: none;
             color: #1e293b;
         }
 
-        /* Detected Info Display */
-        .info-box {
-            background: #f1f5f9;
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 25px;
+        /* 2. Clear Button Row */
+        .action-row {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 800;
-            color: #3b82f6;
-            font-size: 14px;
+            justify-content: flex-end;
+            margin-bottom: 15px;
         }
 
         .clear-btn {
             background: #ef4444;
             color: #fff;
             border: none;
-            padding: 8px 15px;
-            border-radius: 10px;
+            padding: 10px 25px;
+            border-radius: 12px;
             cursor: pointer;
+            font-weight: 800;
             font-size: 12px;
+            text-transform: uppercase;
         }
 
-        /* Lighting OTP Box */
+        /* 3. Mail Display Box with Copy */
+        .mail-box-display {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #f1f5f9;
+        }
+
+        #detected-mail {
+            color: #3b82f6;
+            font-weight: 800;
+            font-size: 15px;
+            word-break: break-all;
+        }
+
+        .copy-mail-btn {
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 20px;
+            margin-left: 10px;
+        }
+
+        /* 4. Code Box (Lighting Effect) */
         .code-box-wrapper { 
             background: #fff; 
             border: 3px solid var(--primary); 
@@ -116,10 +137,10 @@
             color: var(--text-gray);
             font-weight: 600;
             font-size: 13px;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
 
-        /* --- FIXED HISTORY SECTION --- */
+        /* Historey Box */
         .history-section {
             text-align: left;
             border-top: 2px dashed #f1f5f9;
@@ -143,23 +164,6 @@
             flex-direction: column;
             gap: 10px;
         }
-
-        .history-item {
-            background: #fff;
-            padding: 12px 15px;
-            border-radius: 12px;
-            font-size: 13px;
-            border-left: 5px solid #3b82f6;
-            color: #475569;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-        }
-
-        .history-item b { color: #000; }
-
-        /* Custom Scrollbar */
-        .history-list::-webkit-scrollbar { width: 5px; }
-        .history-list::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
-
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -171,61 +175,60 @@
             <h2>API Mail Scraper</h2>
         </div>
 
-        <!-- Input Box for raw mail data -->
-        <textarea id="mail-input" class="input-area" placeholder="Paste your Mail/Outlook data here..." oninput="autoScanMail()"></textarea>
+        <!-- 1. Fast Box -->
+        <textarea id="mail-input" class="input-area" placeholder="Paste full mail token here..." oninput="autoScan()"></textarea>
 
-        <!-- Detected Email Status -->
-        <div class="info-box">
-            <span id="detected-email">No Email Detected</span>
+        <!-- 2. Clear Button -->
+        <div class="action-row">
             <button class="clear-btn" onclick="clearAll()">CLEAR ALL</button>
         </div>
 
+        <!-- 3. Mail Show Box with Copy -->
+        <div class="mail-box-display">
+            <span id="detected-mail">WAITING FOR MAIL...</span>
+            <i class="fa-solid fa-copy copy-mail-btn" onclick="copyMail()" title="Copy Mail"></i>
+        </div>
+
         <center>
-            <!-- OTP Display Box with Lighting -->
+            <!-- 4. Code Box & Copy -->
             <div class="code-box-wrapper">
                 <span id="otp-result" class="code-display">WAITING</span>
-                <i class="fa-solid fa-copy copy-icon" onclick="copyOTP()"></i>
+                <i class="fa-solid fa-copy copy-icon" onclick="copyOTP()" title="Copy Code"></i>
             </div>
-            <p class="status-text">OTP will be auto-scanned and copied!</p>
+            <p class="status-text">Only FB/Insta codes will be auto-scanned!</p>
         </center>
 
-        <!-- Fixed History Box -->
         <div class="history-section">
             <h3>Historey</h3>
-            <div id="history-container" class="history-list">
-                <!-- Scanned items will appear here -->
-            </div>
+            <div id="history-container" class="history-list"></div>
         </div>
     </main>
 </div>
 
 <script>
-    const MAX_HISTORY = 20;
-
-    function autoScanMail() {
+    function autoScan() {
         const input = document.getElementById('mail-input').value;
         
-        // Regex to find Email and 6-digit Code
+        // Mail Extraction
         const emailMatch = input.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-        const codeMatch = input.match(/\b\d{6}\b/);
-
         if (emailMatch) {
             document.getElementById('detected-email').innerText = emailMatch[0];
         }
 
-        if (codeMatch) {
-            const otp = codeMatch[0];
-            const currentOTP = document.getElementById('otp-result').innerText;
+        // Filter for FB and Instagram keywords in the token
+        const isFBorInsta = input.toLowerCase().includes("facebook") || input.toLowerCase().includes("instagram");
+        
+        if (isFBorInsta) {
+            const codeMatch = input.match(/\b\d{6}\b/);
+            if (codeMatch) {
+                const otp = codeMatch[0];
+                const currentOTP = document.getElementById('otp-result').innerText;
 
-            // Only update if it's a new code
-            if (otp !== currentOTP) {
-                document.getElementById('otp-result').innerText = otp;
-                
-                // 1. Auto Copy OTP
-                navigator.clipboard.writeText(otp);
-
-                // 2. Add to History
-                addToHistory(emailMatch ? emailMatch[0] : "Unknown", otp);
+                if (otp !== currentOTP) {
+                    document.getElementById('otp-result').innerText = otp;
+                    navigator.clipboard.writeText(otp); // Auto copy
+                    addToHistory(emailMatch ? emailMatch[0] : "Unknown", otp);
+                }
             }
         }
     }
@@ -233,16 +236,16 @@
     function addToHistory(email, otp) {
         const container = document.getElementById('history-container');
         const item = document.createElement('div');
-        item.className = 'history-item';
-        item.innerHTML = `<b>OTP: ${otp}</b> | <span style="opacity:0.7">MAIL: ${email}</span>`;
-        
+        item.style = "background:#fff; padding:12px; border-radius:12px; border-left:5px solid #a855f7; font-size:13px; color:#475569;";
+        item.innerHTML = `<b>CODE: ${otp}</b> | MAIL: ${email}`;
         container.insertBefore(item, container.firstChild);
+        if (container.children.length > 20) container.removeChild(container.lastChild);
+    }
 
-        // Keep only last 20 items
-        const currentItems = container.getElementsByClassName('history-item');
-        if (currentItems.length > MAX_HISTORY) {
-            container.removeChild(container.lastChild);
-        }
+    function copyMail() {
+        const mail = document.getElementById('detected-email').innerText;
+        if(mail.includes("WAITING")) return;
+        navigator.clipboard.writeText(mail);
     }
 
     function copyOTP() {
@@ -253,7 +256,7 @@
 
     function clearAll() {
         document.getElementById('mail-input').value = "";
-        document.getElementById('detected-email').innerText = "No Email Detected";
+        document.getElementById('detected-email').innerText = "WAITING FOR MAIL...";
         document.getElementById('otp-result').innerText = "WAITING";
     }
 </script>
