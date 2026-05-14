@@ -1,191 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FB LIVE CHECKER - FIXED COLORS</title>
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-body { background: #0a0a0a; color: #ffffff; display: flex; height: 100vh; overflow: hidden; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Longisir VIP Portal - Home</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        
+        :root { 
+            --primary: #a855f7; 
+            --secondary: #3b82f6;
+            --bg: #05060b; 
+            --card-bg: #0f111a; 
+            --text-gray: #94a3b8;
+        }
 
-/* Left Panel */
-.left-panel { 
-    width: 300px; 
-    background: #151515; 
-    padding: 15px; 
-    display: flex; 
-    flex-direction: column; 
-    border-right: 1px solid #333333; 
-}
-.panel-header { 
-    background: #0088ff; 
-    padding: 10px 15px; 
-    border-radius: 5px; 
-    margin-bottom: 10px; 
-    font-size: 13px; 
-    font-weight: bold;
-    color: #ffffff; 
-    text-align: center;
-}
-.token-input { 
-    width: 100%; 
-    background: #202020; 
-    border: 1px solid #333333; 
-    border-radius: 5px; 
-    padding: 8px; 
-    color: #ffffff; 
-    font-family: 'Courier New', monospace; 
-    font-size: 11px; 
-    outline: none; 
-    margin-bottom: 10px;
-}
-.account-list { 
-    flex: 1; 
-    background: #202020; 
-    border: 1px solid #333333; 
-    border-radius: 5px; 
-    padding: 10px; 
-    overflow-y: auto; 
-    font-family: 'Courier New', monospace; 
-    font-size: 11px; 
-    color: #00ff00; 
-    margin-bottom: 10px;
-    outline: none;
-}
-.btn-group { display: flex; gap: 10px; }
-.btn { 
-    flex: 1; 
-    padding: 12px; 
-    border: none; 
-    border-radius: 5px; 
-    font-weight: bold; 
-    cursor: pointer; 
-    font-size: 13px; 
-}
-.btn-clear { background: #ff4444; color: #ffffff; }
-.btn-check { background: #0088ff; color: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        body { 
+            background: var(--bg); 
+            color: #fff; 
+            padding: 20px;
+            overflow-x: hidden;
+        }
 
-/* Middle Panel */
-.middle-panel { 
-    flex: 1; 
-    background: #0a0a0a; 
-    padding: 15px; 
-    display: flex; 
-    flex-direction: column; 
-}
-.status-bar { 
-    background: #151515; 
-    padding: 10px 15px; 
-    border-radius: 5px; 
-    margin-bottom: 10px; 
-    font-size: 12px; 
-    color: #aaaaaa; 
-    display: flex; 
-    justify-content: space-between; 
-}
-.result-container { 
-    flex: 1; 
-    background: #151515; 
-    border: 1px solid #333333; 
-    border-radius: 5px; 
-    padding: 10px; 
-    overflow-y: auto; 
-}
-.result-item { 
-    padding: 8px; 
-    margin-bottom: 5px; 
-    border-radius: 4px; 
-    display: flex; 
-    justify-content: space-between; 
-    font-family: monospace;
-}
-.result-active { background: rgba(0, 255, 0, 0.1); border-left: 4px solid #00ff00; color: #00ff00; }
-.result-blocked { background: rgba(255, 0, 0, 0.1); border-left: 4px solid #ff4444; color: #ff4444; }
+        .container { 
+            max-width: 1200px; 
+            margin: auto; 
+            padding-top: 20px; 
+        }
 
-/* Footer */
-.progress-footer { 
-    background: #151515; 
-    padding: 12px; 
-    border-radius: 5px; 
-    margin-top: 10px; 
-    display: flex; 
-    align-items: center; 
-}
-.progress-bar { 
-    flex: 1; 
-    height: 10px; 
-    background: #333333; 
-    border-radius: 5px; 
-    margin: 0 15px; 
-    overflow: hidden; 
-}
-.progress-fill { height: 100%; background: #0088ff; width: 0%; transition: 0.3s; }
-.btn-export { background: #222222; color: #0088ff; border: 1px solid #0088ff; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
+        /* --- NAVIGATION --- */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
 
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-thumb { background: #333333; border-radius: 4px; }
-</style>
+        .nav-btn {
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 13px;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+            transition: 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* আইকনগুলো বড় করা হয়েছে আপনার চাহিদা অনুযায়ী */
+        .nav-btn i { 
+            font-size: 20px; 
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(168, 85, 247, 0.4);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 8vw, 60px);
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(to bottom, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-gray);
+            letter-spacing: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* --- HOME GRID (Card Space বাড়ানো হয়েছে) --- */
+        .home-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 40px; /* কার্ডগুলোর মাঝে গ্যাপ বাড়ানো হয়েছে */
+            margin-bottom: 60px; 
+        }
+        
+        .h-card { 
+            background: var(--card-bg); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            padding: 60px 20px; 
+            border-radius: 30px; 
+            text-align: center; 
+            cursor: pointer; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            position: relative;
+            overflow: hidden;
+        }
+
+        .h-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(168, 85, 247, 0.05));
+            pointer-events: none;
+        }
+
+        .h-card i { 
+            font-size: 55px; 
+            color: var(--primary); 
+            margin-bottom: 25px; 
+            display: block;
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+        }
+
+        .h-card h3 { 
+            font-size: 22px; 
+            font-weight: 800;
+            margin-bottom: 10px; 
+            letter-spacing: 1px;
+        }
+
+        .h-card p { 
+            font-size: 14px; 
+            color: var(--text-gray); 
+            font-weight: 400;
+        }
+
+        .h-card:hover { 
+            transform: scale(1.05);
+            border-color: var(--primary); 
+            box-shadow: 0 15px 40px rgba(168, 85, 247, 0.2); 
+        }
+
+        /* --- ABOUT SECTION --- */
+        .about-box { 
+            background: var(--card-bg); 
+            padding: 40px; 
+            border-radius: 35px; 
+            border: 1px solid rgba(255,255,255,0.05); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-top: 20px;
+        }
+
+        .about-box h2 { 
+            color: var(--primary); 
+            margin-bottom: 15px; 
+            font-size: 26px; 
+            font-weight: 800;
+        }
+
+        .about-box p { 
+            color: var(--text-gray); 
+            font-size: 16px; 
+            line-height: 1.7; 
+            max-width: 900px;
+        }
+
+        /* --- RESPONSIVE (FOR PHONE) --- */
+        @media (max-width: 992px) {
+            .home-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            .nav-bar { justify-content: center; }
+            .home-grid { grid-template-columns: 1fr; gap: 25px; } 
+            .hero h1 { font-size: 35px; }
+            .h-card { padding: 45px 15px; }
+            .about-box { padding: 25px; }
+        }
+    </style>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-<div class="left-panel">
-    <div class="panel-header">LIVE CHECKER</div>
-    <input type="text" id="token-input" class="token-input" placeholder="Enter Access Token...">
-    <div id="account-list" class="account-list" contenteditable="true"></div>
-    <div class="btn-group">
-        <button class="btn btn-clear" onclick="location.reload()">Clear</button>
-        <button class="btn btn-check" onclick="startCheck()">Check</button>
-    </div>
+<div class="container">
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+        <button class="nav-btn"><i class="fa-solid fa-house"></i> HOME</button>
+        <div style="display:flex; gap:10px;">
+            <button class="nav-btn">2FA</button>
+            <button class="nav-btn">MAIL</button>
+            <button class="nav-btn">CHECKER</button>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="hero">
+        <h1>Longisir VIP Portal</h1>
+        <p>THE NEXT GEN AUTOMATION HUB</p>
+    </header>
+    
+    <!-- Cards Grid -->
+    <main class="home-grid">
+        <div class="h-card">
+            <i class="fa-solid fa-shield-halved"></i>
+            <h3>2FA AUTH</h3>
+            <p>Fast Code Gen</p>
+        </div>
+
+        <div class="h-card">
+            <i class="fa-solid fa-envelope"></i>
+            <h3>API MAIL</h3>
+            <p>Email Scraper</p>
+        </div>
+
+        <div class="h-card">
+            <i class="fa-solid fa-bolt"></i>
+            <h3>UID CHECKER</h3>
+            <p>Bulk Validator</p>
+        </div>
+    </main>
+
+    <!-- About Section -->
+    <footer class="about-box">
+        <h2>About Our Ecosystem</h2>
+        <p>Longisir VIP provides top-tier automation tools for professionals. Our infrastructure is optimized for multi-threaded performance, ensuring that your data processing is not only fast but also secure and reliable. Enjoy a seamless experience with our neon-integrated dashboard.</p>
+    </footer>
 </div>
 
-<div class="middle-panel">
-    <div class="status-bar">
-        <span>Status: <span id="timer">00:00</span></span>
-        <span>Active: <span id="active-count" style="color:#00ff00">0</span> | Blocked: <span id="blocked-count" style="color:#ff4444">0</span></span>
-    </div>
-    <div class="result-container" id="result-container"></div>
-    <div class="progress-footer">
-        <span id="prog-text">0%</span>
-        <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
-        <button class="btn-export">Export</button>
-    </div>
-</div>
-
-<script>
-// এখানে আগের লজিকগুলো থাকবে
-function startCheck() {
-    let list = document.getElementById('account-list').innerText.split('\n').filter(i => i.trim() !== "");
-    if(list.length === 0) return alert("Paste UIDs!");
-    
-    let index = 0;
-    let active = 0;
-    let blocked = 0;
-    
-    function process() {
-        if(index >= list.length) return;
-        
-        let uid = list[index].trim();
-        // এটি একটি ডেমো লজিক, রিয়েল চেকিং এর জন্য এপিআই কল লাগবে
-        let isActive = Math.random() > 0.5; 
-        
-        let resDiv = document.createElement('div');
-        resDiv.className = isActive ? 'result-item result-active' : 'result-item result-blocked';
-        resDiv.innerHTML = `<span>${uid}</span> <span>${isActive ? 'ACTIVE' : 'BLOCKED'}</span>`;
-        document.getElementById('result-container').appendChild(resDiv);
-        
-        if(isActive) active++; else blocked++;
-        document.getElementById('active-count').innerText = active;
-        document.getElementById('blocked-count').innerText = blocked;
-        
-        index++;
-        let progress = (index / list.length) * 100;
-        document.getElementById('progress-fill').style.width = progress + '%';
-        document.getElementById('prog-text').innerText = Math.round(progress) + '%';
-        
-        setTimeout(process, 300);
-    }
-    process();
-}
-</script>
 </body>
 </html>
