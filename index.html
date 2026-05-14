@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>FB & Instagram OTP Extractor</title>
     <style>
         body {
@@ -89,24 +90,39 @@
 ;
             outline: none;
         }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
         button {
-            width: 100%;
+            flex: 1;
             padding: 15px;
-            background: linear-gradient(135deg, 
-, 
-);
-            color: white;
             border: none;
             border-radius: 10px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 15px;
             transition: all 0.3s;
         }
-        button:hover {
+        .btn-extract {
+            background: linear-gradient(135deg, 
+, 
+);
+            color: white;
+        }
+        .btn-extract:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 20px rgba(64, 93, 230, 0.4);
+        }
+        .btn-clear {
+            background: 
+;
+            color: white;
+        }
+        .btn-clear:hover {
+            background: 
+;
         }
         .platform-detected {
             background: 
@@ -155,10 +171,17 @@
             letter-spacing: 12px;
             font-family: monospace;
             box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+            cursor: pointer;
         }
         .code-box.waiting {
             color: #666;
             font-size: 24px;
+            letter-spacing: 2px;
+        }
+        .code-box.error {
+            color: 
+;
+            font-size: 20px;
             letter-spacing: 2px;
         }
         .copy-msg {
@@ -210,18 +233,12 @@
         </div>
         
         <label>📋 Paste Email Data:</label>
-        <textarea id="emailData" placeholder="Paste your Facebook or Instagram verification email here...
-
-Example:
-From: security@facebookmail.com
-Your Facebook confirmation code is: 123456
-
-Or:
-
-From: security@mail.instagram.com
-Your Instagram code is: 654321"></textarea>
+        <textarea id="emailData" placeholder="Paste your Facebook or Instagram verification email here..."></textarea>
         
-        <button onclick="extractOTP()">🔍 Extract OTP Code</button>
+        <div class="btn-group">
+            <button class="btn-extract" onclick="extractOTP()">🔍 Extract OTP</button>
+            <button class="btn-clear" onclick="clearAll()">🗑️ Clear</button>
+        </div>
         
         <div class="platform-detected" id="platform">Waiting for data...</div>
         
@@ -245,11 +262,31 @@ Your Instagram code is: 654321"></textarea>
     </div>
 
     <script>
+        function clearAll() {
+            document.getElementById('emailData').value = '';
+            document.getElementById('platform').className = 'platform-detected';
+            document.getElementById('platform').innerText = 'Waiting for data...';
+            document.getElementById('emailDisplay').innerText = 'No email detected';
+            document.getElementById('otpCode').className = 'code-box waiting';
+            document.getElementById('otpCode').innerText = '------';
+            document.getElementById('copyMsg').innerText = '';
+        }
+        
         function extractOTP() {
+            // Clear previous results first
+            document.getElementById('platform').className = 'platform-detected';
+            document.getElementById('platform').innerText = 'Searching...';
+            document.getElementById('emailDisplay').innerText = 'Searching...';
+            document.getElementById('otpCode').className = 'code-box waiting';
+            document.getElementById('otpCode').innerText = '------';
+            document.getElementById('copyMsg').innerText = '';
+            
             var data = document.getElementById('emailData').value.trim();
             
             if(!data) {
                 alert('⚠️ Please paste email data first!');
+                document.getElementById('platform').innerText = 'Waiting for data...';
+                document.getElementById('emailDisplay').innerText = 'No email detected';
                 return;
             }
             
@@ -257,11 +294,13 @@ Your Instagram code is: 654321"></textarea>
             var platform = 'unknown';
             var platformDisplay = document.getElementById('platform');
             
-            if(data.toLowerCase().includes('facebook') || data.toLowerCase().includes('facebookmail')) {
+            var dataLower = data.toLowerCase();
+            
+            if(dataLower.includes('facebook') || dataLower.includes('facebookmail') || dataLower.includes('fb')) {
                 platform = 'facebook';
                 platformDisplay.className = 'platform-detected fb';
                 platformDisplay.innerText = '📘 Facebook Code Detected';
-            } else if(data.toLowerCase().includes('instagram')) {
+            } else if(dataLower.includes('instagram') || dataLower.includes('ig')) {
                 platform = 'instagram';
                 platformDisplay.className = 'platform-detected ig';
                 platformDisplay.innerText = '📷 Instagram Code Detected';
@@ -280,56 +319,39 @@ Your Instagram code is: 654321"></textarea>
                 document.getElementById('emailDisplay').innerText = '❌ No email found';
             }
             
-            // Extract OTP code - Facebook & Instagram specific patterns
+            // Extract OTP code - FRESH EXTRACTION
             var otp = null;
             
-            // Pattern 1: Facebook specific
-            var fbPatterns = [
-                /(?:facebook|fb).*?(?:code|confirmation|verification).*?(\d{4,8})/gi,
-                /(?:code|confirmation|verification).*?(\d{4,8})/gi
-            ];
-            
-            // Pattern 2: Instagram specific
-            var igPatterns = [
-                /(?:instagram|ig).*?(?:code|confirmation|verification).*?(\d{4,8})/gi,
-                /(?:code|confirmation|verification).*?(\d{4,8})/gi
-            ];
-            
-            // Pattern 3: Generic patterns
-            var genericPatterns = [
-                /(?:your|the)\s+(?:code|otp|verification|confirmation|pin)\s+(?:is|:)\s*(\d{4,8})/gi,
-                /(?:code|otp|verification|confirmation|pin)[\s:]+(\d{4,8})/gi,
+            // Try multiple patterns in order
+            var patterns = [
+                // Pattern 1: "code is 123456" or "code: 123456"
+                /(?:code|otp|verification|confirmation|pin)[\s:is]+(\d{4,8})/gi,
+                // Pattern 2: "Your code 123456"
+                /(?:your|the)\s+(?:code|otp|verification|confirmation)\s+(\d{4,8})/gi,
+                // Pattern 3: Just 6 digits
                 /\b(\d{6})\b/g,
+                // Pattern 4: Just 5 digits
+                /\b(\d{5})\b/g,
+                // Pattern 5: Just 4 digits
                 /\b(\d{4})\b/g,
+                // Pattern 6: Just 8 digits
                 /\b(\d{8})\b/g
             ];
             
-            // Try platform-specific patterns first
-            var patternsToTry = genericPatterns;
-            if(platform === 'facebook') {
-                patternsToTry = fbPatterns.concat(genericPatterns);
-            } else if(platform === 'instagram') {
-                patternsToTry = igPatterns.concat(genericPatterns);
-            }
-            
-            // Search for OTP
-            for(var i = 0; i < patternsToTry.length; i++) {
-                var matches = data.match(patternsToTry[i]);
-                if(matches && matches.length > 0) {
-                    var lastMatch = matches[matches.length - 1];
-                    var digits = lastMatch.match(/\d{4,8}/);
-                    if(digits) {
-                        otp = digits[0];
-                        break;
-                    }
+            // Try each pattern
+            for(var i = 0; i < patterns.length; i++) {
+                var regex = new RegExp(patterns[i].source, patterns[i].flags);
+                var match = null;
+                var allMatches = [];
+                
+                while((match = regex.exec(data)) !== null) {
+                    allMatches.push(match[1]);
                 }
-            }
-            
-            // Fallback: Get all numbers and take the last one
-            if(!otp) {
-                var allNumbers = data.match(/\d{4,8}/g);
-                if(allNumbers && allNumbers.length > 0) {
-                    otp = allNumbers[allNumbers.length - 1];
+                
+                if(allMatches.length > 0) {
+                    // Take the LAST match (usually the OTP)
+                    otp = allMatches[allMatches.length - 1];
+                    break;
                 }
             }
             
@@ -346,14 +368,14 @@ Your Instagram code is: 654321"></textarea>
                     setTimeout(function() {
                         document.getElementById('copyMsg').innerText = '';
                     }, 3000);
-                }).catch(function() {
+                }).catch(function(err) {
                     document.getElementById('copyMsg').innerText = '⚠️ Click code to copy: ' + otp;
                 });
                 
             } else {
                 codeBox.innerText = 'NOT FOUND';
-                codeBox.className = 'code-box waiting';
-                document.getElementById('copyMsg').innerText = '❌ No OTP code detected';
+                codeBox.className = 'code-box error';
+                document.getElementById('copyMsg').innerText = '❌ No OTP code detected in this email';
             }
         }
         
@@ -368,9 +390,18 @@ Your Instagram code is: 654321"></textarea>
             if(code !== '------' && code !== 'NOT FOUND') {
                 navigator.clipboard.writeText(code);
                 document.getElementById('copyMsg').innerText = '✓ Copied: ' + code;
+                setTimeout(function() {
+                    document.getElementById('copyMsg').innerText = '';
+                }, 2000);
+            }
+        });
+        
+        // Clear on textarea focus
+        document.getElementById('emailData').addEventListener('focus', function() {
+            if(this.value === '') {
+                clearAll();
             }
         });
     </script>
 </body>
 </html>
-
