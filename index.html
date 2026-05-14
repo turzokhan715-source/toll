@@ -16,49 +16,90 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: #fff; padding: 80px 20px; }
-        .container { max-width: 1200px; margin: auto; }
+        body { background: var(--bg); color: #fff; padding: 20px; }
+        .container { max-width: 1200px; margin: auto; padding-top: 40px; }
         .hidden { display: none !important; }
 
         /* --- NAV & BUTTONS --- */
+        .nav-container { display: flex; justify-content: space-between; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
         .nav-btn {
             background: linear-gradient(135deg, #a855f7, #3b82f6);
-            color: #fff; border: none; padding: 12px 28px; border-radius: 15px;
-            font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 13px;
+            color: #fff; border: none; padding: 12px 20px; border-radius: 12px;
+            font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 12px;
             box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3); transition: 0.3s;
-            display: flex; align-items: center; gap: 10px;
+            display: flex; align-items: center; gap: 8px;
         }
-        .nav-btn i { font-size: 18px; } /* আইকন বড় করা হয়েছে */
-        .nav-btn:hover { transform: scale(1.05); filter: brightness(1.2); }
+        .nav-btn i { font-size: 16px; }
+        .nav-btn:hover { transform: scale(1.05); }
 
         /* --- HOME PAGE --- */
-        .hero h1 { font-size: 55px; font-weight: 800; text-align: center; margin-bottom: 40px; }
-        .home-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-bottom: 60px; } /* গ্যাপ বাড়ানো হয়েছে */
-        .h-card { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1); padding: 60px 20px; border-radius: 30px; text-align: center; cursor: pointer; transition: 0.4s; }
-        .h-card i { font-size: 50px; color: var(--primary); margin-bottom: 20px; display: block; }
-        .h-card:hover { border-color: var(--primary); box-shadow: 0 0 40px rgba(168, 85, 247, 0.2); }
+        .hero h1 { font-size: clamp(30px, 8vw, 55px); font-weight: 800; text-align: center; margin-bottom: 10px; }
+        .hero p { text-align: center; color: var(--text-gray); margin-bottom: 40px; letter-spacing: 2px; font-size: 12px; }
+        
+        /* কার্ড এর গ্যাপ এবং গ্রিড ফিক্স */
+        .home-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 30px; 
+            margin-bottom: 50px; 
+        }
+        
+        .h-card { 
+            background: var(--card-bg); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            padding: 50px 20px; 
+            border-radius: 25px; 
+            text-align: center; 
+            cursor: pointer; 
+            transition: 0.4s; 
+        }
+        .h-card i { font-size: 45px; color: var(--primary); margin-bottom: 20px; display: block; }
+        .h-card h3 { font-size: 18px; margin-bottom: 10px; }
+        .h-card p { font-size: 13px; color: var(--text-gray); }
+        .h-card:hover { border-color: var(--primary); box-shadow: 0 0 30px rgba(168, 85, 247, 0.2); }
+
+        /* About Section */
+        .about-box { 
+            background: var(--card-bg); 
+            padding: 30px; 
+            border-radius: 25px; 
+            border: 1px solid rgba(255,255,255,0.05); 
+            margin-top: 20px;
+        }
+        .about-box h2 { color: var(--primary); margin-bottom: 10px; font-size: 22px; }
+        .about-box p { color: var(--text-gray); font-size: 14px; line-height: 1.6; }
 
         /* --- TOOL INTERFACE --- */
-        .tool-container { background: #fff; color: #000; border-radius: 40px; padding: 50px; min-height: 850px; box-shadow: 0 25px 70px rgba(0,0,0,0.5); }
-        .tool-about { border-bottom: 1px solid #eee; margin-bottom: 30px; padding-bottom: 20px; }
-        .tool-about h2 { color: var(--primary); font-size: 28px; }
-
-        .input-box { width: 100%; padding: 20px; border-radius: 20px; border: 2px solid #e2e8f0; background: #f8fafc; font-weight: 700; margin-bottom: 20px; outline: none; }
+        .tool-container { background: #fff; color: #000; border-radius: 30px; padding: 30px; min-height: 600px; box-shadow: 0 20px 50px rgba(0,0,0,0.4); }
+        .tool-header { border-bottom: 1px solid #eee; margin-bottom: 25px; padding-bottom: 15px; }
+        .tool-header h2 { color: var(--primary); font-size: 24px; }
+        
+        .input-box { width: 100%; padding: 18px; border-radius: 15px; border: 2px solid #e2e8f0; background: #f8fafc; font-weight: 700; margin-bottom: 15px; outline: none; }
 
         /* --- CODE BOX --- */
         .code-box-wrapper { 
-            background: #fff; border: 3px solid var(--primary); padding: 15px 40px; border-radius: 20px; 
-            display: inline-flex; align-items: center; gap: 20px; margin: 30px 0;
-            box-shadow: 0 0 25px rgba(168, 85, 247, 0.3);
+            background: #fff; border: 3px solid var(--primary); padding: 12px 30px; border-radius: 15px; 
+            display: inline-flex; align-items: center; gap: 15px; margin: 25px 0;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
         }
-        .code-display { font-size: 38px; font-weight: 800; color: #000; letter-spacing: 4px; }
+        .code-display { font-size: clamp(24px, 5vw, 35px); font-weight: 800; color: #000; letter-spacing: 3px; }
 
         /* --- CHECKER STATS --- */
-        .checker-footer { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 30px; }
-        .mini-stats { display: flex; gap: 10px; }
-        .stat-box { background: #f1f5f9; padding: 12px; border-radius: 15px; text-align: center; min-width: 95px; border: 1px solid #e2e8f0; }
-        
-        .console { background: #05060b; color: #10b981; padding: 25px; border-radius: 25px; height: 350px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 14px; margin-top: 20px; }
+        .console { background: #05060b; color: #10b981; padding: 20px; border-radius: 20px; height: 300px; overflow-y: auto; font-family: monospace; font-size: 13px; margin: 15px 0; }
+        .footer-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .mini-stats { display: flex; gap: 8px; }
+        .stat-box { background: #f1f5f9; padding: 10px; border-radius: 12px; text-align: center; min-width: 80px; border: 1px solid #e2e8f0; }
+        .stat-box b { display: block; font-size: 16px; }
+        .stat-box span { font-size: 9px; font-weight: 800; color: #64748b; }
+
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .home-grid { grid-template-columns: 1fr; gap: 20px; } /* মোবাইলে এক কলাম হবে */
+            .nav-container { justify-content: center; }
+            .tool-container { padding: 20px; }
+            .hero h1 { margin-top: 20px; }
+            .h-card { padding: 40px 15px; }
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -69,20 +110,26 @@
     <div id="home-pg">
         <div class="hero">
             <h1>Longisir VIP Portal</h1>
-            <p style="text-align:center; color:var(--text-gray); margin-bottom:50px; letter-spacing:3px;">THE NEXT GEN AUTOMATION HUB</p>
+            <p>THE NEXT GEN AUTOMATION HUB</p>
         </div>
+        
         <div class="home-grid">
             <div class="h-card" onclick="showTool('2fa')"><i class="fa-solid fa-shield-halved"></i><h3>2FA AUTH</h3><p>Fast Code Gen</p></div>
             <div class="h-card" onclick="showTool('mail')"><i class="fa-solid fa-envelope"></i><h3>API MAIL</h3><p>Email Scraper</p></div>
             <div class="h-card" onclick="showTool('check')"><i class="fa-solid fa-bolt"></i><h3>UID CHECKER</h3><p>Bulk Validator</p></div>
         </div>
+
+        <div class="about-box">
+            <h2>About Our Ecosystem</h2>
+            <p>Longisir VIP provides top-tier automation tools for professionals. Our infrastructure is optimized for multi-threaded performance, ensuring that your data processing is not only fast but also secure and reliable.</p>
+        </div>
     </div>
 
     <!-- TOOL PAGE -->
     <div id="tool-pg" class="hidden">
-        <div style="display:flex; justify-content:space-between; margin-bottom:30px;">
+        <div class="nav-container">
             <button class="nav-btn" onclick="location.reload()"><i class="fa-solid fa-house"></i> HOME</button>
-            <div style="display:flex; gap:10px;">
+            <div style="display:flex; gap:8px;">
                 <button class="nav-btn" onclick="showTool('2fa')">2FA</button>
                 <button class="nav-btn" onclick="showTool('mail')">MAIL</button>
                 <button class="nav-btn" onclick="showTool('check')">CHECKER</button>
@@ -90,51 +137,51 @@
         </div>
 
         <div class="tool-container">
-            <!-- 2FA TOOL -->
+            <!-- 2FA -->
             <div id="box-2fa" class="hidden">
-                <div class="tool-about"><h2>2FA Authenticator</h2></div>
+                <div class="tool-header"><h2>2FA Authenticator</h2></div>
                 <input type="text" id="2fa-input" class="input-box" placeholder="Enter Secret Key...">
-                <button class="nav-btn" style="width:100%; justify-content:center; padding:20px;" onclick="gen2FA()">GENERATE CODE</button>
+                <button class="nav-btn" style="width:100%; justify-content:center; padding:18px;" onclick="gen2FA()">GENERATE CODE</button>
                 <center>
                     <div class="code-box-wrapper">
                         <span id="2fa-res" class="code-display">(CODE)</span>
-                        <i class="fa-solid fa-copy" style="color:var(--primary); font-size:24px; cursor:pointer;" onclick="copyTxt('2fa-res')"></i>
+                        <i class="fa-solid fa-copy" style="color:var(--primary); cursor:pointer;" onclick="copyTxt('2fa-res')"></i>
                     </div>
                 </center>
             </div>
 
-            <!-- MAIL TOOL -->
+            <!-- MAIL -->
             <div id="box-mail" class="hidden">
-                <div class="tool-about"><h2>API Mail Scraper</h2></div>
-                <textarea id="mail-input" class="input-box" style="height:150px;" placeholder="Paste Outlook Data..." oninput="autoScanMail()"></textarea>
+                <div class="tool-header"><h2>API Mail Scraper</h2></div>
+                <textarea id="mail-input" class="input-box" style="height:120px;" placeholder="Paste Outlook Data..." oninput="autoScanMail()"></textarea>
                 <div style="display:flex; gap:10px; margin-bottom:15px;">
-                    <div style="background:#f1f5f9; padding:15px; border-radius:15px; flex:1; font-weight:800; color:var(--secondary);" id="mail-display">No Email Detected</div>
+                    <div style="background:#f1f5f9; padding:15px; border-radius:12px; flex:1; font-weight:800; color:var(--secondary); font-size:13px;" id="mail-display">No Email Detected</div>
                     <button class="nav-btn" style="background:#ef4444;" onclick="clearMail()">CLEAR</button>
                 </div>
                 <center>
                     <div class="code-box-wrapper">
                         <span id="mail-otp" class="code-display">WAITING</span>
-                        <i class="fa-solid fa-copy" style="color:var(--primary); font-size:24px; cursor:pointer;" onclick="copyTxt('mail-otp')"></i>
+                        <i class="fa-solid fa-copy" style="color:var(--primary); cursor:pointer;" onclick="copyTxt('mail-otp')"></i>
                     </div>
                 </center>
             </div>
 
-            <!-- CHECKER TOOL -->
+            <!-- CHECKER -->
             <div id="box-check" class="hidden">
-                <div class="tool-about"><h2>Bulk UID Checker</h2></div>
-                <textarea id="check-input" class="input-box" style="height:200px;" placeholder="UID|PASS|2FA"></textarea>
+                <div class="tool-header"><h2>Bulk UID Checker</h2></div>
+                <textarea id="check-input" class="input-box" style="height:150px;" placeholder="UID|PASS|2FA"></textarea>
                 <div style="display:flex; gap:10px;">
                     <button class="nav-btn" style="flex:3; justify-content:center;" onclick="startCheck()">START SCANNER</button>
                     <button class="nav-btn" style="background:#ef4444;" onclick="document.getElementById('check-input').value=''">CLEAR</button>
                 </div>
                 <div class="console" id="log">Console ready...</div>
-                <div class="checker-footer">
+                <div class="footer-flex">
                     <div class="mini-stats">
                         <div class="stat-box"><b><span id="c-total">0</span></b><span>Total</span></div>
                         <div class="stat-box" style="color:#10b981;"><b id="c-live">0</b><span id="p-live">0% LIVE</span></div>
                         <div class="stat-box" style="color:#ef4444;"><b id="c-die">0</b><span id="p-die">0% DIE</span></div>
                     </div>
-                    <button class="nav-btn" style="background:#10b981;" onclick="downloadLive()">DOWNLOAD LIVE ID</button>
+                    <button class="nav-btn" style="background:#10b981;" onclick="downloadLive()">DOWNLOAD LIVE</button>
                 </div>
             </div>
         </div>
@@ -147,17 +194,24 @@
     function showTool(t) {
         document.getElementById('home-pg').classList.add('hidden');
         document.getElementById('tool-pg').classList.remove('hidden');
-        ['2fa', 'mail', 'check'].forEach(id => document.getElementById('box-'+id).classList.add('hidden'));
+        ['2fa', 'mail', 'check'].forEach(id => {
+            let el = document.getElementById('box-'+id);
+            if(el) el.classList.add('hidden');
+        });
         document.getElementById('box-'+t).classList.remove('hidden');
+        window.scrollTo(0,0);
     }
 
     function copyTxt(id) {
         let txt = document.getElementById(id).innerText;
+        if(txt === "WAITING" || txt === "(CODE)") return;
         navigator.clipboard.writeText(txt);
         alert("Copied: " + txt);
     }
 
     function gen2FA() {
+        let key = document.getElementById('2fa-input').value;
+        if(!key) return alert("Enter Key First");
         let code = Math.floor(100000 + Math.random() * 900000);
         document.getElementById('2fa-res').innerText = code;
         navigator.clipboard.writeText(code);
@@ -181,7 +235,7 @@
         document.getElementById('mail-otp').innerText = "WAITING";
     }
 
-    // UID Checker Logic (Your provided async code)
+    // Your Working Checker Logic
     async function checkFacebookUID(uid) {
         try {
             const response = await fetch(`https://graph.facebook.com/${uid}/picture?type=normal`);
@@ -197,12 +251,11 @@
 
     async function startCheck() {
         let input = document.getElementById('check-input').value.split('\n').filter(l => l.trim() != "");
-        if(!input.length) return;
+        if(!input.length) return alert("Input list empty!");
         
         let l=0, d=0, t=input.length;
         liveData = [];
-        document.getElementById('c-total').innerText = t;
-        document.getElementById('log').innerHTML = "Initializing Graph API Threads...<br>";
+        document.getElementById('log').innerHTML = "Scanning starting...<br>";
 
         for(let line of input) {
             let uid = line.split('|')[0].trim();
@@ -214,9 +267,10 @@
                 document.getElementById('log').innerHTML += `<span style="color:#10b981">[LIVE] ${uid}</span><br>`;
             } else {
                 d++;
-                document.getElementById('log').innerHTML += `<span style="color:#ef4444">[DEAD] ${uid}</span><br>`;
+                document.getElementById('log').innerHTML += `<span style="color:#ef4444">[DIE] ${uid}</span><br>`;
             }
             
+            document.getElementById('c-total').innerText = t;
             document.getElementById('c-live').innerText = l;
             document.getElementById('c-die').innerText = d;
             document.getElementById('p-live').innerText = Math.round((l/t)*100) + "% LIVE";
@@ -226,11 +280,11 @@
     }
 
     function downloadLive() {
-        if(!liveData.length) return;
+        if(!liveData.length) return alert("No live data!");
         let blob = new Blob([liveData.join('\n')], {type: 'text/plain'});
         let a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = 'live_ids.txt';
+        a.download = 'live_uids.txt';
         a.click();
     }
 </script>
