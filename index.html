@@ -1,407 +1,89 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>FB & Instagram OTP Extractor</title>
+    <title>FB OTP RETRIEVER - PRO</title>
     <style>
-        body {
-            background: linear-gradient(135deg, 
-, 
-, 
-, 
-, 
-, 
-);
-            font-family: Arial;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-        .box {
-            background: white;
-            padding: 35px;
-            border-radius: 20px;
-            width: 550px;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.4);
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        .header h2 {
-            color: 
-;
-            margin-bottom: 5px;
-            font-size: 28px;
-        }
-        .header p {
-            color: #666;
-            font-size: 13px;
-        }
-        .platforms {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        .platform-badge {
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .fb-badge {
-            background: 
-;
-            color: white;
-        }
-        .ig-badge {
-            background: linear-gradient(45deg, 
-, 
-, 
-, 
-, 
-);
-            color: white;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #333;
-            font-size: 14px;
-        }
-        textarea {
-            width: 100%;
-            height: 140px;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 14px;
-            box-sizing: border-box;
-            font-family: monospace;
-            resize: vertical;
-        }
-        textarea:focus {
-            border-color: 
-;
-            outline: none;
-        }
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        button {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .btn-extract {
-            background: linear-gradient(135deg, 
-, 
-);
-            color: white;
-        }
-        .btn-extract:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(64, 93, 230, 0.4);
-        }
-        .btn-clear {
-            background: 
-;
-            color: white;
-        }
-        .btn-clear:hover {
-            background: 
-;
-        }
-        .platform-detected {
-            background: 
-;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 15px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 14px;
-        }
-        .platform-detected.fb {
-            background: 
-;
-            color: 
-;
-        }
-        .platform-detected.ig {
-            background: 
-;
-            color: 
-;
-        }
-        .email-display {
-            background: 
-;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 10px;
-            text-align: center;
-            font-weight: bold;
-            color: 
-;
-            font-size: 14px;
-        }
-        .code-box {
-            background: linear-gradient(135deg, #000, 
-);
-            color: #0f0;
-            padding: 35px;
-            border-radius: 12px;
-            margin-top: 15px;
-            text-align: center;
-            font-size: 52px;
-            font-weight: bold;
-            letter-spacing: 12px;
-            font-family: monospace;
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
-            cursor: pointer;
-        }
-        .code-box.waiting {
-            color: #666;
-            font-size: 24px;
-            letter-spacing: 2px;
-        }
-        .code-box.error {
-            color: 
-;
-            font-size: 20px;
-            letter-spacing: 2px;
-        }
-        .copy-msg {
-            text-align: center;
-            color: 
-;
-            font-weight: bold;
-            margin-top: 12px;
-            min-height: 20px;
-            font-size: 14px;
-        }
-        .info {
-            background: 
-;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            font-size: 13px;
-            color: 
-;
-            border-left: 4px solid 
-;
-        }
-        .info strong {
-            display: block;
-            margin-bottom: 8px;
-            color: 
-;
-        }
-        .info ul {
-            margin: 8px 0 0 20px;
-            padding: 0;
-        }
-        .info li {
-            margin-bottom: 5px;
-        }
+        body { background: #0d1117; color: #c9d1d9; font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; }
+        .box { width: 500px; background: #161b22; padding: 20px; border-radius: 8px; border: 1px solid #30363d; }
+        textarea { width: 100%; height: 100px; background: #010409; color: #58a6ff; border: 1px solid #30363d; padding: 10px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #238636; color: white; border: none; margin-top: 10px; cursor: pointer; font-weight: bold; }
+        .result-box { margin-top: 20px; padding: 15px; border: 2px dashed #58a6ff; text-align: center; }
+        #otpDisplay { font-size: 30px; color: #39ff14; font-weight: bold; display: block; margin-top: 10px; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <div class="header">
-            <h2>🔐 FB & IG OTP Extractor</h2>
-            <p>Facebook & Instagram Verification Code Extractor</p>
-        </div>
-        
-        <div class="platforms">
-            <span class="platform-badge fb-badge">📘 Facebook</span>
-            <span class="platform-badge ig-badge">📷 Instagram</span>
-        </div>
-        
-        <label>📋 Paste Email Data:</label>
-        <textarea id="emailData" placeholder="Paste your Facebook or Instagram verification email here..."></textarea>
-        
-        <div class="btn-group">
-            <button class="btn-extract" onclick="extractOTP()">🔍 Extract OTP</button>
-            <button class="btn-clear" onclick="clearAll()">🗑️ Clear</button>
-        </div>
-        
-        <div class="platform-detected" id="platform">Waiting for data...</div>
-        
-        <div class="email-display" id="emailDisplay">No email detected</div>
-        
-        <div class="code-box waiting" id="otpCode">------</div>
-        
-        <div class="copy-msg" id="copyMsg"></div>
-        
-        <div class="info">
-            <strong>✨ Features:</strong>
-            <ul>
-                <li>✅ Facebook verification codes</li>
-                <li>✅ Instagram verification codes</li>
-                <li>✅ Auto-detect platform (FB/IG)</li>
-                <li>✅ Extract email address</li>
-                <li>✅ Auto-copy to clipboard</li>
-                <li>✅ Supports 4, 6, 8 digit codes</li>
-            </ul>
-        </div>
-    </div>
 
-    <script>
-        function clearAll() {
-            document.getElementById('emailData').value = '';
-            document.getElementById('platform').className = 'platform-detected';
-            document.getElementById('platform').innerText = 'Waiting for data...';
-            document.getElementById('emailDisplay').innerText = 'No email detected';
-            document.getElementById('otpCode').className = 'code-box waiting';
-            document.getElementById('otpCode').innerText = '------';
-            document.getElementById('copyMsg').innerText = '';
+<div class="box">
+    <h3 style="text-align: center; color: #58a6ff;">Get FB Verification Code</h3>
+    <textarea id="fullData" placeholder="Paste: Email|Password|Refresh_Token|Client_ID"></textarea>
+    <button onclick="getOTP()">GET VERIFICATION CODE</button>
+
+    <div class="result-box">
+        <div>Detected Code:</div>
+        <span id="otpDisplay">------</span>
+    </div>
+</div>
+
+<script>
+async function getOTP() {
+    const input = document.getElementById('fullData').value.split('|');
+    const display = document.getElementById('otpDisplay');
+    
+    if (input.length < 4) {
+        alert("Please paste full data correctly!");
+        return;
+    }
+
+    const email = input[0].trim();
+    const refreshToken = input[2].trim();
+    const clientId = input[3].trim();
+
+    display.innerText = "Fetching Access Token...";
+
+    try {
+        // Step 1: Refresh Token থেকে নতুন Access Token নেওয়া
+        const tokenRes = await fetch('https://login.microsoftonline.com/common/oauth2/v2.0/token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                client_id: clientId,
+                refresh_token: refreshToken,
+                grant_type: 'refresh_token',
+                scope: 'https://graph.microsoft.com/Mail.Read'
+            })
+        });
+
+        const tokenData = await tokenRes.json();
+        const accessToken = tokenData.access_token;
+
+        if (!accessToken) throw new Error("Failed to get Access Token");
+
+        display.innerText = "Searching Inbox...";
+
+        // Step 2: Microsoft Graph API দিয়ে ইনবক্স থেকে ফেসবুকের মেইল খোঁজা
+        const mailRes = await fetch(`https://graph.microsoft.com/v1.0/users/${email}/messages?$search="Facebook"&$top=1`, {
+            headers: { 'Authorization': `Bearer ${accessToken}` }
+        });
+
+        const mailData = await mailRes.json();
+        const latestMailBody = mailData.value[0].body.content;
+
+        // Step 3: Regular Expression দিয়ে ৬ ডিজিটের কোড বের করা
+        const codeMatch = latestMailBody.match(/\b\d{6}\b/);
+        
+        if (codeMatch) {
+            display.innerText = codeMatch[0];
+        } else {
+            display.innerText = "Code Not Found!";
         }
-        
-        function extractOTP() {
-            // Clear previous results first
-            document.getElementById('platform').className = 'platform-detected';
-            document.getElementById('platform').innerText = 'Searching...';
-            document.getElementById('emailDisplay').innerText = 'Searching...';
-            document.getElementById('otpCode').className = 'code-box waiting';
-            document.getElementById('otpCode').innerText = '------';
-            document.getElementById('copyMsg').innerText = '';
-            
-            var data = document.getElementById('emailData').value.trim();
-            
-            if(!data) {
-                alert('⚠️ Please paste email data first!');
-                document.getElementById('platform').innerText = 'Waiting for data...';
-                document.getElementById('emailDisplay').innerText = 'No email detected';
-                return;
-            }
-            
-            // Detect platform
-            var platform = 'unknown';
-            var platformDisplay = document.getElementById('platform');
-            
-            var dataLower = data.toLowerCase();
-            
-            if(dataLower.includes('facebook') || dataLower.includes('facebookmail') || dataLower.includes('fb')) {
-                platform = 'facebook';
-                platformDisplay.className = 'platform-detected fb';
-                platformDisplay.innerText = '📘 Facebook Code Detected';
-            } else if(dataLower.includes('instagram') || dataLower.includes('ig')) {
-                platform = 'instagram';
-                platformDisplay.className = 'platform-detected ig';
-                platformDisplay.innerText = '📷 Instagram Code Detected';
-            } else {
-                platformDisplay.className = 'platform-detected';
-                platformDisplay.innerText = '⚠️ Platform not detected (FB/IG only)';
-            }
-            
-            // Extract email address
-            var emailRegex = /[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
-            var emails = data.match(emailRegex);
-            
-            if(emails && emails.length > 0) {
-                document.getElementById('emailDisplay').innerText = '✅ Email: ' + emails[0];
-            } else {
-                document.getElementById('emailDisplay').innerText = '❌ No email found';
-            }
-            
-            // Extract OTP code - FRESH EXTRACTION
-            var otp = null;
-            
-            // Try multiple patterns in order
-            var patterns = [
-                // Pattern 1: "code is 123456" or "code: 123456"
-                /(?:code|otp|verification|confirmation|pin)[\s:is]+(\d{4,8})/gi,
-                // Pattern 2: "Your code 123456"
-                /(?:your|the)\s+(?:code|otp|verification|confirmation)\s+(\d{4,8})/gi,
-                // Pattern 3: Just 6 digits
-                /\b(\d{6})\b/g,
-                // Pattern 4: Just 5 digits
-                /\b(\d{5})\b/g,
-                // Pattern 5: Just 4 digits
-                /\b(\d{4})\b/g,
-                // Pattern 6: Just 8 digits
-                /\b(\d{8})\b/g
-            ];
-            
-            // Try each pattern
-            for(var i = 0; i < patterns.length; i++) {
-                var regex = new RegExp(patterns[i].source, patterns[i].flags);
-                var match = null;
-                var allMatches = [];
-                
-                while((match = regex.exec(data)) !== null) {
-                    allMatches.push(match[1]);
-                }
-                
-                if(allMatches.length > 0) {
-                    // Take the LAST match (usually the OTP)
-                    otp = allMatches[allMatches.length - 1];
-                    break;
-                }
-            }
-            
-            // Display result
-            var codeBox = document.getElementById('otpCode');
-            if(otp) {
-                codeBox.innerText = otp;
-                codeBox.className = 'code-box';
-                
-                // Auto copy to clipboard
-                navigator.clipboard.writeText(otp).then(function() {
-                    document.getElementById('copyMsg').innerText = '✓ Code copied to clipboard: ' + otp;
-                    
-                    setTimeout(function() {
-                        document.getElementById('copyMsg').innerText = '';
-                    }, 3000);
-                }).catch(function(err) {
-                    document.getElementById('copyMsg').innerText = '⚠️ Click code to copy: ' + otp;
-                });
-                
-            } else {
-                codeBox.innerText = 'NOT FOUND';
-                codeBox.className = 'code-box error';
-                document.getElementById('copyMsg').innerText = '❌ No OTP code detected in this email';
-            }
-        }
-        
-        // Auto extract on paste
-        document.getElementById('emailData').addEventListener('paste', function() {
-            setTimeout(extractOTP, 300);
-        });
-        
-        // Manual copy on click
-        document.getElementById('otpCode').addEventListener('click', function() {
-            var code = this.innerText;
-            if(code !== '------' && code !== 'NOT FOUND') {
-                navigator.clipboard.writeText(code);
-                document.getElementById('copyMsg').innerText = '✓ Copied: ' + code;
-                setTimeout(function() {
-                    document.getElementById('copyMsg').innerText = '';
-                }, 2000);
-            }
-        });
-        
-        // Clear on textarea focus
-        document.getElementById('emailData').addEventListener('focus', function() {
-            if(this.value === '') {
-                clearAll();
-            }
-        });
-    </script>
+
+    } catch (err) {
+        console.error(err);
+        display.innerText = "Error: Check Console";
+    }
+}
+</script>
+
 </body>
 </html>
