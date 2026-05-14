@@ -105,7 +105,7 @@
         .code-box-wrapper { 
             background: #fff; 
             border: 3px solid var(--primary); 
-            padding: 12px 40px; 
+            padding: 10px 35px; /* আরও ছোট করা হয়েছে */
             border-radius: 22px; 
             display: inline-flex; 
             align-items: center; 
@@ -115,7 +115,7 @@
         }
 
         .code-display { 
-            font-size: 38px; 
+            font-size: 34px; /* ফন্ট সাইজ আরও অপ্টিমাইজড */
             font-weight: 800; 
             color: #000; 
             letter-spacing: 4px; 
@@ -182,7 +182,7 @@
             <h2>API Mail Scraper</h2>
         </div>
 
-        <textarea id="mail-input" class="input-area" placeholder="Paste full mail data here..."></textarea>
+        <textarea id="mail-input" class="input-area" placeholder="Paste full data here..."></textarea>
 
         <div class="action-row">
             <button class="clear-btn" onclick="clearAll()">CLEAR ALL</button>
@@ -198,7 +198,7 @@
                 <span id="otp-result" class="code-display">WAITING</span>
                 <i class="fa-solid fa-copy copy-icon" onclick="copyOTP()"></i>
             </div>
-            <p class="status-text">Scanning for FB/IG codes every second...</p>
+            <p class="status-text">Scanning for any 6-digit code every second...</p>
         </center>
 
         <div class="history-section">
@@ -209,18 +209,14 @@
 </div>
 
 <script>
-    let lastCode = "";
+    let lastProcessedCode = "";
 
-    // প্রতি ১ সেকেন্ডে (১০০০ মিলিসেকেন্ড) অটো চেক করবে
+    // প্রতি ১ সেকেন্ডে অটোমেটিক স্ক্যান করবে
     setInterval(() => {
-        autoScanner();
-    }, 1000);
-
-    function autoScanner() {
         const input = document.getElementById('mail-input').value.trim();
         if (!input) return;
 
-        // ১. মেইল খোঁজা
+        // ১. মেইল ডিটেকশন (বক্সে দেখানোর জন্য)
         const emailMatch = input.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
         let currentEmail = "Unknown Mail";
         if (emailMatch) {
@@ -228,29 +224,24 @@
             document.getElementById('detected-mail').innerText = currentEmail;
         }
 
-        // ২. ফেসবুক বা ইনস্টাগ্রাম এর কিউওয়ার্ড চেক
-        const isTarget = /facebook|fb|instagram|ig/i.test(input);
+        // ২. ৬ ডিজিট কোড ডিটেকশন (ফিল্টার ছাড়া)
+        const codeMatch = input.match(/\b\d{6}\b/);
+        if (codeMatch) {
+            const otp = codeMatch[0];
 
-        if (isTarget) {
-            // ৬ ডিজিটের কোড খোঁজা
-            const codeMatch = input.match(/\b\d{6}\b/);
-            if (codeMatch) {
-                const otp = codeMatch[0];
+            // যদি নতুন কোড হয়, তবেই প্রসেস করবে
+            if (otp !== lastProcessedCode) {
+                lastProcessedCode = otp;
+                document.getElementById('otp-result').innerText = otp;
+                
+                // অটো কপি
+                navigator.clipboard.writeText(otp).catch(() => {});
 
-                // যদি নতুন কোড পাওয়া যায় (আগেরটার সাথে না মিলে)
-                if (otp !== lastCode) {
-                    lastCode = otp;
-                    document.getElementById('otp-result').innerText = otp;
-                    
-                    // অটো কপি
-                    navigator.clipboard.writeText(otp);
-
-                    // হিস্ট্রিতে মেইলসহ ওটিপি যোগ করা
-                    addToHistory(currentEmail, otp);
-                }
+                // হিস্ট্রিতে মেইলসহ যোগ করা
+                addToHistory(currentEmail, otp);
             }
         }
-    }
+    }, 1000);
 
     function addToHistory(email, otp) {
         const container = document.getElementById('history-container');
@@ -260,7 +251,7 @@
         
         container.insertBefore(item, container.firstChild);
 
-        if (container.children.length > 20) {
+        if (container.children.length > 30) {
             container.removeChild(container.lastChild);
         }
     }
@@ -281,7 +272,7 @@
         document.getElementById('mail-input').value = "";
         document.getElementById('detected-mail').innerText = "WAITING FOR MAIL...";
         document.getElementById('otp-result').innerText = "WAITING";
-        lastCode = ""; // লাস্ট কোড রিসেট
+        lastProcessedCode = ""; 
     }
 </script>
 
