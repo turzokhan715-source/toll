@@ -401,6 +401,7 @@ Will extract Facebook or Instagram verification codes!"></textarea>
 
     <script>
         var selectedPlatform = 'facebook'; // Default
+        var lastInput = ''; // Track last input to detect changes
         
         function selectPlatform(platform) {
             selectedPlatform = platform;
@@ -429,9 +430,12 @@ Will extract Facebook or Instagram verification codes!"></textarea>
         function clearAll() {
             document.getElementById('emailInput').value = '';
             document.getElementById('dataDisplay').style.display = 'none';
+            document.getElementById('emailOut').innerText = '-';
+            document.getElementById('passOut').innerText = '-';
             document.getElementById('codeDisplay').className = 'code-display waiting';
             document.getElementById('codeDisplay').innerText = '------';
             document.getElementById('copyMsg').innerText = '';
+            lastInput = '';
             
             var platformDisplay = document.getElementById('platformDisplay');
             platformDisplay.className = 'platform-detected waiting';
@@ -450,9 +454,19 @@ Will extract Facebook or Instagram verification codes!"></textarea>
                 return;
             }
             
+            // Check if input changed - if same as last, don't re-extract
+            if(input === lastInput) {
+                return; // Same input, don't process again
+            }
+            
+            lastInput = input; // Update last input
+            
+            // RESET everything before new extraction
             document.getElementById('codeDisplay').className = 'code-display waiting';
             document.getElementById('codeDisplay').innerText = 'SEARCHING...';
             document.getElementById('copyMsg').innerText = '';
+            document.getElementById('emailOut').innerText = '-';
+            document.getElementById('passOut').innerText = '-';
             
             // Parse pipe-separated format
             var parts = input.split('|');
@@ -461,16 +475,22 @@ Will extract Facebook or Instagram verification codes!"></textarea>
             
             if(parts.length >= 1) {
                 email = parts[0].trim();
-                document.getElementById('emailOut').innerText = email;
+                if(email) {
+                    document.getElementById('emailOut').innerText = email;
+                }
             }
             
             if(parts.length >= 2) {
                 password = parts[1].trim();
-                document.getElementById('passOut').innerText = password;
+                if(password) {
+                    document.getElementById('passOut').innerText = password;
+                }
             }
             
             if(email || password) {
                 document.getElementById('dataDisplay').style.display = 'block';
+            } else {
+                document.getElementById('dataDisplay').style.display = 'none';
             }
             
             // Display platform
@@ -539,15 +559,33 @@ Will extract Facebook or Instagram verification codes!"></textarea>
             }
         }
         
-        // Auto-extract on paste
+        // Auto-extract on paste - with proper clearing
         document.getElementById('emailInput').addEventListener('paste', function() {
+            // Clear previous results immediately
+            document.getElementById('codeDisplay').className = 'code-display waiting';
+            document.getElementById('codeDisplay').innerText = 'WAITING...';
+            document.getElementById('copyMsg').innerText = '';
+            
             setTimeout(extractOTP, 500);
+        });
+        
+        // Clear results when user starts typing new data
+        document.getElementById('emailInput').addEventListener('input', function() {
+            var currentInput = this.value.trim();
+            
+            // If input is being cleared or changed significantly
+            if(currentInput.length < lastInput.length - 10) {
+                document.getElementById('codeDisplay').className = 'code-display waiting';
+                document.getElementById('codeDisplay').innerText = '------';
+                document.getElementById('copyMsg').innerText = '';
+                lastInput = '';
+            }
         });
         
         // Click to copy
         document.getElementById('codeDisplay').addEventListener('click', function() {
             var code = this.innerText;
-            if(code !== '------' && code !== 'SEARCHING...' && code !== 'NO CODE FOUND') {
+            if(code !== '------' && code !== 'SEARCHING...' && code !== 'WAITING...' && code !== 'NO CODE FOUND') {
                 navigator.clipboard.writeText(code);
                 var copyMsg = document.getElementById('copyMsg');
                 copyMsg.className = 'copy-indicator success';
@@ -560,4 +598,3 @@ Will extract Facebook or Instagram verification codes!"></textarea>
     </script>
 </body>
 </html>
-
