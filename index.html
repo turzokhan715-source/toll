@@ -1,537 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Outlook → FB/IG OTP Extractor [DEBUG]</title>
+    <title>FB OTP DETECTOR - BROWSER VERSION</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background: linear-gradient(135deg, 
-, 
-, 
-);
-            font-family: 'Segoe UI', Arial, sans-serif;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            width: 700px;
-            max-width: 95%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .header h1 {
-            background: linear-gradient(135deg, 
-, 
-, 
-);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 32px;
-            margin-bottom: 8px;
-            font-weight: 800;
-        }
-        .header p {
-            color: #666;
-            font-size: 14px;
-        }
-        
-        .tab-container {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-bottom: 25px;
-        }
-        .tab-button {
-            flex: 1;
-            padding: 15px 25px;
-            border: 3px solid #ddd;
-            border-radius: 15px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background: white;
-        }
-        .tab-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-        .tab-button.active.fb {
-            background: linear-gradient(135deg, 
-, 
-);
-            color: white;
-            border-color: 
-;
-            box-shadow: 0 5px 25px rgba(24, 119, 242, 0.4);
-        }
-        .tab-button.active.ig {
-            background: linear-gradient(45deg, 
-, 
-, 
-, 
-, 
-);
-            color: white;
-            border-color: 
-;
-            box-shadow: 0 5px 25px rgba(225, 48, 108, 0.4);
-        }
-        .tab-button.inactive {
-            color: #999;
-            background: 
-;
-        }
-        
-        .input-section {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-            font-size: 15px;
-        }
-        textarea {
-            width: 100%;
-            height: 150px;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 12px;
-            font-size: 13px;
-            font-family: 'Courier New', monospace;
-            resize: vertical;
-            transition: all 0.3s;
-        }
-        textarea:focus {
-            border-color: 
-;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
-        }
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 25px;
-        }
-        button {
-            flex: 1;
-            padding: 16px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .btn-extract {
-            background: linear-gradient(135deg, 
-, 
-);
-            color: white;
-        }
-        .btn-extract:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 120, 212, 0.4);
-        }
-        .btn-clear {
-            background: 
-;
-            color: white;
-        }
-        .btn-clear:hover {
-            background: 
-;
-        }
-        
-        .debug-panel {
-            background: 
-;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border-left: 4px solid 
-;
-            display: none;
-        }
-        .debug-panel h4 {
-            color: 
-;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-        .debug-panel .debug-codes {
-            background: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-family: monospace;
-            font-size: 13px;
-            color: #333;
-            max-height: 100px;
-            overflow-y: auto;
-        }
-        
-        .result-section {
-            margin-top: 25px;
-        }
-        .data-display {
-            background: 
-;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            font-size: 13px;
-            font-family: monospace;
-        }
-        .data-row {
-            padding: 8px;
-            margin: 5px 0;
-            background: white;
-            border-radius: 5px;
-            border-left: 3px solid 
-;
-            word-break: break-all;
-        }
-        .data-label {
-            font-weight: bold;
-            color: 
-;
-            display: inline-block;
-            min-width: 80px;
-        }
-        .platform-detected {
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            text-align: center;
-            font-weight: 700;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-        .platform-detected.waiting {
-            background: 
-;
-            color: #666;
-        }
-        .platform-detected.fb {
-            background: linear-gradient(135deg, 
-, 
-);
-            color: 
-;
-            border-left: 5px solid 
-;
-        }
-        .platform-detected.ig {
-            background: linear-gradient(135deg, 
-, 
-);
-            color: 
-;
-            border-left: 5px solid 
-;
-        }
-        .code-container {
-            background: linear-gradient(135deg, 
-, 
-);
-            padding: 45px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-            position: relative;
-            overflow: hidden;
-        }
-        .code-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0,255,0,0.15) 0%, transparent 70%);
-            animation: pulse 3s ease-in-out infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-        }
-        .code-display {
-            position: relative;
-            z-index: 1;
-            color: #0f0;
-            font-size: 58px;
-            font-weight: bold;
-            letter-spacing: 16px;
-            font-family: 'Courier New', monospace;
-            text-shadow: 0 0 25px rgba(0,255,0,0.6);
-            cursor: pointer;
-            user-select: all;
-            transition: all 0.3s;
-        }
-        .code-display:hover {
-            transform: scale(1.05);
-            text-shadow: 0 0 35px rgba(0,255,0,0.8);
-        }
-        .code-display.waiting {
-            color: #666;
-            font-size: 28px;
-            letter-spacing: 3px;
-            text-shadow: none;
-        }
-        .code-display.error {
-            color: 
-;
-            font-size: 22px;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(255,68,68,0.3);
-        }
-        .copy-indicator {
-            text-align: center;
-            margin-top: 15px;
-            min-height: 25px;
-            font-weight: bold;
-            font-size: 15px;
-        }
-        .copy-indicator.success {
-            color: 
-;
-        }
+        body { background: #0d1117; color: white; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; padding-top: 50px; }
+        .card { width: 550px; background: #161b22; padding: 25px; border-radius: 12px; border: 1px solid #30363d; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h2 { text-align: center; color: #58a6ff; margin-bottom: 20px; }
+        textarea { width: 100%; height: 120px; background: #010409; color: #39ff14; border: 1px solid #30363d; border-radius: 6px; padding: 12px; font-family: monospace; box-sizing: border-box; resize: none; outline: none; }
+        button { width: 100%; padding: 14px; background: #238636; color: white; border: none; border-radius: 6px; margin-top: 15px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; }
+        button:hover { background: #2ea043; }
+        .result-area { margin-top: 25px; padding: 20px; border: 2px dashed #30363d; border-radius: 8px; text-align: center; }
+        #status { font-size: 14px; color: #8b949e; margin-bottom: 10px; }
+        #otpDisplay { font-size: 42px; color: #58a6ff; font-weight: bold; letter-spacing: 5px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>📧 Outlook → FB/IG OTP [DEBUG]</h1>
-            <p>Extract Facebook/Instagram codes from Outlook/Hotmail data</p>
-        </div>
-        
-        <div class="tab-container">
-            <div class="tab-button active fb" id="fbTab" onclick="selectPlatform('facebook')">
-                📘 Facebook
-            </div>
-            <div class="tab-button inactive" id="igTab" onclick="selectPlatform('instagram')">
-                📷 Instagram
-            </div>
-        </div>
-        
-        <div class="input-section">
-            <label>📋 Paste Outlook/Hotmail Data:</label>
-            <textarea id="emailInput" placeholder="Paste your Outlook/Hotmail data here..."></textarea>
-        </div>
-        
-        <div class="btn-group">
-            <button class="btn-extract" onclick="extractOTP()">🔍 Extract OTP Code</button>
-            <button class="btn-clear" onclick="clearAll()">🗑️ Clear All</button>
-        </div>
-        
-        <!-- DEBUG PANEL -->
-        <div class="debug-panel" id="debugPanel">
-            <h4>🐛 Debug Info - All Detected Numbers:</h4>
-            <div class="debug-codes" id="debugCodes">-</div>
-        </div>
-        
-        <div class="result-section">
-            <div class="data-display" id="dataDisplay" style="display:none;">
-                <div class="data-row">
-                    <span class="data-label">📧 Email:</span>
-                    <span id="emailOut">-</span>
-                </div>
-                <div class="data-row">
-                    <span class="data-label">🔑 Password:</span>
-                    <span id="passOut">-</span>
-                </div>
-            </div>
-            
-            <div class="platform-detected waiting" id="platformDisplay">
-                ⏳ Select platform and paste data...
-            </div>
-            
-            <div class="code-container">
-                <div class="code-display waiting" id="codeDisplay">------</div>
-            </div>
-            
-            <div class="copy-indicator" id="copyMsg"></div>
-        </div>
-    </div>
 
-    <script>
-        var selectedPlatform = 'facebook';
+<div class="card">
+    <h2>Get FB Verification Code</h2>
+    <textarea id="tokenData" placeholder="Email|Password|Refresh_Token|Client_ID"></textarea>
+    <button onclick="fetchCode()">GET VERIFICATION CODE</button>
+
+    <div class="result-area">
+        <div id="status">Waiting for input...</div>
+        <div id="otpDisplay">------</div>
+    </div>
+</div>
+
+<script>
+async function fetchCode() {
+    const input = document.getElementById('tokenData').value.trim();
+    const status = document.getElementById('status');
+    const display = document.getElementById('otpDisplay');
+
+    if (!input.includes('|')) {
+        alert("Invalid Format! Use: Email|Pass|Refresh_Token|Client_ID");
+        return;
+    }
+
+    const parts = input.split('|');
+    const email = parts[0].trim();
+    const refreshToken = parts[2].trim();
+    const clientId = parts[3].trim();
+
+    // CORS সমস্যা সমাধানের জন্য পাবলিক প্রক্সি ব্যবহার করা হয়েছে
+    const proxy = "https://api.allorigins.win/raw?url=";
+
+    try {
+        status.innerText = "Refreshing Access Token...";
         
-        function selectPlatform(platform) {
-            selectedPlatform = platform;
-            
-            var fbTab = document.getElementById('fbTab');
-            var igTab = document.getElementById('igTab');
-            
-            if(platform === 'facebook') {
-                fbTab.className = 'tab-button active fb';
-                igTab.className = 'tab-button inactive';
-            } else {
-                fbTab.className = 'tab-button inactive';
-                igTab.className = 'tab-button active ig';
-            }
-        }
-        
-        function clearAll() {
-            document.getElementById('emailInput').value = '';
-            document.getElementById('dataDisplay').style.display = 'none';
-            document.getElementById('debugPanel').style.display = 'none';
-            document.getElementById('emailOut').innerText = '-';
-            document.getElementById('passOut').innerText = '-';
-            document.getElementById('codeDisplay').className = 'code-display waiting';
-            document.getElementById('codeDisplay').innerText = '------';
-            document.getElementById('copyMsg').innerText = '';
-            document.getElementById('debugCodes').innerText = '-';
-            
-            var platformDisplay = document.getElementById('platformDisplay');
-            platformDisplay.className = 'platform-detected waiting';
-            platformDisplay.innerText = '⏳ Select platform and paste data...';
-        }
-        
-        function extractOTP() {
-            var input = document.getElementById('emailInput').value.trim();
-            
-            if(!input) {
-                alert('⚠️ Please paste data first!');
-                return;
-            }
-            
-            // COMPLETE RESET
-            document.getElementById('codeDisplay').className = 'code-display waiting';
-            document.getElementById('codeDisplay').innerText = 'SEARCHING...';
-            document.getElementById('copyMsg').innerText = '';
-            document.getElementById('debugCodes').innerText = 'Analyzing...';
-            document.getElementById('debugPanel').style.display = 'block';
-            
-            // Parse email and password
-            var parts = input.split('|');
-            var email = '';
-            var password = '';
-            
-            if(parts.length >= 1 && parts[0].includes('@')) {
-                email = parts[0].trim();
-                document.getElementById('emailOut').innerText = email;
-            }
-            
-            if(parts.length >= 2) {
-                password = parts[1].trim();
-                document.getElementById('passOut').innerText = password;
-            }
-            
-            if(email || password) {
-                document.getElementById('dataDisplay').style.display = 'block';
-            }
-            
-            // Platform display
-            var platformDisplay = document.getElementById('platformDisplay');
-            if(selectedPlatform === 'facebook') {
-                platformDisplay.className = 'platform-detected fb';
-                platformDisplay.innerText = '✅ Extracting Facebook Code';
-            } else {
-                platformDisplay.className = 'platform-detected ig';
-                platformDisplay.innerText = '✅ Extracting Instagram Code';
-            }
-            
-            // EXTRACT ALL NUMBERS FOR DEBUG
-            var allNumbers = input.match(/\d+/g);
-            var debugInfo = [];
-            
-            if(allNumbers && allNumbers.length > 0) {
-                for(var i = 0; i < allNumbers.length; i++) {
-                    var num = allNumbers[i];
-                    debugInfo.push(num + ' (' + num.length + ' digits)');
-                }
-                document.getElementById('debugCodes').innerText = debugInfo.join(', ');
-            } else {
-                document.getElementById('debugCodes').innerText = 'No numbers found!';
-            }
-            
-            // EXTRACT OTP - Find 4-8 digit codes
-            var otp = null;
-            
-            if(allNumbers && allNumbers.length > 0) {
-                var validCodes = [];
-                
-                for(var j = 0; j < allNumbers.length; j++) {
-                    var num = allNumbers[j];
-                    var len = num.length;
-                    
-                    if(len >= 4 && len <= 8) {
-                        validCodes.push(num);
-                    }
-                }
-                
-                // Take LAST valid code
-                if(validCodes.length > 0) {
-                    otp = validCodes[validCodes.length - 1];
-                }
-            }
-            
-            // Display result
-            var codeDisplay = document.getElementById('codeDisplay');
-            var copyMsg = document.getElementById('copyMsg');
-            
-            if(otp) {
-                codeDisplay.className = 'code-display';
-                codeDisplay.innerText = otp;
-                
-                navigator.clipboard.writeText(otp).then(function() {
-                    copyMsg.className = 'copy-indicator success';
-                    copyMsg.innerText = '✓ Code copied: ' + otp;
-                    
-                    setTimeout(function() {
-                        copyMsg.innerText = '';
-                    }, 3000);
-                }).catch(function() {
-                    copyMsg.innerText = '💡 Click code to copy';
-                });
-                
-            } else {
-                codeDisplay.className = 'code-display error';
-                codeDisplay.innerText = 'NO CODE FOUND';
-                copyMsg.innerText = '❌ No 4-8 digit code detected';
-            }
-        }
-        
-        // Auto-extract on paste
-        document.getElementById('emailInput').addEventListener('paste', function() {
-            // Clear immediately
-            document.getElementById('codeDisplay').className = 'code-display waiting';
-            document.getElementById('codeDisplay').innerText = 'WAITING...';
-            
-            setTimeout(extractOTP, 500);
+        // ১. এক্সেস টোকেন নেওয়া
+        const tokenUrl = "https://login.microsoftonline.com/common/oauth2/v2.0/token";
+        const body = new URLSearchParams({
+            client_id: clientId,
+            refresh_token: refreshToken,
+            grant_type: 'refresh_token',
+            scope: 'https://graph.microsoft.com/Mail.Read'
         });
-        
-        // Click to copy
-        document.getElementById('codeDisplay').addEventListener('click', function() {
-            var code = this.innerText;
-            if(code !== '------' && code !== 'SEARCHING...' && code !== 'WAITING...' && code !== 'NO CODE FOUND') {
-                navigator.clipboard.writeText(code);
-                document.getElementById('copyMsg').className = 'copy-indicator success';
-                document.getElementById('copyMsg').innerText = '✓ Copied: ' + code;
-            }
+
+        const tokenRes = await fetch(proxy + encodeURIComponent(tokenUrl), {
+            method: 'POST',
+            body: body
         });
-    </script>
+        const tokenJson = await tokenRes.json();
+        const accessToken = tokenJson.access_token;
+
+        if (!accessToken) throw new Error("Token Refresh Failed");
+
+        status.innerText = "Scanning Inbox for Facebook Mail...";
+
+        // ২. মাইক্রোসফট গ্রাফ এপিআই দিয়ে মেইল চেক করা
+        const mailUrl = `https://graph.microsoft.com/v1.0/users/${email}/messages?$search="Facebook"&$top=1`;
+        const mailRes = await fetch(proxy + encodeURIComponent(mailUrl), {
+            headers: { 'Authorization': `Bearer ${accessToken}` }
+        });
+        const mailJson = await mailRes.json();
+
+        if (mailJson.value && mailJson.value.length > 0) {
+            const content = mailJson.value[0].body.content;
+            // ৩. ৬ ডিজিটের কোড খুজে বের করা
+            const codeMatch = content.match(/\b\d{5,6}\b/);
+            
+            if (codeMatch) {
+                status.innerText = "Verification Code Detected!";
+                display.innerText = codeMatch[0];
+            } else {
+                status.innerText = "Mail found, but no code detected.";
+                display.innerText = "NOT FOUND";
+            }
+        } else {
+            status.innerText = "No Facebook mail found in inbox.";
+            display.innerText = "EMPTY";
+        }
+
+    } catch (err) {
+        console.error(err);
+        status.innerText = "Error: Token might be expired or invalid.";
+        display.innerText = "ERROR";
+    }
+}
+</script>
+
 </body>
 </html>
