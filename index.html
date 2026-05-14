@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2FA Authenticator - Longisir VIP</title>
+    <title>API Mail Scraper - Longisir VIP</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
         
@@ -46,64 +46,77 @@
             margin-bottom: 30px;
         }
 
-        .input-box {
+        /* Input Area for Outlook/Mail Data */
+        .input-area {
             width: 100%;
+            height: 150px;
             padding: 20px;
-            border-radius: 18px;
+            border-radius: 20px;
             border: 2px solid #f1f5f9;
             background: #f8fafc;
-            font-weight: 800;
-            font-size: 17px;
-            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 20px;
             outline: none;
-            text-align: center;
+            resize: none;
             color: #1e293b;
         }
 
-        .gen-btn {
-            background: var(--btn-grad);
-            color: #fff;
-            border: none;
-            width: 100%;
-            padding: 20px;
-            border-radius: 18px;
+        /* Detected Info Display */
+        .info-box {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             font-weight: 800;
-            font-size: 17px;
-            cursor: pointer;
-            text-transform: uppercase;
-            box-shadow: 0 10px 20px rgba(168, 85, 247, 0.3);
-            margin-bottom: 35px;
+            color: #3b82f6;
+            font-size: 14px;
         }
 
+        .clear-btn {
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* Lighting OTP Box */
         .code-box-wrapper { 
             background: #fff; 
             border: 3px solid var(--primary); 
-            padding: 15px 45px; 
+            padding: 20px 50px; 
             border-radius: 25px; 
             display: inline-flex; 
             align-items: center; 
             gap: 20px; 
             box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
+            margin-bottom: 10px;
         }
 
         .code-display { 
-            font-size: 42px; 
+            font-size: 45px; 
             font-weight: 800; 
             color: #000; 
             letter-spacing: 5px; 
         }
 
         .copy-icon {
-            font-size: 24px;
+            font-size: 26px;
             color: var(--primary);
             cursor: pointer;
         }
 
-        .auto-copy-label {
-            margin: 12px 0 30px 0;
+        .status-text {
             color: var(--text-gray);
             font-weight: 600;
             font-size: 13px;
+            margin-bottom: 30px;
         }
 
         /* --- FIXED HISTORY SECTION --- */
@@ -120,9 +133,8 @@
             margin-bottom: 15px;
         }
 
-        /* ফিক্সড হাইট এবং স্ক্রলবার */
         .history-list {
-            height: 250px; /* নির্দিষ্ট আকার */
+            height: 200px;
             overflow-y: auto;
             background: #f8fafc;
             border-radius: 20px;
@@ -132,33 +144,21 @@
             gap: 10px;
         }
 
-        /* সুন্দর স্ক্রলবার ডিজাইন */
-        .history-list::-webkit-scrollbar {
-            width: 6px;
-        }
-        .history-list::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 10px;
-        }
-
         .history-item {
             background: #fff;
-            padding: 15px;
-            border-radius: 15px;
+            padding: 12px 15px;
+            border-radius: 12px;
             font-size: 13px;
-            border-left: 5px solid var(--primary);
-            word-break: break-all;
+            border-left: 5px solid #3b82f6;
             color: #475569;
             box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .history-item b { color: #000; }
+
+        /* Custom Scrollbar */
+        .history-list::-webkit-scrollbar { width: 5px; }
+        .history-list::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -168,25 +168,32 @@
 <div class="container">
     <main class="tool-card">
         <div class="tool-header">
-            <h2>2FA Authenticator</h2>
+            <h2>API Mail Scraper</h2>
         </div>
 
-        <input type="text" id="secret-key" class="input-box" placeholder="Enter Your 2FA Secret Key">
-        
-        <button class="gen-btn" onclick="generateAndSave()">Generate 6-Digit Code</button>
+        <!-- Input Box for raw mail data -->
+        <textarea id="mail-input" class="input-area" placeholder="Paste your Mail/Outlook data here..." oninput="autoScanMail()"></textarea>
+
+        <!-- Detected Email Status -->
+        <div class="info-box">
+            <span id="detected-email">No Email Detected</span>
+            <button class="clear-btn" onclick="clearAll()">CLEAR ALL</button>
+        </div>
 
         <center>
+            <!-- OTP Display Box with Lighting -->
             <div class="code-box-wrapper">
-                <span id="2fa-result" class="code-display">(CODE)</span>
-                <i class="fa-solid fa-copy copy-icon" onclick="copyManual()"></i>
+                <span id="otp-result" class="code-display">WAITING</span>
+                <i class="fa-solid fa-copy copy-icon" onclick="copyOTP()"></i>
             </div>
-            <p class="auto-copy-label">Auto code generated & copied!</p>
+            <p class="status-text">OTP will be auto-scanned and copied!</p>
         </center>
 
+        <!-- Fixed History Box -->
         <div class="history-section">
             <h3>Historey</h3>
             <div id="history-container" class="history-list">
-                <!-- History items will appear here -->
+                <!-- Scanned items will appear here -->
             </div>
         </div>
     </main>
@@ -195,48 +202,59 @@
 <script>
     const MAX_HISTORY = 20;
 
-    function generateAndSave() {
-        const keyInput = document.getElementById('secret-key');
-        const key = keyInput.value.trim();
+    function autoScanMail() {
+        const input = document.getElementById('mail-input').value;
         
-        if(!key) return;
+        // Regex to find Email and 6-digit Code
+        const emailMatch = input.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+        const codeMatch = input.match(/\b\d{6}\b/);
 
-        // Code Generation
-        const code = Math.floor(100000 + Math.random() * 900000);
-        document.getElementById('2fa-result').innerText = code;
-        
-        // Auto Copy
-        navigator.clipboard.writeText(code.toString());
+        if (emailMatch) {
+            document.getElementById('detected-email').innerText = emailMatch[0];
+        }
 
-        // Save to History
-        addToHistory(key, code);
+        if (codeMatch) {
+            const otp = codeMatch[0];
+            const currentOTP = document.getElementById('otp-result').innerText;
 
-        // Clear Input
-        keyInput.value = "";
+            // Only update if it's a new code
+            if (otp !== currentOTP) {
+                document.getElementById('otp-result').innerText = otp;
+                
+                // 1. Auto Copy OTP
+                navigator.clipboard.writeText(otp);
+
+                // 2. Add to History
+                addToHistory(emailMatch ? emailMatch[0] : "Unknown", otp);
+            }
+        }
     }
 
-    function addToHistory(key, code) {
+    function addToHistory(email, otp) {
         const container = document.getElementById('history-container');
-        
-        // নতুন আইটেম তৈরি
         const item = document.createElement('div');
         item.className = 'history-item';
-        item.innerHTML = `<b>CODE: ${code}</b> | <span style="opacity:0.7">KEY: ${key}</span>`;
+        item.innerHTML = `<b>OTP: ${otp}</b> | <span style="opacity:0.7">MAIL: ${email}</span>`;
         
-        // সবার উপরে অ্যাড করা
         container.insertBefore(item, container.firstChild);
 
-        // ২০টির বেশি হলে সবশেষে থাকা পুরনো হিস্ট্রি ডিলিট করা
+        // Keep only last 20 items
         const currentItems = container.getElementsByClassName('history-item');
         if (currentItems.length > MAX_HISTORY) {
             container.removeChild(container.lastChild);
         }
     }
 
-    function copyManual() {
-        const code = document.getElementById('2fa-result').innerText;
-        if(code === "(CODE)") return;
-        navigator.clipboard.writeText(code);
+    function copyOTP() {
+        const otp = document.getElementById('otp-result').innerText;
+        if(otp === "WAITING") return;
+        navigator.clipboard.writeText(otp);
+    }
+
+    function clearAll() {
+        document.getElementById('mail-input').value = "";
+        document.getElementById('detected-email').innerText = "No Email Detected";
+        document.getElementById('otp-result').innerText = "WAITING";
     }
 </script>
 
