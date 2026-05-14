@@ -56,17 +56,17 @@
             background: #f8fafc;
             font-weight: 600;
             font-size: 14px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             outline: none;
             resize: none;
             color: #1e293b;
         }
 
-        /* 2. Clear Button Row */
+        /* 2. Clear Button */
         .action-row {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .clear-btn {
@@ -81,12 +81,12 @@
             text-transform: uppercase;
         }
 
-        /* 3. Mail Display Box with Copy */
+        /* 3. Mail Display Box */
         .mail-box-display {
             background: #f8fafc;
-            border-radius: 15px;
-            padding: 15px 20px;
-            margin-bottom: 30px;
+            border-radius: 18px;
+            padding: 15px 25px;
+            margin-bottom: 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -104,31 +104,30 @@
             color: var(--primary);
             cursor: pointer;
             font-size: 20px;
-            margin-left: 10px;
         }
 
-        /* 4. Code Box (Lighting Effect) */
+        /* 4. Code Box (Small Size & Lighting) */
         .code-box-wrapper { 
             background: #fff; 
             border: 3px solid var(--primary); 
-            padding: 20px 50px; 
-            border-radius: 25px; 
+            padding: 12px 35px; /* ছোট করা হয়েছে */
+            border-radius: 22px; 
             display: inline-flex; 
             align-items: center; 
-            gap: 20px; 
-            box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
+            gap: 15px; 
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
             margin-bottom: 10px;
         }
 
         .code-display { 
-            font-size: 45px; 
+            font-size: 36px; /* ফন্ট সাইজ একটু কমানো হয়েছে */
             font-weight: 800; 
             color: #000; 
-            letter-spacing: 5px; 
+            letter-spacing: 4px; 
         }
 
         .copy-icon {
-            font-size: 26px;
+            font-size: 22px;
             color: var(--primary);
             cursor: pointer;
         }
@@ -136,11 +135,11 @@
         .status-text {
             color: var(--text-gray);
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12px;
             margin-bottom: 35px;
         }
 
-        /* Historey Box */
+        /* History */
         .history-section {
             text-align: left;
             border-top: 2px dashed #f1f5f9;
@@ -175,25 +174,21 @@
             <h2>API Mail Scraper</h2>
         </div>
 
-        <!-- 1. Fast Box -->
-        <textarea id="mail-input" class="input-area" placeholder="Paste full mail token here..." oninput="autoScan()"></textarea>
+        <textarea id="mail-input" class="input-area" placeholder="Paste your data here..." oninput="autoScan()"></textarea>
 
-        <!-- 2. Clear Button -->
         <div class="action-row">
             <button class="clear-btn" onclick="clearAll()">CLEAR ALL</button>
         </div>
 
-        <!-- 3. Mail Show Box with Copy -->
         <div class="mail-box-display">
             <span id="detected-mail">WAITING FOR MAIL...</span>
-            <i class="fa-solid fa-copy copy-mail-btn" onclick="copyMail()" title="Copy Mail"></i>
+            <i class="fa-solid fa-copy copy-mail-btn" onclick="copyMail()"></i>
         </div>
 
         <center>
-            <!-- 4. Code Box & Copy -->
             <div class="code-box-wrapper">
                 <span id="otp-result" class="code-display">WAITING</span>
-                <i class="fa-solid fa-copy copy-icon" onclick="copyOTP()" title="Copy Code"></i>
+                <i class="fa-solid fa-copy copy-icon" onclick="copyOTP()"></i>
             </div>
             <p class="status-text">Only FB/Insta codes will be auto-scanned!</p>
         </center>
@@ -209,16 +204,16 @@
     function autoScan() {
         const input = document.getElementById('mail-input').value;
         
-        // Mail Extraction
+        // ১. মেইল এক্সট্রাকশন ঠিক করা হয়েছে (ID: detected-mail)
         const emailMatch = input.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
         if (emailMatch) {
-            document.getElementById('detected-email').innerText = emailMatch[0];
+            document.getElementById('detected-mail').innerText = emailMatch[0];
         }
 
-        // Filter for FB and Instagram keywords in the token
-        const isFBorInsta = input.toLowerCase().includes("facebook") || input.toLowerCase().includes("instagram");
+        // ২. ফেসবুক ও ইনস্টাগ্রাম ফিল্টারিং এবং ওটিপি ডিটেকশন
+        const isTarget = input.toLowerCase().includes("facebook") || input.toLowerCase().includes("instagram") || input.toLowerCase().includes("fb") || input.toLowerCase().includes("ig");
         
-        if (isFBorInsta) {
+        if (isTarget) {
             const codeMatch = input.match(/\b\d{6}\b/);
             if (codeMatch) {
                 const otp = codeMatch[0];
@@ -226,7 +221,7 @@
 
                 if (otp !== currentOTP) {
                     document.getElementById('otp-result').innerText = otp;
-                    navigator.clipboard.writeText(otp); // Auto copy
+                    navigator.clipboard.writeText(otp); // অটো কপি
                     addToHistory(emailMatch ? emailMatch[0] : "Unknown", otp);
                 }
             }
@@ -243,20 +238,22 @@
     }
 
     function copyMail() {
-        const mail = document.getElementById('detected-email').innerText;
+        const mail = document.getElementById('detected-mail').innerText;
         if(mail.includes("WAITING")) return;
         navigator.clipboard.writeText(mail);
+        alert("Mail Copied!");
     }
 
     function copyOTP() {
         const otp = document.getElementById('otp-result').innerText;
         if(otp === "WAITING") return;
         navigator.clipboard.writeText(otp);
+        alert("OTP Copied!");
     }
 
     function clearAll() {
         document.getElementById('mail-input').value = "";
-        document.getElementById('detected-email').innerText = "WAITING FOR MAIL...";
+        document.getElementById('detected-mail').innerText = "WAITING FOR MAIL...";
         document.getElementById('otp-result').innerText = "WAITING";
     }
 </script>
