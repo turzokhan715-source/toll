@@ -62,7 +62,7 @@
             color: #1e293b;
         }
 
-        /* 2. Clear Button */
+        /* 2. Clear Button Row */
         .action-row {
             display: flex;
             justify-content: flex-end;
@@ -106,11 +106,11 @@
             font-size: 20px;
         }
 
-        /* 4. Code Box (Small Size & Lighting) */
+        /* 4. Code Box (Small & Lighting) */
         .code-box-wrapper { 
             background: #fff; 
             border: 3px solid var(--primary); 
-            padding: 12px 35px; /* ছোট করা হয়েছে */
+            padding: 12px 40px; 
             border-radius: 22px; 
             display: inline-flex; 
             align-items: center; 
@@ -120,7 +120,7 @@
         }
 
         .code-display { 
-            font-size: 36px; /* ফন্ট সাইজ একটু কমানো হয়েছে */
+            font-size: 38px; 
             font-weight: 800; 
             color: #000; 
             letter-spacing: 4px; 
@@ -139,7 +139,7 @@
             margin-bottom: 35px;
         }
 
-        /* History */
+        /* Historey Box */
         .history-section {
             text-align: left;
             border-top: 2px dashed #f1f5f9;
@@ -154,7 +154,7 @@
         }
 
         .history-list {
-            height: 200px;
+            height: 220px;
             overflow-y: auto;
             background: #f8fafc;
             border-radius: 20px;
@@ -163,6 +163,25 @@
             flex-direction: column;
             gap: 10px;
         }
+
+        .history-item {
+            background: #fff;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 13px;
+            border-left: 5px solid var(--primary);
+            color: #475569;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            word-break: break-all;
+        }
+
+        .history-item b {
+            color: #000;
+            font-weight: 800;
+        }
+
+        .history-list::-webkit-scrollbar { width: 5px; }
+        .history-list::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -174,7 +193,7 @@
             <h2>API Mail Scraper</h2>
         </div>
 
-        <textarea id="mail-input" class="input-area" placeholder="Paste your data here..." oninput="autoScan()"></textarea>
+        <textarea id="mail-input" class="input-area" placeholder="Paste full mail data here..." oninput="autoScan()"></textarea>
 
         <div class="action-row">
             <button class="clear-btn" onclick="clearAll()">CLEAR ALL</button>
@@ -203,26 +222,32 @@
 <script>
     function autoScan() {
         const input = document.getElementById('mail-input').value;
-        
-        // ১. মেইল এক্সট্রাকশন ঠিক করা হয়েছে (ID: detected-mail)
+        if (!input) return;
+
+        // 1. Mail Detection
         const emailMatch = input.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+        let currentEmail = "Unknown Mail";
         if (emailMatch) {
-            document.getElementById('detected-mail').innerText = emailMatch[0];
+            currentEmail = emailMatch[0];
+            document.getElementById('detected-mail').innerText = currentEmail;
         }
 
-        // ২. ফেসবুক ও ইনস্টাগ্রাম ফিল্টারিং এবং ওটিপি ডিটেকশন
-        const isTarget = input.toLowerCase().includes("facebook") || input.toLowerCase().includes("instagram") || input.toLowerCase().includes("fb") || input.toLowerCase().includes("ig");
-        
-        if (isTarget) {
+        // 2. FB/Insta OTP Detection (লজিক আরও শক্তিশালী করা হয়েছে)
+        const isFB = input.toLowerCase().includes("facebook") || input.toLowerCase().includes("fb");
+        const isInsta = input.toLowerCase().includes("instagram") || input.toLowerCase().includes("ig");
+
+        if (isFB || isInsta) {
+            // ৬ ডিজিটের কোড খোঁজা
             const codeMatch = input.match(/\b\d{6}\b/);
             if (codeMatch) {
                 const otp = codeMatch[0];
-                const currentOTP = document.getElementById('otp-result').innerText;
+                const displayedOTP = document.getElementById('otp-result').innerText;
 
-                if (otp !== currentOTP) {
+                // নতুন ওটিপি হলে আপডেট এবং হিস্ট্রিতে যোগ করবে
+                if (otp !== displayedOTP) {
                     document.getElementById('otp-result').innerText = otp;
-                    navigator.clipboard.writeText(otp); // অটো কপি
-                    addToHistory(emailMatch ? emailMatch[0] : "Unknown", otp);
+                    navigator.clipboard.writeText(otp); // Auto copy
+                    addToHistory(currentEmail, otp);
                 }
             }
         }
@@ -231,24 +256,29 @@
     function addToHistory(email, otp) {
         const container = document.getElementById('history-container');
         const item = document.createElement('div');
-        item.style = "background:#fff; padding:12px; border-radius:12px; border-left:5px solid #a855f7; font-size:13px; color:#475569;";
-        item.innerHTML = `<b>CODE: ${otp}</b> | MAIL: ${email}`;
+        item.className = 'history-item';
+        
+        // হিস্ট্রিতে মেইল এবং কোড দুটোই দেখাবে
+        item.innerHTML = `<b>CODE: ${otp}</b><br><span style="font-size:11px; color:var(--text-gray);">MAIL: ${email}</span>`;
+        
         container.insertBefore(item, container.firstChild);
-        if (container.children.length > 20) container.removeChild(container.lastChild);
+
+        // ২০টার বেশি হলে ডিলিট করবে
+        if (container.children.length > 20) {
+            container.removeChild(container.lastChild);
+        }
     }
 
     function copyMail() {
         const mail = document.getElementById('detected-mail').innerText;
         if(mail.includes("WAITING")) return;
         navigator.clipboard.writeText(mail);
-        alert("Mail Copied!");
     }
 
     function copyOTP() {
         const otp = document.getElementById('otp-result').innerText;
         if(otp === "WAITING") return;
         navigator.clipboard.writeText(otp);
-        alert("OTP Copied!");
     }
 
     function clearAll() {
