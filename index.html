@@ -3,118 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FB & Insta OTP Extractor</title>
+    <title>API Mail OTP Extractor</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: #0a0a0a; color: #ffffff; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        
-        .extractor-card { 
-            width: 100%; 
-            max-width: 550px; 
-            background: #151515; 
-            border: 1px solid #333333; 
-            border-radius: 15px; 
-            padding: 25px; 
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, 
+ 0%, 
+ 100%);
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-
-        h2 { color: #0088ff; text-align: center; margin-bottom: 20px; font-size: 20px; letter-spacing: 1px; text-transform: uppercase; }
-
-        .input-box { 
-            width: 100%; 
-            height: 150px; 
-            background: #1e1e1e; 
-            border: 1px solid #444444; 
-            border-radius: 10px; 
-            padding: 15px; 
-            color: #00ff00; 
-            font-size: 13px; 
-            outline: none; 
-            resize: none;
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: 
+;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            resize: vertical;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, 
+ 0%, 
+ 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
             margin-bottom: 20px;
-            font-family: monospace;
         }
-        .input-box:focus { border-color: #0088ff; }
-
-        .result-section { 
-            background: #000000; 
-            border-radius: 12px; 
-            padding: 25px; 
-            text-align: center; 
-            border: 2px solid #333333;
-            margin-bottom: 20px;
+        button:hover {
+            opacity: 0.9;
         }
-
-        .otp-title { font-size: 11px; color: #888888; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px; }
-        .otp-display { font-size: 55px; font-weight: 900; color: #ffffff; letter-spacing: 5px; margin: 10px 0; }
-        .mail-display { font-size: 14px; color: #0088ff; font-family: monospace; border-top: 1px solid #222; pt: 10px; margin-top: 10px; padding-top: 10px; }
-
-        .btn-extract { 
-            width: 100%; 
-            background: #0088ff; 
-            color: #ffffff; 
-            border: none; 
-            padding: 15px; 
-            border-radius: 8px; 
-            font-size: 16px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            transition: 0.3s;
+        .result {
+            background: 
+;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
         }
-        .btn-extract:hover { background: #0066cc; transform: translateY(-1px); }
-
-        .footer-info { text-align: center; font-size: 11px; margin-top: 15px; color: #555555; }
+        .code-box {
+            background: #000;
+            color: #0f0;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 48px;
+            font-weight: bold;
+            letter-spacing: 5px;
+        }
+        .status {
+            text-align: center;
+            color: #0f0;
+            font-weight: bold;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>📧 API Mail OTP Extractor</h1>
+        
+        <textarea id="input" rows="8" placeholder="Paste your email data here...
 
-<div class="extractor-card">
-    <h2>FB/Insta Mail Extractor</h2>
-    
-    <textarea id="rawInput" class="input-box" placeholder="Paste your API Data or Email Text here..."></textarea>
-    
-    <div class="result-section">
-        <div class="otp-title">Extracted OTP (5-8 Digits)</div>
-        <div id="otpResult" class="otp-display">------</div>
-        <div id="mailResult" class="mail-display">No Data Found</div>
+Example:
+From: noreply@service.com
+Your verification code is: 123456
+Email: user@outlook.com"></textarea>
+        
+        <button onclick="extract()">🔍 Extract Data</button>
+        
+        <div class="result" id="email">Waiting for email...</div>
+        
+        <div class="code-box" id="code">------</div>
+        
+        <div class="status" id="status"></div>
     </div>
 
-    <button class="btn-extract" onclick="doExtract()">EXTRACT CODE</button>
-    
-    <div class="footer-info">Support: Facebook, Instagram & Microsoft Codes</div>
-</div>
-
-<script>
-    function doExtract() {
-        const input = document.getElementById('rawInput').value;
-        const otpDisplay = document.getElementById('otpResult');
-        const mailDisplay = document.getElementById('mailResult');
-
-        // ১. ইমেইল ফিল্টার
-        const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
-        const emailFound = input.match(emailRegex);
-        mailDisplay.innerText = emailFound ? emailFound[0] : "Email not found";
-
-        // ২. ৫ থেকে ৮ ডিজিটের কোড ফিল্টার
-        // এই রেজেক্সটি শুধুমাত্র ৫, ৬, ৭ বা ৮ ডিজিটের নম্বর খুঁজে বের করবে
-        const otpRegex = /\b\d{5,8}\b/; 
-        const otpFound = input.match(otpRegex);
-
-        if (otpFound) {
-            otpDisplay.innerText = otpFound[0];
-            otpDisplay.style.color = "#00ff00"; // গ্রিন কালার
+    <script>
+        function extract() {
+            var text = document.getElementById('input').value;
             
-            // অটো কপি
-            navigator.clipboard.writeText(otpFound[0]);
-        } else {
-            otpDisplay.innerText = "EMPTY";
-            otpDisplay.style.color = "#ff4444"; // রেড কালার
+            if(!text) {
+                alert('Please paste email data first!');
+                return;
+            }
+            
+            // Find email
+            var emailMatch = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+            if(emailMatch) {
+                document.getElementById('email').innerText = '✅ ' + emailMatch[0];
+            } else {
+                document.getElementById('email').innerText = '❌ No email found';
+            }
+            
+            // Find code
+            var code = null;
+            
+            // Try pattern 1: "code: 123456"
+            var p1 = text.match(/(?:code|otp|verification|pin)[\s:is]+(\d{4,8})/i);
+            if(p1) code = p1[1];
+            
+            // Try pattern 2: just 6 digits
+            if(!code) {
+                var p2 = text.match(/\b(\d{6})\b/);
+                if(p2) code = p2[1];
+            }
+            
+            // Try pattern 3: 4 digits
+            if(!code) {
+                var p3 = text.match(/\b(\d{4})\b/);
+                if(p3) code = p3[1];
+            }
+            
+            // Show code
+            if(code) {
+                document.getElementById('code').innerText = code;
+                
+                // Copy to clipboard
+                navigator.clipboard.writeText(code);
+                document.getElementById('status').innerText = '✓ Code copied to clipboard!';
+                
+                setTimeout(function() {
+                    document.getElementById('status').innerText = '';
+                }, 3000);
+            } else {
+                document.getElementById('code').innerText = 'NOT FOUND';
+                document.getElementById('status').innerText = '';
+            }
         }
-    }
-
-    // পেস্ট করার সাথে সাথে অটোমেটিক কাজ করবে
-    document.getElementById('rawInput').addEventListener('input', doExtract);
-</script>
-
+        
+        // Auto extract on paste
+        document.getElementById('input').addEventListener('paste', function() {
+            setTimeout(extract, 100);
+        });
+    </script>
 </body>
 </html>
