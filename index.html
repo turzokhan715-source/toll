@@ -8,79 +8,149 @@ app.use(cors());
 
 const GRAPH_API_BASE = 'https://graph.microsoft.com/v1.0';
 
+// Enhanced OTP extraction with multiple patterns
 function extractOTP(text, platform, mode) {
-    const clean = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
-    
-    const patterns = {
-        facebook: {
-            strict: [
-                /(?:facebook|fb).*?(\d{6})/i,
-                /(\d{6}).*?(?:facebook|fb)/i,
-                /(?:confirmation|verification|reset).*?code.*?(\d{6})/i,
-                /(\d{6}).*?(?:confirmation|verification|reset).*?code/i
-            ],
-            relaxed: [/\b(\d{6})\b/g]
-        },
-        instagram: {
-            strict: [
-                /(?:instagram|ig).*?(\d{6})/i,
-                /(\d{6}).*?(?:instagram|ig)/i,
-                /(?:confirmation|verification).*?code.*?(\d{6})/i
-            ],
-            relaxed: [/\b(\d{6})\b/g]
-        }
-    };
+    // Remove HTML tags and normalize whitespace
+    const clean = text
+        .replace(/<[^>]*>/g, ' ')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
 
-    const platformPatterns = patterns[platform]?.[mode] || patterns.facebook.strict;
-    
-    for (let pattern of platformPatterns) {
-        const match = clean.match(pattern);
-        if (match && match[1]) return match[1];
+    console.log('🔍 Searching in text:', clean.substring(0, 200));
+
+    // All possible 6-digit code patterns
+    const allPatterns = [
+        // Explicit mentions
+        /(?:code|código|codigo|kode|kod)[\s:]*(\d{6})/i,
+        /(\d{6})[\s]*(?:is your|is the|code|código)/i,
+        
+        // Facebook specific
+        /facebook.*?(\d{6})/i,
+        /(\d{6}).*?facebook/i,
+        /fb.*?(\d{6})/i,
+        
+        // Instagram specific
+        /instagram.*?(\d{6})/i,
+        /(\d{6}).*?instagram/i,
+        
+        // Verification/Confirmation
+        /verification.*?(\d{6})/i,
+        /(\d{6}).*?verification/i,
+        /confirmation.*?(\d{6})/i,
+        /(\d{6}).*?confirmation/i,
+        
+        // Reset/Security
+        /reset.*?(\d{6})/i,
+        /security.*?(\d{6})/i,
+        /(\d{6}).*?reset/i,
+        
+        // Generic 6-digit (relaxed fallback)
+        /\b(\d{6})\b/g
+    ];
+
+    // Try strict patterns first
+    if (mode === 'strict') {
+        const strictPatterns = allPatterns.slice(0, -1); // All except last generic one
+        
+        for (let pattern of strictPatterns) {
+            const match = clean.match(pattern);
+            if (match && match[1]) {
+                console.log('✅ Found code (strict):', match[1]);
+                return match[1];
+            }
+        }
     }
+
+    // Try all patterns including generic
+    for (let pattern of allPatterns) {
+        const match = clean.match(pattern);
+        if (match && match[1]) {
+            console.log('✅ Found code (relaxed):', match[1]);
+            return match[1];
+        }
+    }
+
+    console.log('❌ No code found');
     return null;
+}
+
+// Check if email is from Facebook/Instagram
+function isPlatformEmail(fromAddress, platform) {
+    const lower = fromAddress.toLowerCase();
+    
+    if (platform === 'facebook') {
+        return lower.includes('facebook') || 
+               lower.includes('facebookmail') || 
+               lower.includes('fb.com');
+    }
+    
+    if (platform === 'instagram') {
+        return lower.includes('instagram') || 
+               lower.includes('ig.me');
+    }
+    
+    return false;
 }
 
 app.post('/api/get-otp', async (req, res) => {
     const { token, platform = 'facebook', mode = 'strict' } = req.body;
+
+    console.log('📨 Request:', { platform, mode, tokenLength: token?.length });
 
     if (!token) {
         return res.status(400).json({ error: 'Access token required' });
     }
 
     try {
+        // Fetch emails from Microsoft Graph API
+        console.log('🔄 Fetching emails from Graph API...');
+        
         const response = await axios.get(`${GRAPH_API_BASE}/me/messages`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
             params: {
-                '$top': 20,
+                '$top': 30, // Increased to 30 emails
                 '$orderby': 'receivedDateTime DESC',
-                '$select': 'subject,body,receivedDateTime,from',
-                '$filter': "contains(subject, 'verification') or contains(subject, 'code') or contains(subject, 'confirmation') or contains(subject, 'reset')"
+                '$select': 'subject,body,receivedDateTime,from'
+                // Removed filter to get ALL recent emails
             }
         });
 
         const emails = response.data.value;
+        console.log(`📧 Found ${emails.length} emails`);
 
         if (!emails || emails.length === 0) {
-            return res.status(404).json({ error: 'No verification emails found' });
+            return res.status(404).json({ error: 'No emails found in inbox' });
         }
 
-        for (let email of emails) {
+        // Search through all emails
+        for (let i = 0; i < emails.length; i++) {
+            const email = emails[i];
             const emailBody = email.body?.content || '';
             const subject = email.subject || '';
-            const fromAddress = email.from?.emailAddress?.address?.toLowerCase() || '';
+            const fromAddress = email.from?.emailAddress?.address || '';
             
-            const isFBEmail = fromAddress.includes('facebook') || fromAddress.includes('facebookmail');
-            const isIGEmail = fromAddress.includes('instagram');
+            console.log(`\n📬 Email ${i+1}:`, {
+                from: fromAddress,
+                subject: subject.substring(0, 50),
+                received: email.receivedDateTime
+            });
 
-            if (platform === 'facebook' && !isFBEmail && mode === 'strict') continue;
-            if (platform === 'instagram' && !isIGEmail && mode === 'strict') continue;
+            // In strict mode, check sender
+            if (mode === 'strict' && !isPlatformEmail(fromAddress, platform)) {
+                console.log('⏭️  Skipping (not from platform)');
+                continue;
+            }
 
-            const code = extractOTP(emailBody + ' ' + subject, platform, mode);
+            // Try to extract OTP
+            const fullText = `${subject} ${emailBody}`;
+            const code = extractOTP(fullText, platform, mode);
             
             if (code) {
+                console.log('🎉 SUCCESS! Code found:', code);
                 return res.json({
                     success: true,
                     code: code,
@@ -91,10 +161,22 @@ app.post('/api/get-otp', async (req, res) => {
             }
         }
 
-        return res.status(404).json({ error: 'No verification code found' });
+        console.log('❌ No verification code found in any email');
+        return res.status(404).json({ 
+            error: 'No verification code found',
+            hint: 'Try Relaxed Mode or check if verification email was received'
+        });
 
     } catch (error) {
-        console.error('Error:', error.response?.data || error.message);
+        console.error('💥 Error:', error.response?.data || error.message);
+        
+        if (error.response?.status === 401) {
+            return res.status(401).json({ 
+                error: 'Invalid or expired access token',
+                details: 'Please generate a new Microsoft Graph API token'
+            });
+        }
+        
         return res.status(500).json({ 
             error: 'Failed to fetch emails',
             details: error.response?.data?.error?.message || error.message
@@ -102,23 +184,29 @@ app.post('/api/get-otp', async (req, res) => {
     }
 });
 
+// Health check endpoint
 app.get('/health', (req, res) => {
-    res.json({ status: 'OK' });
+    res.json({ 
+        status: 'OK', 
+        timestamp: new Date().toISOString(),
+        message: 'Outlook OTP Extractor API is running'
+    });
 });
 
-const PORT = 3000;
+// Test endpoint (for debugging)
+app.post('/api/test-extract', (req, res) => {
+    const { text, platform, mode } = req.body;
+    const code = extractOTP(text, platform, mode);
+    res.json({ code, found: !!code });
+});
+
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`🚀 Server: http://localhost:${PORT}`);
+    console.log(`\n🚀 Server running on http://localhost:${PORT}`);
+    console.log(`📊 Health check: http://localhost:${PORT}/health\n`);
 });
 
-Run:
-
-npm install express axios cors
-node server.js
-
-Step 2: Single HTML File (Complete Tool)
-File: outlook-otp-extractor.html
-
+🎨 Fixed Frontend (outlook-otp-extractor.html)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -171,6 +259,31 @@ File: outlook-otp-extractor.html
             font-size: 14px;
         }
 
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ccc;
+            margin-right: 8px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .status-indicator.online {
+            background: 
+;
+        }
+
+        .status-indicator.offline {
+            background: 
+;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
         .tabs {
             display: flex;
             gap: 12px;
@@ -210,8 +323,7 @@ File: outlook-otp-extractor.html
             background: linear-gradient(135deg, 
  0%, 
  100%);
-            border: 2px solid 
-;
+            border: 2px solid #b3d9ff;
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 25px;
@@ -223,6 +335,18 @@ File: outlook-otp-extractor.html
         .info-box strong {
             display: block;
             margin-bottom: 6px;
+            color: 
+;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid 
+;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 13px;
             color: 
 ;
         }
@@ -295,8 +419,7 @@ File: outlook-otp-extractor.html
             width: 100%;
             padding: 16px;
             background: linear-gradient(135deg, 
- 0%, 
- 100%);
+ 0%, #764ba2 100%);
             color: white;
             border: none;
             border-radius: 10px;
@@ -307,7 +430,7 @@ File: outlook-otp-extractor.html
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
-        .btn:hover {
+        .btn:hover:not(:disabled) {
             transform: translateY(-3px);
             box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
         }
@@ -336,11 +459,6 @@ File: outlook-otp-extractor.html
             animation: pulse 1.5s ease-in-out infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
         .error {
             background: linear-gradient(135deg, #fee 0%, 
  100%);
@@ -360,8 +478,7 @@ File: outlook-otp-extractor.html
  0%, 
  100%);
             border-radius: 12px;
-            border: 2px solid 
-;
+            border: 2px solid #86efac;
             display: none;
         }
 
@@ -491,13 +608,29 @@ File: outlook-otp-extractor.html
             font-size: 16px;
             margin-left: 15px;
         }
+
+        .debug-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: 
+;
+            border-radius: 10px;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+            color: #666;
+            max-height: 200px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>🔐 Outlook OTP Extractor</h1>
-            <p class="subtitle">Extract verification codes from Outlook/Hotmail instantly</p>
+            <p class="subtitle">
+                <span class="status-indicator" id="statusIndicator"></span>
+                <span id="statusText">Checking connection...</span>
+            </p>
         </div>
 
         <div class="tabs">
@@ -509,6 +642,10 @@ File: outlook-otp-extractor.html
             <strong>📋 Input Format:</strong>
             email|password|token|uuid<br>
             <strong>💡 Pro Tip:</strong> Paste your credentials and the code will be extracted automatically!
+        </div>
+
+        <div class="warning-box" style="display: none;" id="warningBox">
+            ⚠️ <strong>Token Issue:</strong> Make sure your Microsoft Graph API token is valid and has Mail.Read permission.
         </div>
 
         <div class="input-group">
@@ -539,15 +676,43 @@ File: outlook-otp-extractor.html
             <div class="history-title">📜 History</div>
             <div id="historyList"></div>
         </div>
+
+        <div class="debug-section" id="debugSection" style="display: none;"></div>
     </div>
 
     <script>
         // ⚙️ Configuration
         const API_URL = 'http://localhost:3000/api/get-otp';
+        const HEALTH_URL = 'http://localhost:3000/health';
 
         let currentPlatform = 'facebook';
         let currentMode = 'strict';
         let history = [];
+
+        // Check server status on load
+        async function checkServerStatus() {
+            const indicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            
+            try {
+                const response = await fetch(HEALTH_URL);
+                if (response.ok) {
+                    indicator.classList.add('online');
+                    statusText.textContent = 'Server connected ✓';
+                } else {
+                    throw new Error('Server not responding');
+                }
+            } catch (error) {
+                indicator.classList.add('offline');
+                statusText.textContent = 'Server offline - Please start backend';
+                document.getElementById('warningBox').style.display = 'block';
+                document.getElementById('warningBox').innerHTML = 
+                    '⚠️ <strong>Backend Not Running:</strong> Please run "node server.js" in terminal first.';
+            }
+        }
+
+        // Check on page load
+        checkServerStatus();
 
         // Tab switching
         document.querySelectorAll('.tab').forEach(tab => {
@@ -581,6 +746,15 @@ File: outlook-otp-extractor.html
             };
         }
 
+        // Debug logger
+        function logDebug(message) {
+            const debugSection = document.getElementById('debugSection');
+            debugSection.style.display = 'block';
+            const timestamp = new Date().toLocaleTimeString();
+            debugSection.innerHTML += `[${timestamp}] ${message}\n`;
+            debugSection.scrollTop = debugSection.scrollHeight;
+        }
+
         // Main extraction function
         async function extractCode() {
             const input = document.getElementById('accountInput').value;
@@ -590,19 +764,28 @@ File: outlook-otp-extractor.html
             const errorBox = document.getElementById('errorBox');
             const loadingBox = document.getElementById('loadingBox');
             const extractBtn = document.getElementById('extractBtn');
+            const debugSection = document.getElementById('debugSection');
 
             // Clear previous results
             resultBox.classList.remove('show');
             errorBox.innerHTML = '';
             loadingBox.innerHTML = '';
+            debugSection.innerHTML = '';
+            debugSection.style.display = 'none';
 
             try {
                 // Parse input
                 const credentials = parseInput(input);
+                logDebug(`📧 Email: ${credentials.email}`);
+                logDebug(`🔑 Token length: ${credentials.token.length} chars`);
+                logDebug(`🎯 Platform: ${currentPlatform}`);
+                logDebug(`⚙️ Mode: ${currentMode}`);
 
                 // Show loading
                 loadingBox.innerHTML = '<div class="loading">⏳ Fetching emails from Outlook/Hotmail...</div>';
                 extractBtn.disabled = true;
+
+                logDebug('🔄 Calling API...');
 
                 // Call backend API
                 const response = await fetch(API_URL, {
@@ -617,11 +800,14 @@ File: outlook-otp-extractor.html
                 });
 
                 const data = await response.json();
+                logDebug(`📨 Response status: ${response.status}`);
 
                 loadingBox.innerHTML = '';
                 extractBtn.disabled = false;
 
                 if (response.ok && data.success) {
+                    logDebug(`✅ Code found: ${data.code}`);
+                    
                     // Display result
                     codeDisplay.textContent = data.code;
                     emailInfo.innerHTML = `
@@ -633,17 +819,32 @@ File: outlook-otp-extractor.html
 
                     // Auto-copy
                     await navigator.clipboard.writeText(data.code);
+                    logDebug('📋 Code auto-copied to clipboard');
 
                     // Add to history
                     addToHistory(credentials.email, data.code);
                 } else {
-                    throw new Error(data.error || 'Failed to extract code');
+                    logDebug(`❌ Error: ${data.error}`);
+                    throw new Error(data.error || data.details || 'Failed to extract code');
                 }
 
             } catch (error) {
                 loadingBox.innerHTML = '';
                 extractBtn.disabled = false;
-                errorBox.innerHTML = `<div class="error">❌ ${error.message}</div>`;
+                logDebug(`💥 Exception: ${error.message}`);
+                
+                let errorMessage = error.message;
+                let hint = '';
+                
+                if (error.message.includes('token')) {
+                    hint = '<br><br>💡 <strong>Tip:</strong> Generate a new Microsoft Graph API token with Mail.Read permission.';
+                } else if (error.message.includes('No verification code')) {
+                    hint = '<br><br>💡 <strong>Tip:</strong> Try switching to Relaxed Mode or check if the verification email was received.';
+                } else if (error.message.includes('Failed to fetch')) {
+                    hint = '<br><br>💡 <strong>Tip:</strong> Make sure the backend server is running (node server.js).';
+                }
+                
+                errorBox.innerHTML = `<div class="error">❌ ${errorMessage}${hint}</div>`;
             }
         }
 
@@ -693,16 +894,3 @@ File: outlook-otp-extractor.html
     </script>
 </body>
 </html>
-
-🚀 How to Use:
-1. Setup (One-time):
-# Create folder
-mkdir outlook-otp-tool
-cd outlook-otp-tool
-
-# Install dependencies
-npm init -y
-npm install express axios cors
-
-# Save server.js (backend code)
-# Save outlook-otp-extractor.html (frontend)
