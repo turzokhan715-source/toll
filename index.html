@@ -1,16 +1,133 @@
+const express = require('express');
+const axios = require('axios');
+const cors = require('cors');
+
+const app = express();
+app.use(express.json());
+app.use(cors());
+
+const GRAPH_API_BASE = 'https://graph.microsoft.com/v1.0';
+
+function extractOTP(text, platform, mode) {
+    const clean = text.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ');
+    
+    const patterns = {
+        facebook: {
+            strict: [
+                /(?:facebook|fb).*?(\d{6})/i,
+                /(\d{6}).*?(?:facebook|fb)/i,
+                /(?:confirmation|verification|reset).*?code.*?(\d{6})/i,
+                /(\d{6}).*?(?:confirmation|verification|reset).*?code/i
+            ],
+            relaxed: [/\b(\d{6})\b/g]
+        },
+        instagram: {
+            strict: [
+                /(?:instagram|ig).*?(\d{6})/i,
+                /(\d{6}).*?(?:instagram|ig)/i,
+                /(?:confirmation|verification).*?code.*?(\d{6})/i
+            ],
+            relaxed: [/\b(\d{6})\b/g]
+        }
+    };
+
+    const platformPatterns = patterns[platform]?.[mode] || patterns.facebook.strict;
+    
+    for (let pattern of platformPatterns) {
+        const match = clean.match(pattern);
+        if (match && match[1]) return match[1];
+    }
+    return null;
+}
+
+app.post('/api/get-otp', async (req, res) => {
+    const { token, platform = 'facebook', mode = 'strict' } = req.body;
+
+    if (!token) {
+        return res.status(400).json({ error: 'Access token required' });
+    }
+
+    try {
+        const response = await axios.get(`${GRAPH_API_BASE}/me/messages`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            params: {
+                '$top': 20,
+                '$orderby': 'receivedDateTime DESC',
+                '$select': 'subject,body,receivedDateTime,from',
+                '$filter': "contains(subject, 'verification') or contains(subject, 'code') or contains(subject, 'confirmation') or contains(subject, 'reset')"
+            }
+        });
+
+        const emails = response.data.value;
+
+        if (!emails || emails.length === 0) {
+            return res.status(404).json({ error: 'No verification emails found' });
+        }
+
+        for (let email of emails) {
+            const emailBody = email.body?.content || '';
+            const subject = email.subject || '';
+            const fromAddress = email.from?.emailAddress?.address?.toLowerCase() || '';
+            
+            const isFBEmail = fromAddress.includes('facebook') || fromAddress.includes('facebookmail');
+            const isIGEmail = fromAddress.includes('instagram');
+
+            if (platform === 'facebook' && !isFBEmail && mode === 'strict') continue;
+            if (platform === 'instagram' && !isIGEmail && mode === 'strict') continue;
+
+            const code = extractOTP(emailBody + ' ' + subject, platform, mode);
+            
+            if (code) {
+                return res.json({
+                    success: true,
+                    code: code,
+                    email: fromAddress,
+                    subject: subject,
+                    receivedAt: email.receivedDateTime
+                });
+            }
+        }
+
+        return res.status(404).json({ error: 'No verification code found' });
+
+    } catch (error) {
+        console.error('Error:', error.response?.data || error.message);
+        return res.status(500).json({ 
+            error: 'Failed to fetch emails',
+            details: error.response?.data?.error?.message || error.message
+        });
+    }
+});
+
+app.get('/health', (req, res) => {
+    res.json({ status: 'OK' });
+});
+
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log(`🚀 Server: http://localhost:${PORT}`);
+});
+
+Run:
+
+npm install express axios cors
+node server.js
+
+Step 2: Single HTML File (Complete Tool)
+File: outlook-otp-extractor.html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Outlook OTP Extractor</title>
+    <title>🔐 Outlook OTP Extractor</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, 
@@ -25,49 +142,59 @@
 
         .container {
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 800px;
+            border-radius: 20px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.35);
+            max-width: 850px;
             width: 100%;
-            padding: 40px;
+            padding: 45px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
         }
 
         h1 {
-            text-align: center;
             color: #333;
-            margin-bottom: 10px;
-            font-size: 28px;
+            font-size: 32px;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, 
+ 0%, 
+ 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .subtitle {
-            text-align: center;
             color: #666;
-            margin-bottom: 30px;
             font-size: 14px;
         }
 
         .tabs {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 25px;
         }
 
         .tab {
             flex: 1;
-            padding: 12px;
+            padding: 14px;
             border: 2px solid 
 ;
-            border-radius: 8px;
+            border-radius: 10px;
             background: white;
             cursor: pointer;
             text-align: center;
             font-weight: 600;
-            transition: all 0.3s;
+            font-size: 15px;
+            transition: all 0.3s ease;
         }
 
         .tab:hover {
             border-color: 
 ;
+            transform: translateY(-2px);
         }
 
         .tab.active {
@@ -75,7 +202,28 @@
  0%, 
  100%);
             color: white;
-            border-color: 
+            border-color: transparent;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, 
+ 0%, 
+ 100%);
+            border: 2px solid 
+;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 13px;
+            color: 
+;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 6px;
+            color: 
 ;
         }
 
@@ -85,7 +233,7 @@
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             color: #333;
             font-weight: 600;
             font-size: 14px;
@@ -93,40 +241,46 @@
 
         textarea {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border: 2px solid 
 ;
-            border-radius: 8px;
+            border-radius: 10px;
             font-family: 'Courier New', monospace;
             font-size: 13px;
             resize: vertical;
-            min-height: 100px;
-            transition: border-color 0.3s;
+            min-height: 110px;
+            transition: all 0.3s ease;
         }
 
         textarea:focus {
             outline: none;
             border-color: 
 ;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .mode-toggle {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 25px;
         }
 
         .mode-btn {
             flex: 1;
-            padding: 10px;
+            padding: 12px;
             border: 2px solid 
 ;
-            border-radius: 8px;
+            border-radius: 10px;
             background: white;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+        }
+
+        .mode-btn:hover {
+            border-color: 
+;
         }
 
         .mode-btn.active {
@@ -139,39 +293,73 @@
 
         .btn {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             background: linear-gradient(135deg, 
  0%, 
  100%);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 700;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
         }
 
         .btn:active {
-            transform: translateY(0);
+            transform: translateY(-1px);
         }
 
         .btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            text-align: center;
+            color: 
+;
+            font-weight: 600;
+            margin-top: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, 
+ 0%, 
+ 100%);
+            border-radius: 10px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .error {
+            background: linear-gradient(135deg, #fee 0%, 
+ 100%);
+            border: 2px solid #fcc;
+            color: #c33;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 14px;
+            font-weight: 600;
         }
 
         .result-box {
-            margin-top: 20px;
-            padding: 20px;
-            background: 
-;
-            border-radius: 8px;
+            margin-top: 25px;
+            padding: 25px;
+            background: linear-gradient(135deg, 
+ 0%, 
+ 100%);
+            border-radius: 12px;
             border: 2px solid 
 ;
             display: none;
@@ -179,36 +367,51 @@
 
         .result-box.show {
             display: block;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .result-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
         }
 
         .result-title {
-            font-weight: 600;
-            color: #333;
+            font-weight: 700;
+            color: 
+;
+            font-size: 16px;
         }
 
         .copy-btn {
-            padding: 8px 16px;
+            padding: 10px 20px;
             background: 
 ;
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.2s;
+            font-size: 14px;
+            font-weight: 700;
+            transition: all 0.3s ease;
         }
 
         .copy-btn:hover {
             background: 
 ;
+            transform: scale(1.05);
         }
 
         .copy-btn.copied {
@@ -218,88 +421,84 @@
 
         .code-display {
             background: white;
-            padding: 15px;
-            border-radius: 6px;
+            padding: 25px;
+            border-radius: 10px;
             font-family: 'Courier New', monospace;
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 38px;
+            font-weight: 900;
             text-align: center;
             color: 
 ;
-            letter-spacing: 2px;
+            letter-spacing: 6px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .email-info {
+            margin-top: 15px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .email-info strong {
+            color: #333;
         }
 
         .history {
-            margin-top: 30px;
+            margin-top: 35px;
         }
 
         .history-title {
-            font-weight: 600;
+            font-weight: 700;
             color: #333;
-            margin-bottom: 15px;
-            font-size: 16px;
+            margin-bottom: 18px;
+            font-size: 18px;
         }
 
         .history-item {
-            background: 
-;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 10px;
+            background: linear-gradient(135deg, 
+ 0%, 
+ 100%);
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
         }
 
         .history-email {
             color: #666;
             font-family: 'Courier New', monospace;
+            flex: 1;
         }
 
         .history-code {
-            font-weight: 700;
+            font-weight: 900;
             color: 
 ;
             font-family: 'Courier New', monospace;
-        }
-
-        .error {
-            background: #fee;
-            border: 2px solid #fcc;
-            color: #c33;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-
-        .loading {
-            text-align: center;
-            color: 
-;
-            font-weight: 600;
-            margin-top: 15px;
-        }
-
-        .info-box {
-            background: 
-;
-            border: 2px solid 
-;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 13px;
-            color: 
-;
+            font-size: 16px;
+            margin-left: 15px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🔐 Outlook OTP Extractor</h1>
-        <p class="subtitle">Extract verification codes from Outlook/Hotmail</p>
+        <div class="header">
+            <h1>🔐 Outlook OTP Extractor</h1>
+            <p class="subtitle">Extract verification codes from Outlook/Hotmail instantly</p>
+        </div>
 
         <div class="tabs">
             <div class="tab active" data-platform="facebook">📘 Facebook</div>
@@ -307,13 +506,14 @@
         </div>
 
         <div class="info-box">
-            📋 <strong>Format:</strong> email|password|token|uuid<br>
-            💡 Paste your credentials and click "Get OTP"
+            <strong>📋 Input Format:</strong>
+            email|password|token|uuid<br>
+            <strong>💡 Pro Tip:</strong> Paste your credentials and the code will be extracted automatically!
         </div>
 
         <div class="input-group">
-            <label>Account Details</label>
-            <textarea id="accountInput" placeholder="example@outlook.com|password123|token_here|uuid_here"></textarea>
+            <label>🔑 Account Details</label>
+            <textarea id="accountInput" placeholder="example@outlook.com|password123|M.C532_BAY.token_here|uuid-here"></textarea>
         </div>
 
         <div class="mode-toggle">
@@ -321,26 +521,30 @@
             <button class="mode-btn" data-mode="relaxed">🔄 Relaxed Mode</button>
         </div>
 
-        <button class="btn" id="extractBtn">Get Verification Code</button>
+        <button class="btn" id="extractBtn">🚀 Get Verification Code</button>
+
+        <div id="loadingBox"></div>
+        <div id="errorBox"></div>
 
         <div class="result-box" id="resultBox">
             <div class="result-header">
-                <span class="result-title">✅ Code Extracted</span>
-                <button class="copy-btn" id="copyBtn">Copy Code</button>
+                <span class="result-title">✅ Code Extracted Successfully</span>
+                <button class="copy-btn" id="copyBtn">📋 Copy Code</button>
             </div>
             <div class="code-display" id="codeDisplay">------</div>
+            <div class="email-info" id="emailInfo"></div>
         </div>
 
-        <div id="errorBox"></div>
-        <div id="loadingBox"></div>
-
         <div class="history" id="historySection" style="display: none;">
-            <div class="history-title">History</div>
+            <div class="history-title">📜 History</div>
             <div id="historyList"></div>
         </div>
     </div>
 
     <script>
+        // ⚙️ Configuration
+        const API_URL = 'http://localhost:3000/api/get-otp';
+
         let currentPlatform = 'facebook';
         let currentMode = 'strict';
         let history = [];
@@ -367,7 +571,7 @@
         function parseInput(input) {
             const parts = input.trim().split('|');
             if (parts.length !== 4) {
-                throw new Error('Invalid format. Expected: email|password|token|uuid');
+                throw new Error('❌ Invalid format. Expected: email|password|token|uuid');
             }
             return {
                 email: parts[0].trim(),
@@ -377,58 +581,12 @@
             };
         }
 
-        // Extract OTP from email content
-        function extractOTP(emailBody, platform, mode) {
-            const patterns = {
-                facebook: {
-                    strict: [/\b(\d{6})\b.*Facebook/i, /Facebook.*\b(\d{6})\b/i],
-                    relaxed: [/\b(\d{6})\b/g]
-                },
-                instagram: {
-                    strict: [/\b(\d{6})\b.*Instagram/i, /Instagram.*\b(\d{6})\b/i],
-                    relaxed: [/\b(\d{6})\b/g]
-                }
-            };
-
-            const platformPatterns = patterns[platform][mode];
-            
-            for (let pattern of platformPatterns) {
-                const match = emailBody.match(pattern);
-                if (match) {
-                    return match[1] || match[0];
-                }
-            }
-            
-            return null;
-        }
-
-        // Simulate Microsoft Graph API call (replace with actual backend endpoint)
-        async function fetchOutlookEmails(credentials) {
-            // THIS IS A MOCK FUNCTION
-            // In production, you need to:
-            // 1. Set up a Node.js/Express backend
-            // 2. Use Microsoft Graph API with proper authentication
-            // 3. Fetch emails from the inbox
-            // 4. Return email content
-            
-            // Mock response for demonstration
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    // Simulate API response
-                    const mockEmail = {
-                        subject: 'Facebook verification code',
-                        body: 'Your Facebook verification code is 123456. Do not share this code.'
-                    };
-                    resolve([mockEmail]);
-                }, 1500);
-            });
-        }
-
         // Main extraction function
         async function extractCode() {
             const input = document.getElementById('accountInput').value;
             const resultBox = document.getElementById('resultBox');
             const codeDisplay = document.getElementById('codeDisplay');
+            const emailInfo = document.getElementById('emailInfo');
             const errorBox = document.getElementById('errorBox');
             const loadingBox = document.getElementById('loadingBox');
             const extractBtn = document.getElementById('extractBtn');
@@ -443,34 +601,43 @@
                 const credentials = parseInput(input);
 
                 // Show loading
-                loadingBox.innerHTML = '<div class="loading">⏳ Fetching emails...</div>';
+                loadingBox.innerHTML = '<div class="loading">⏳ Fetching emails from Outlook/Hotmail...</div>';
                 extractBtn.disabled = true;
 
-                // Fetch emails (replace with actual API call)
-                const emails = await fetchOutlookEmails(credentials);
+                // Call backend API
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: credentials.email,
+                        token: credentials.token,
+                        platform: currentPlatform,
+                        mode: currentMode
+                    })
+                });
 
-                // Extract OTP
-                let code = null;
-                for (let email of emails) {
-                    code = extractOTP(email.body, currentPlatform, currentMode);
-                    if (code) break;
-                }
+                const data = await response.json();
 
                 loadingBox.innerHTML = '';
                 extractBtn.disabled = false;
 
-                if (code) {
+                if (response.ok && data.success) {
                     // Display result
-                    codeDisplay.textContent = code;
+                    codeDisplay.textContent = data.code;
+                    emailInfo.innerHTML = `
+                        <strong>📧 From:</strong> ${data.email}<br>
+                        <strong>📝 Subject:</strong> ${data.subject}<br>
+                        <strong>🕒 Received:</strong> ${new Date(data.receivedAt).toLocaleString()}
+                    `;
                     resultBox.classList.add('show');
 
                     // Auto-copy
-                    await navigator.clipboard.writeText(code);
+                    await navigator.clipboard.writeText(data.code);
 
                     // Add to history
-                    addToHistory(credentials.email, code);
+                    addToHistory(credentials.email, data.code);
                 } else {
-                    throw new Error('No verification code found in recent emails');
+                    throw new Error(data.error || 'Failed to extract code');
                 }
 
             } catch (error) {
@@ -490,7 +657,7 @@
             btn.classList.add('copied');
             
             setTimeout(() => {
-                btn.textContent = 'Copy Code';
+                btn.textContent = '📋 Copy Code';
                 btn.classList.remove('copied');
             }, 2000);
         });
@@ -527,52 +694,15 @@
 </body>
 </html>
 
-🚀 Tool Features:
-✅ Pipe-separated input (email|password|token|uuid)
-✅ Platform tabs (Facebook/Instagram)
-✅ Strict/Relaxed mode toggle
-✅ Auto-copy to clipboard
-✅ Paste-to-extract (automatic extraction on paste)
-✅ History panel (last 5 codes)
-✅ Premium UI (gradient, smooth animations)
-✅ Clean code display with large font
+🚀 How to Use:
+1. Setup (One-time):
+# Create folder
+mkdir outlook-otp-tool
+cd outlook-otp-tool
 
-⚠️ Important Notes:
-Backend Setup Required:
-Ei tool ta frontend-only mock diye banano. Production-e use korar jonno tumake:
+# Install dependencies
+npm init -y
+npm install express axios cors
 
-Node.js/Express backend setup korte hobe
-Microsoft Graph API integration korte hobe
-Proper OAuth authentication implement korte hobe
-Backend Code (Node.js/Express):
-const express = require('express');
-const axios = require('axios');
-const app = express();
-
-app.use(express.json());
-
-app.post('/api/get-otp', async (req, res) => {
-    const { email, token } = req.body;
-    
-    try {
-        // Microsoft Graph API call
-        const response = await axios.get(
-            'https://graph.microsoft.com/v1.0/me/messages',
-            {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                },
-                params: {
-                    '$top': 10,
-                    '$filter': "contains(subject, 'verification') or contains(subject, 'code')"
-                }
-            }
-        );
-        
-        res.json(response.data);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-app.listen(3000, () => console.log('Server running on port 3000'));
+# Save server.js (backend code)
+# Save outlook-otp-extractor.html (frontend)
