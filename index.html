@@ -136,8 +136,12 @@
     <script>
         let currentPlatform = 'fb';
 
+        // 🔐 আপনার কুইক অ্যাকাউন্ট ডাটা লাইন (প্রয়োজন মতো পরিবর্তন করে নিতে পারেন)
         const account1_data = "email1@outlook.com|pass1|refresh_token_1|client_id_1";
         const account2_data = "email2@outlook.com|pass2|refresh_token_2|client_id_2";
+
+        // 🎯 Render থেকে পাওয়া আপনার আসল লাইভ API URL
+        const API_URL = "https://toll-376d.onrender.com/get-code"; 
 
         document.getElementById('rawData').addEventListener('input', function(e) {
             const val = e.target.value.trim();
@@ -208,8 +212,6 @@
             otpOutput.className = "text-4xl sm:text-5xl font-black tracking-widest text-slate-800 font-mono";
 
             try {
-                const API_URL = "https://fb-code-api.onrender.com/get-code"; 
-
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
