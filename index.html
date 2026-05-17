@@ -3,78 +3,395 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Bulk UID Checker Panel</title>
+    <title>Longisir VIP Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* প্রফেশনাল ডার্ক থিম গ্লোবাল স্টাইল */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        
+        :root { 
+            --primary: #a855f7; 
+            --primary-glow: rgba(168, 85, 247, 0.3);
+            --bg: #05060b; 
+            --card-bg: #0f111a; 
+            --input-bg: #111726;
+            --text-gray: #94a3b8;
+            --btn-grad: linear-gradient(135deg, #a855f7, #3b82f6);
+            --border: rgba(255, 255, 255, 0.05);
         }
 
-        body {
-            background-color: #0b0f19; /* রিচ ডার্ক ব্যাকগ্রাউন্ড */
-            color: #f1f5f9;
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+        }
+        
+        body { 
+            background: var(--bg); 
+            color: #fff; 
+            padding: 20px 15px;
             min-height: 100vh;
-            padding: 30px 15px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
         }
 
-        /* মূল প্যানেল কন্টেইনার (গ্লসি ডার্ক কার্ড) */
-        .main-panel {
+        .container { 
+            max-width: 1100px; 
             width: 100%;
-            max-width: 800px;
-            background: #111827; /* সাইবার ডার্ক প্যানেল */
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            margin-bottom: 30px;
+            margin-top: 10px;
         }
 
-        .panel-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #818cf8; /* নিয়ন পার্পল টাইটেল */
-            margin-bottom: 20px;
+        /* --- GLOBAL NAVIGATION BAR --- */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            background: var(--card-bg);
+            padding: 12px 24px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .nav-left .home-btn {
+            background: var(--btn-grad);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .nav-left .home-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.95;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .nav-link-btn {
+            background: #111726;
+            color: #f1f5f9;
+            border: 1px solid var(--border);
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s ease;
+        }
+
+        .nav-link-btn:hover {
+            border-color: var(--primary);
+            background: #161f33;
+            transform: translateY(-2px);
+        }
+
+        .nav-link-btn.active {
+            background: var(--btn-grad);
+            border: none;
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2);
+        }
+
+        /* --- APP PAGES ROUTING --- */
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out forwards;
+        }
+
+        .page.active-page {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- HOME PAGE STYLES --- */
+        .hero {
             text-align: center;
+            margin-bottom: 60px; 
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 7vw, 54px);
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            color: var(--text-gray);
+            letter-spacing: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .home-grid { 
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 25px; 
+            margin-bottom: 40px; 
+        }
+        
+        .h-card { 
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.05); 
+            padding: 50px 20px; 
+            border-radius: 20px;
+            text-align: center; 
+            transition: 0.3s ease;
+            cursor: pointer;
+        }
+
+        .h-card i { 
+            font-size: 48px;
+            color: var(--primary); 
+            margin-bottom: 20px; 
+            display: block;
+            filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.5));
+        }
+
+        .h-card h3 { 
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 10px; 
             letter-spacing: 0.5px;
         }
 
-        /* ইনপুট বক্স - স্ক্রল ফ্রেন্ডলি */
-        .input-area-wrapper {
+        .h-card p { 
+            font-size: 13px;
+            color: var(--text-gray); 
+        }
+
+        .h-card:hover { 
+            transform: translateY(-6px);
+            border-color: rgba(168, 85, 247, 0.3);
+            background: #12141f;
+        }
+
+        .about-box {
+            background: var(--card-bg);
+            padding: 35px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .about-box h2 {
+            color: var(--primary);
             margin-bottom: 15px;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .about-box p {
+            color: var(--text-gray);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* --- 2FA TOOL STYLES --- */
+        .twofa-layout {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .main-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .tool-header h2 {
+            font-size: 1.85rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #fff 40%, var(--text-gray));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #e2e8f0;
+            font-size: 0.875rem;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #1e293b;
+            border-radius: 14px;
+            font-size: 1rem;
+            color: #fff;
+            transition: all 0.25s ease;
+            background: var(--input-bg);
+        }
+
+        input[type="text"]:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #151c2e;
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .btn-prime {
+            width: 100%;
+            padding: 16px;
+            background: var(--btn-grad);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3);
+        }
+
+        .btn-prime:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(168, 85, 247, 0.4);
+        }
+
+        .code-display {
+            background: linear-gradient(135deg, #111827 0%, #030712 100%);
+            border: 2px solid #1e293b;
+            border-radius: 14px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .code-label {
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+
+        .totp-code {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #34d399;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 6px;
+            text-shadow: 0 0 12px rgba(52, 211, 153, 0.3);
+        }
+
+        .copy-hint {
+            text-align: center;
+            color: #34d399;
+            font-weight: 700;
+            font-size: 0.875rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .copy-hint.show { opacity: 1; }
+
+        .history-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 32px;
+            border: 1px solid var(--border);
+            max-height: 400px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        #historyCount {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #c084fc;
+            background: rgba(168, 85, 247, 0.15);
+            padding: 6px 14px;
+            border-radius: 20px;
+        }
+
+        .history-list { overflow-y: auto; }
+        .empty-state { text-align: center; color: var(--text-gray); padding: 20px; font-style: italic; }
+
+        .history-item {
+            padding: 14px;
+            background: #111726;
+            border-radius: 14px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-code { font-size: 1.25rem; font-weight: 700; color: #38bdf8; font-family: 'Courier New', monospace; }
+        .history-key { font-size: 0.75rem; color: var(--text-gray); max-width: 180px; overflow: hidden; text-overflow: ellipsis; }
+
+        /* --- UID CHECKER STYLES --- */
+        .checker-panel {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
 
         textarea {
-            width: 100%;
             height: 160px;
-            background: #1f2937;
-            border: 1px solid #374151;
-            border-radius: 12px;
-            padding: 15px;
-            font-size: 14px;
-            color: #f3f4f6;
-            outline: none;
             resize: vertical;
-            font-weight: 500;
-            line-height: 1.5;
-            overflow-y: auto;
+            font-family: 'Courier New', monospace;
         }
 
-        textarea:focus {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
-        }
-
-        /* অ্যাকশন বাটন গ্রুপ */
         .action-row {
             display: flex;
             gap: 12px;
-            margin-bottom: 18px;
+            margin: 18px 0;
         }
 
         .btn-start {
@@ -86,14 +403,10 @@
             border-radius: 12px;
             font-size: 15px;
             font-weight: 700;
-            letter-spacing: 0.5px;
             cursor: pointer;
             text-transform: uppercase;
             box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
-            transition: opacity 0.2s;
         }
-
-        .btn-start:active { opacity: 0.9; }
 
         .btn-clear {
             background: #dc2626;
@@ -108,10 +421,9 @@
             box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
         }
 
-        /* ব্ল্যাক কনসোল বক্স - স্ক্রল ফ্রেন্ডলি */
         .console-box {
             width: 100%;
-            height: 260px;
+            height: 240px;
             background: #030712;
             border-radius: 12px;
             padding: 15px;
@@ -121,15 +433,9 @@
             overflow-y: auto;
             margin-bottom: 20px;
             border: 1px solid #1f2937;
-            box-shadow: inset 0 4px 12px rgba(0,0,0,0.6);
             line-height: 1.6;
         }
 
-        .console-log { margin-bottom: 4px; word-break: break-all; }
-        .log-live { color: #34d399; font-weight: 600; }
-        .log-die { color: #f87171; }
-
-        /* ফুটারে থাকা কাউন্টার এবং ডাউনলোড বাটন */
         .footer-row {
             display: flex;
             flex-direction: column;
@@ -138,46 +444,23 @@
         }
 
         @media (min-width: 600px) {
-            .footer-row {
-                flex-direction: row;
-                justify-content: space-between;
-            }
+            .footer-row { flex-direction: row; justify-content: space-between; }
         }
 
-        .stats-group {
-            display: flex;
-            gap: 10px;
-            width: 100%;
-        }
-
-        @media (min-width: 600px) {
-            .stats-group { width: auto; }
-        }
+        .stats-group { display: flex; gap: 10px; width: 100%; }
+        @media (min-width: 600px) { .stats-group { width: auto; } }
 
         .stat-card {
-            background: #1f2937;
-            border: 1px solid #374151;
+            background: #111726;
+            border: 1px solid #1e293b;
             border-radius: 10px;
             padding: 10px 15px;
             text-align: center;
             flex: 1;
-            min-width: 85px;
         }
 
-        .stat-num {
-            font-size: 15px;
-            font-weight: 700;
-            display: block;
-            margin-bottom: 2px;
-        }
-
-        .stat-label {
-            font-size: 10px;
-            color: #9ca3af;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+        .stat-num { font-size: 15px; font-weight: 700; display: block; }
+        .stat-label { font-size: 10px; color: #9ca3af; font-weight: 700; text-transform: uppercase; }
 
         .total-color { color: #e5e7eb; }
         .live-color { color: #34d399; }
@@ -193,205 +476,372 @@
             font-size: 14px;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.4);
-            transition: background 0.2s;
-            text-align: center;
             text-transform: uppercase;
         }
+        @media (min-width: 600px) { .btn-download { width: auto; } }
 
-        @media (min-width: 600px) {
-            .btn-download { width: auto; }
+        /* --- RESPONSIVE FIXES --- */
+        @media (max-width: 850px) {
+            .home-grid { grid-template-columns: 1fr; gap: 15px; }
+            .nav-bar { flex-direction: column; gap: 15px; }
         }
-
-        .btn-download:hover { background: #047857; }
     </style>
 </head>
 <body>
 
-    <div class="main-panel">
-        <div class="panel-title">Bulk UID Checker Pro</div>
+<div class="container">
+    <nav class="nav-bar">
+        <div class="nav-left">
+            <button class="home-btn" onclick="switchPage('home')"><i class="fa-solid fa-house"></i> HOME</button>
+        </div>
+        <div class="nav-right">
+            <button class="nav-link-btn" id="nav-2fa" onclick="switchPage('2fa')"><i class="fa-solid fa-shield-halved"></i> 2FA AUTH</button>
+            <button class="nav-link-btn" id="nav-uid" onclick="switchPage('uid')"><i class="fa-solid fa-bolt"></i> UID CHECKER</button>
+            <button class="nav-link-btn" id="nav-mail" onclick="switchPage('mail')"><i class="fa-solid fa-envelope"></i> API MAIL</button>
+        </div>
+    </nav>
+
+    <div id="page-home" class="page active-page">
+        <header class="hero">
+            <h1>Longisir VIP Portal</h1>
+            <p>THE NEXT GEN AUTOMATION HUB</p>
+        </header>
         
-        <div class="input-area-wrapper">
-            <textarea id="inputData" placeholder="Paste data here... (Supports UID|PASS|2FA or Space/Tab separated formats)"></textarea>
-        </div>
+        <main class="home-grid">
+            <div class="h-card" onclick="switchPage('2fa')">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3>2FA AUTH</h3>
+                <p>Fast Code Gen</p>
+            </div>
 
-        <div class="action-row">
-            <button class="btn-start" id="startBtn" onclick="startScanner()">Start Scanner</button>
-            <button class="btn-clear" onclick="clearTool()">Clear</button>
-        </div>
+            <div class="h-card" onclick="switchPage('uid')">
+                <i class="fa-solid fa-bolt"></i>
+                <h3>UID CHECKER</h3>
+                <p>Bulk Validator</p>
+            </div>
 
-        <div class="console-box" id="consoleScreen">Console ready...</div>
+            <div class="h-card" onclick="switchPage('mail')">
+                <i class="fa-solid fa-envelope"></i>
+                <h3>API MAIL</h3>
+                <p>Email Scraper</p>
+            </div>
+        </main>
 
-        <div class="footer-row">
-            <div class="stats-group">
-                <div class="stat-card">
-                    <span class="stat-num total-color" id="totalCount">0</span>
-                    <span class="stat-label">Total</span>
+        <footer class="about-box">
+            <h2>About Portal</h2>
+            <p>Welcome to Longisir VIP Portal. This premium ecosystem unifies elite automation routines into a seamless UI. Engine initialized and active.</p>
+        </footer>
+    </div>
+
+    <div id="page-2fa" class="page">
+        <div class="twofa-layout">
+            <div class="main-card">
+                <div class="tool-header">
+                    <h2>🔐 2FA Authenticator Pro</h2>
+                    <p style="color: var(--text-gray); font-size: 0.85rem;">Secure Time-based OTP Generator</p>
                 </div>
-                <div class="stat-card">
-                    <span class="stat-num live-color" id="livePercent">0% LIVE</span>
-                    <span class="stat-label">Live</span>
+                <div class="input-group">
+                    <label>Enter your 2FA Secret Key:</label>
+                    <input type="text" id="secretKey" placeholder="JBSWY3DPEHPK3PXP" autocomplete="off">
                 </div>
-                <div class="stat-card">
-                    <span class="stat-num die-color" id="diePercent">0% DIE</span>
-                    <span class="stat-label">Die</span>
+                <button class="btn-prime" onclick="generateCode()">
+                    <span>🔑</span> <span>Generate Code</span>
+                </button>
+                <div id="codeDisplay" class="code-display" style="display: none;">
+                    <div class="code-label">Your Code:</div>
+                    <div id="totpCode" class="totp-code">------</div>
+                </div>
+                <p class="copy-hint" id="copyHint">✓ Code copied to clipboard!</p>
+            </div>
+            <div class="history-card">
+                <div class="history-header">
+                    <h3>📋 Recent Codes</h3>
+                    <span id="historyCount">0 saved</span>
+                </div>
+                <div id="historyList" class="history-list">
+                    <p class="empty-state">No codes generated yet</p>
                 </div>
             </div>
-            
-            <button class="btn-download" onclick="downloadLiveCSV()">Download Live Accounts</button>
         </div>
     </div>
 
-<script>
-    let liveAccounts = []; 
-    const CONCURRENCY_LIMIT = 5; 
+    <div id="page-uid" class="page">
+        <div class="checker-panel">
+            <div class="tool-header">
+                <h2 style="background: none; color: #818cf8;">Premium Bulk UID Checker Panel</h2>
+            </div>
+            <div class="input-group">
+                <textarea id="inputData" placeholder="Paste data here... (Supports UID|PASS|2FA or Space/Tab separated formats)"></textarea>
+            </div>
+            <div class="action-row">
+                <button class="btn-start" id="startBtn" onclick="startScanner()">Start Scanner</button>
+                <button class="btn-clear" onclick="clearTool()">Clear</button>
+            </div>
+            <div class="console-box" id="consoleScreen">Console ready...</div>
+            <div class="footer-row">
+                <div class="stats-group">
+                    <div class="stat-card">
+                        <span class="stat-num total-color" id="totalCount">0</span>
+                        <span class="stat-label">Total</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num live-color" id="livePercent">0% LIVE</span>
+                        <span class="stat-label">Live</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num die-color" id="diePercent">0% DIE</span>
+                        <span class="stat-label">Die</span>
+                    </div>
+                </div>
+                <button class="btn-download" onclick="downloadLiveCSV()">Download Live Accounts</button>
+            </div>
+        </div>
+    </div>
 
-    // ফেসবুক আইডি মেথড দিয়ে চেক করার ফাংশন
+    <div id="page-mail" class="page">
+        <div class="about-box" style="text-align: center; padding: 60px 20px;">
+            <i class="fa-solid fa-envelope" style="font-size: 50px; color: var(--primary); margin-bottom: 20px;"></i>
+            <h2>API MAIL Tool</h2>
+            <p style="margin-top: 10px;">This feature is currently under development. Stay tuned!</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- PAGE NAVIGATION ROUTER ---
+    function switchPage(pageId) {
+        // Hide all pages
+        document.querySelectorAll('.page').forEach(page => {
+            page.classList.remove('active-page');
+        });
+        // Deactivate all buttons
+        document.querySelectorAll('.nav-link-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Show targets
+        document.getElementById('page-' + pageId).classList.add('active-page');
+        const activeNavBtn = document.getElementById('nav-' + pageId);
+        if(activeNavBtn) activeNavBtn.classList.add('active');
+    }
+
+    // --- 2FA ENGINE ENGINE LOGIC ---
+    const BASE32_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+    function base32Decode(base32) {
+        base32 = base32.toUpperCase().replace(/=+$/, '');
+        let bits = '';
+        for (let i = 0; i < base32.length; i++) {
+            const val = BASE32_CHARS.indexOf(base32[i]);
+            if (val === -1) throw new Error('Invalid base32 character');
+            bits += val.toString(2).padStart(5, '0');
+        }
+        const bytes = [];
+        for (let i = 0; i + 8 <= bits.length; i += 8) {
+            bytes.push(parseInt(bits.substr(i, 8), 2));
+        }
+        return new Uint8Array(bytes);
+    }
+
+    function hmacSha1Sync(key, message) {
+        const blockSize = 64;
+        if (key.length > blockSize) key = sha1(key);
+        if (key.length < blockSize) {
+            const padded = new Uint8Array(blockSize);
+            padded.set(key);
+            key = padded;
+        }
+        const innerKey = new Uint8Array(blockSize);
+        const outerKey = new Uint8Array(blockSize);
+        for (let i = 0; i < blockSize; i++) {
+            innerKey[i] = key[i] ^ 0x36;
+            outerKey[i] = key[i] ^ 0x5c;
+        }
+        const innerHash = sha1(concat(innerKey, message));
+        return sha1(concat(outerKey, innerHash));
+    }
+
+    function sha1(data) {
+        if (!(data instanceof Uint8Array)) data = new Uint8Array(data);
+        let h0 = 0x67452301, h1 = 0xEFCDAB89, h2 = 0x98BADCFE, h3 = 0x10325476, h4 = 0xC3D2E1F0;
+        const ml = data.length * 8;
+        const paddedLength = Math.ceil((ml + 65) / 512) * 512 / 8;
+        const padded = new Uint8Array(paddedLength);
+        padded.set(data);
+        padded[data.length] = 0x80;
+        const view = new DataView(padded.buffer);
+        view.setUint32(paddedLength - 4, ml & 0xffffffff, false);
+        for (let i = 0; i < paddedLength; i += 64) {
+            const w = new Uint32Array(80);
+            for (let j = 0; j < 16; j++) w[j] = view.getUint32(i + j * 4, false);
+            for (let j = 16; j < 80; j++) w[j] = leftRotate(w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16], 1);
+            let a = h0, b = h1, c = h2, d = h3, e = h4;
+            for (let j = 0; j < 80; j++) {
+                let f, k;
+                if (j < 20) { f = (b & c) | ((~b) & d); k = 0x5A827999; }
+                else if (j < 40) { f = b ^ c ^ d; k = 0x6ED9EBA1; }
+                else if (j < 60) { f = (b & c) | (b & d) | (c & d); k = 0x8F1BBCDC; }
+                else { f = b ^ c ^ d; k = 0xCA62C1D6; }
+                const temp = (leftRotate(a, 5) + f + e + k + w[j]) & 0xffffffff;
+                e = d; d = c; c = leftRotate(b, 30); b = a; a = temp;
+            }
+            h0 = (h0 + a) & 0xffffffff; h1 = (h1 + b) & 0xffffffff;
+            h2 = (h2 + c) & 0xffffffff; h3 = (h3 + d) & 0xffffffff;
+            h4 = (h4 + e) & 0xffffffff;
+        }
+        const result = new Uint8Array(20);
+        const resultView = new DataView(result.buffer);
+        resultView.setUint32(0, h0, false); resultView.setUint32(4, h1, false);
+        resultView.setUint32(8, h2, false); resultView.setUint32(12, h3, false);
+        resultView.setUint32(16, h4, false);
+        return result;
+    }
+
+    function leftRotate(n, s) { return ((n << s) | (n >>> (32 - s))) & 0xffffffff; }
+    function concat(a, b) { const result = new Uint8Array(a.length + b.length); result.set(a); result.set(b, a.length); return result; }
+
+    function generateTOTP(secret) {
+        secret = secret.replace(/\s/g, '').toUpperCase();
+        const key = base32Decode(secret);
+        const epoch = Math.floor(Date.now() / 1000);
+        const timeStep = Math.floor(epoch / 30);
+        const timeBytes = new Uint8Array(8);
+        const timeView = new DataView(timeBytes.buffer);
+        timeView.setUint32(4, timeStep, false);
+        const hmac = hmacSha1Sync(key, timeBytes);
+        const offset = hmac[19] & 0x0f;
+        const truncated = (((hmac[offset] & 0x7f) << 24) | ((hmac[offset + 1] & 0xff) << 16) | ((hmac[offset + 2] & 0xff) << 8) | (hmac[offset + 3] & 0xff));
+        return (truncated % 1000000).toString().padStart(6, '0');
+    }
+
+    let historyData = [];
+    let autoHideTimeout = null;
+
+    function generateCode() {
+        const secretInput = document.getElementById('secretKey');
+        const secret = secretInput.value.trim().toUpperCase().replace(/\s/g, '');
+        if (!secret) { alert('⚠️ Please enter a secret key!'); return; }
+        try {
+            const code = generateTOTP(secret);
+            document.getElementById('totpCode').textContent = code;
+            document.getElementById('codeDisplay').style.display = 'block';
+            
+            navigator.clipboard.writeText(code);
+            const hint = document.getElementById('copyHint');
+            hint.classList.add('show');
+            setTimeout(() => hint.classList.remove('show'), 2000);
+
+            addToHistory(secret, code);
+            secretInput.value = '';
+
+            if (autoHideTimeout) clearTimeout(autoHideTimeout);
+            autoHideTimeout = setTimeout(() => {
+                document.getElementById('codeDisplay').style.display = 'none';
+                document.getElementById('totpCode').textContent = '------';
+            }, 30000);
+        } catch (error) {
+            alert('❌ Invalid secret key! Please check and try again.');
+        }
+    }
+
+    function addToHistory(key, code) {
+        historyData.unshift({ key, code });
+        if (historyData.length > 20) historyData.pop();
+        updateHistoryDisplay();
+    }
+
+    function updateHistoryDisplay() {
+        const list = document.getElementById('historyList');
+        document.getElementById('historyCount').textContent = `${historyData.length} saved`;
+        if (historyData.length === 0) {
+            list.innerHTML = '<p class="empty-state">No codes generated yet</p>';
+            return;
+        }
+        list.innerHTML = historyData.map(item => `
+            <div class="history-item">
+                <span class="history-code">${item.code}</span>
+                <span class="history-key">Key: ${item.key}</span>
+            </div>
+        `).join('');
+    }
+
+    // --- UID CHECKER ENGINE ENGINE LOGIC ---
+    let liveAccounts = [];
+    const CONCURRENCY_LIMIT = 5;
+
     async function checkFacebookUID(uid) {
         try {
             const cleanUID = uid.trim().replace(/[^a-zA-Z0-9.]/g, "");
             if(!cleanUID) return "DEAD ❌";
-            
-            // গ্রাফ পিকচার এন্ডপয়েন্ট ব্যবহার করে স্ট্যাটাস চেক
             const response = await fetch(`https://graph.facebook.com/${cleanUID}/picture?type=normal&_ts=${Date.now()}`);
-            if (response.ok && response.url.includes('100x100')) {
-                return "LIVE ✅";
-            } else {
-                return "DEAD ❌";
-            }
-        } catch (error) {
-            return "ERROR ⚠️";
-        }
+            if (response.ok && response.url.includes('100x100')) { return "LIVE ✅"; } else { return "DEAD ❌"; }
+        } catch (error) { return "ERROR ⚠️"; }
     }
 
     async function startScanner() {
         const inputStr = document.getElementById('inputData').value.trim();
         const consoleScreen = document.getElementById('consoleScreen');
         const startBtn = document.getElementById('startBtn');
+        if (!inputStr) { alert("Please paste your UID data first!"); return; }
         
-        if (!inputStr) {
-            alert("Please paste your UID data first!");
-            return;
-        }
-
         const lines = inputStr.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-        
-        consoleScreen.innerHTML = "Initializing fast engine...<br>";
+        consoleScreen.innerHTML = "Initializing fast multi-threaded engine...<br>";
         liveAccounts = [];
-        let total = lines.length;
-        let live = 0;
-        let die = 0;
-
-        document.getElementById('totalCount').innerText = total;
         startBtn.disabled = true;
-        startBtn.innerText = "Scanning Fast...";
+        startBtn.innerText = "Scanning...";
 
-        function updateStats() {
-            const livePct = total > 0 ? Math.round((live / total) * 100) : 0;
-            const diePct = total > 0 ? Math.round((die / total) * 100) : 0;
-            document.getElementById('livePercent').innerText = `${livePct}% LIVE`;
-            document.getElementById('diePercent').innerText = `${diePct}% DIE`;
-        }
+        let total = lines.length;
+        document.getElementById('totalCount').innerText = total;
 
-        const queue = [...lines];
-        
+        let liveCount = 0;
+        let dieCount = 0;
+        let index = 0;
+
         async function worker() {
-            while (queue.length > 0) {
-                const currentLine = queue.shift();
-                if (!currentLine) continue;
+            while (index < lines.length) {
+                let currentIdx = index++;
+                let line = lines[currentIdx];
+                let parts = line.split(/[| \t]+/);
+                let uid = parts[0];
+                let pass = parts[1] || "N/A";
+                let twoFA = parts[2] || "N/A";
 
-                let uid = '';
-                let pass = '';
-                let twoFA = '';
-
-                // এডভান্সড ডেটা পার্সিং লজিক
-                if (currentLine.includes('|')) {
-                    const parts = currentLine.split('|');
-                    uid = parts[0] ? parts[0].trim() : '';
-                    pass = parts[1] ? parts[1].trim() : '';
-                    twoFA = parts.slice(2).join('|').trim();
-                } else {
-                    const parts = currentLine.split(/\s+/);
-                    uid = parts[0] ? parts[0].trim() : '';
-                    pass = parts[1] ? parts[1].trim() : '';
-                    
-                    if (parts.length > 2) {
-                        const rawAfterPass = currentLine.substring(currentLine.indexOf(pass) + pass.length).trim();
-                        twoFA = rawAfterPass;
-                    }
-                }
-
-                if (!uid) continue;
-
-                const result = await checkFacebookUID(uid);
-                const logLine = document.createElement('div');
-                logLine.className = 'console-log';
+                let result = await checkFacebookUID(uid);
 
                 if (result === "LIVE ✅") {
-                    logLine.className += ' log-live';
-                    logLine.innerText = `[LIVE] ID: ${uid}`;
-                    live++;
+                    liveCount++;
                     liveAccounts.push({ uid, pass, twoFA });
+                    consoleScreen.innerHTML += `<span class="log-live">[LIVE] ${uid} | ${pass} | ${twoFA}</span><br>`;
                 } else {
-                    logLine.className += ' log-die';
-                    logLine.innerText = `[DIE] ID: ${uid}`;
-                    die++;
+                    dieCount++;
+                    consoleScreen.innerHTML += `<span class="log-die">[DEAD] ${uid}</span><br>`;
                 }
 
-                consoleScreen.appendChild(logLine);
-                consoleScreen.scrollTop = consoleScreen.scrollHeight; 
-                updateStats();
+                document.getElementById('livePercent').innerText = `${Math.round((liveCount/total)*100)}% LIVE (${liveCount})`;
+                document.getElementById('diePercent').innerText = `${Math.round((dieCount/total)*100)}% DIE (${dieCount})`;
+                consoleScreen.scrollTop = consoleScreen.scrollHeight;
             }
         }
 
-        const workers = [];
-        const activeThreads = Math.min(CONCURRENCY_LIMIT, queue.length);
-        
-        for (let i = 0; i < activeThreads; i++) {
-            workers.push(worker());
-        }
+        const pool = Array(Math.min(CONCURRENCY_LIMIT, lines.length)).fill(null).map(worker);
+        await Promise.all(pool);
 
-        await Promise.all(workers);
-
-        const finalLog = document.createElement('div');
-        finalLog.style.color = '#818cf8';
-        finalLog.style.paddingTop = '10px';
-        finalLog.style.fontWeight = 'bold';
-        finalLog.innerText = `⚡ Completed! Total Live: ${live}, Total Die: ${die}`;
-        consoleScreen.appendChild(finalLog);
-        consoleScreen.scrollTop = consoleScreen.scrollHeight;
-        
+        consoleScreen.innerHTML += "<br><b>Scan Completed!</b><br>";
         startBtn.disabled = false;
         startBtn.innerText = "Start Scanner";
     }
 
     function downloadLiveCSV() {
-        if (liveAccounts.length === 0) {
-            alert("No live accounts found to download!");
-            return;
-        }
-
+        if (liveAccounts.length === 0) { alert("No live accounts found to download!"); return; }
         let csvRows = ["UID,PASSWORD,2FA"];
-
-        liveAccounts.forEach(account => {
-            csvRows.push(`"${account.uid}","${account.pass}","${account.twoFA}"`);
-        });
-
-        const csvString = csvRows.join("\n");
-        const contentWithBOM = "\ufeff" + csvString;
-        
-        const blob = new Blob([contentWithBOM], { type: 'text/csv;charset=utf-8;' });
+        liveAccounts.forEach(acc => { csvRows.push(`"${acc.uid}","${acc.pass}","${acc.twoFA}"`); });
+        const blob = new Blob(["\ufeff" + csvRows.join("\n")], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
-        
         const link = document.createElement("a");
         link.setAttribute("href", url);
         link.setAttribute("download", "live_accounts.csv");
-        
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
-        setTimeout(() => URL.revokeObjectURL(url), 100);
     }
 
     function clearTool() {
@@ -400,9 +850,7 @@
         document.getElementById('totalCount').innerText = '0';
         document.getElementById('livePercent').innerText = '0% LIVE';
         document.getElementById('diePercent').innerText = '0% DIE';
-        liveAccounts = [];
     }
 </script>
-
 </body>
 </html>
