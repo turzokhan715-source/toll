@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Premium Bulk UID Checker Panel</title>
     <style>
         * {
@@ -16,82 +16,83 @@
             background-color: #090b0e;
             color: #333;
             min-height: 100vh;
-            padding: 15px; /* মোবাইলের জন্য প্যাডিং কমানো হয়েছে */
+            padding: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            -webkit-text-size-adjust: 100%;
         }
 
-        /* Top Header Navigation - Responsive */
+        /* Top Header Navigation - Mobile First */
         .top-navbar {
             width: 100%;
             max-width: 1100px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            gap: 10px;
+            margin-bottom: 15px;
+            gap: 8px;
         }
 
         .nav-left .nav-btn-home {
             background: #6366f1;
             color: white;
             border: none;
-            padding: 10px 18px;
+            padding: 8px 16px;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
-            font-size: 13px;
+            box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
+            font-size: 12px;
         }
 
         .nav-right {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
 
         .nav-right .nav-btn {
             background: #4f46e5;
             color: white;
             border: none;
-            padding: 10px 14px;
+            padding: 8px 12px;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(79, 70, 229, 0.4);
-            font-size: 12px;
+            box-shadow: 0 0 12px rgba(79, 70, 229, 0.4);
+            font-size: 11px;
         }
 
-        /* Main Panel Card - Responsive Width */
+        /* Main Panel Card - Responsive */
         .main-panel {
             width: 100%;
             max-width: 1100px;
             background: #ffffff;
-            border-radius: 20px;
-            padding: 20px; /* মোবাইলের জন্য প্যাডিং অ্যাডজাস্ট করা হয়েছে */
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
         }
 
         .panel-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             color: #8b5cf6;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-align: center;
         }
 
         /* Input Box */
         .input-area-wrapper {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         textarea {
             width: 100%;
-            height: 150px;
+            height: 130px;
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 12px;
+            border-radius: 10px;
+            padding: 10px;
             font-size: 13px;
             color: #475569;
             outline: none;
@@ -102,8 +103,8 @@
         /* Action Buttons */
         .action-row {
             display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         .btn-start {
@@ -111,23 +112,23 @@
             background: linear-gradient(90deg, #6366f1, #3b82f6);
             color: white;
             border: none;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 14px;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 13px;
             font-weight: bold;
             letter-spacing: 0.5px;
             cursor: pointer;
             text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         }
 
         .btn-clear {
             background: #ef4444;
             color: white;
             border: none;
-            padding: 0 20px;
-            border-radius: 12px;
-            font-size: 14px;
+            padding: 0 18px;
+            border-radius: 10px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
@@ -136,32 +137,31 @@
         /* Black Console Box */
         .console-box {
             width: 100%;
-            height: 250px;
+            height: 220px;
             background: #090d16;
-            border-radius: 16px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 12px;
             font-family: 'Courier New', monospace;
-            font-size: 13px;
+            font-size: 12px;
             color: #10b981;
             overflow-y: auto;
-            margin-bottom: 20px;
-            box-shadow: inset 0 4px 10px rgba(0,0,0,0.8);
+            margin-bottom: 15px;
+            box-shadow: inset 0 3px 8px rgba(0,0,0,0.8);
             line-height: 1.5;
         }
 
-        .console-log { margin-bottom: 4px; word-break: break-all; }
+        .console-log { margin-bottom: 3px; word-break: break-all; }
         .log-live { color: #10b981; }
         .log-die { color: #ef4444; }
 
         /* Footer Stats & Download Button */
         .footer-row {
             display: flex;
-            flex-direction: column; /* মোবাইলে উপর-নিচ হবে */
-            gap: 15px;
+            flex-direction: column;
+            gap: 12px;
             align-items: center;
         }
 
-        /* ল্যাপটপ বা বড় স্ক্রিনের জন্য রেসপনসিভ ব্রেকপয়েন্ট */
         @media (min-width: 600px) {
             .footer-row {
                 flex-direction: row;
@@ -172,36 +172,34 @@
 
         .stats-group {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             width: 100%;
             justify-content: space-between;
         }
 
         @media (min-width: 600px) {
-            .stats-group {
-                width: auto;
-            }
+            .stats-group { width: auto; }
         }
 
         .stat-card {
             background: #f1f5f9;
             border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 10px;
+            border-radius: 10px;
+            padding: 8px;
             text-align: center;
             flex: 1;
-            min-width: 80px;
+            min-width: 75px;
         }
 
         .stat-num {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             display: block;
             margin-bottom: 2px;
         }
 
         .stat-label {
-            font-size: 10px;
+            font-size: 9px;
             color: #64748b;
             font-weight: bold;
             text-transform: uppercase;
@@ -212,13 +210,13 @@
         .die-color { color: #ef4444; }
 
         .btn-download {
-            width: 100%; /* মোবাইলে ফুল উইথ হবে */
+            width: 100%;
             background: #10b981;
             color: white;
             border: none;
-            padding: 14px 25px;
-            border-radius: 12px;
-            font-size: 14px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
@@ -227,9 +225,7 @@
         }
 
         @media (min-width: 600px) {
-            .btn-download {
-                width: auto; /* পিসিতে নরমাল সাইজ */
-            }
+            .btn-download { width: auto; }
         }
 
         .btn-download:hover { background: #059669; }
@@ -278,7 +274,7 @@
                 </div>
             </div>
             
-            <button class="btn-download" onclick="downloadLiveCSV()">DOWNLOAD LIVE (EXCEL/SHEET)</button>
+            <button class="btn-download" onclick="downloadLiveCSV()">DOWNLOAD FOR GOOGLE SHEETS</button>
         </div>
     </div>
 
@@ -392,24 +388,22 @@
         startBtn.innerText = "Start Scanner";
     }
 
-    // [FIXED] গুগল শিট ও এক্সেল ফ্রেন্ডলি ডাউনলোডার ইঞ্জিন
+    // ગૂગલ શીટ્સ માટે સ્પેશિયલ ઓપ્ટિમાઇઝ્ડ ડાઉનલોડર
     function downloadLiveCSV() {
         if (liveAccounts.length === 0) {
             alert("No live accounts found to download!");
             return;
         }
 
-        // কলাম হেডার সেট করা হলো
         let csvRows = ["UID,PASSWORD,2FA"];
 
-        // প্রতিটি ডেটাকে কমা দিয়ে এবং ডাবল কোটেশন দিয়ে সুরক্ষিত করা হলো
         liveAccounts.forEach(account => {
             csvRows.push(`"${account.uid}","${account.pass}","${account.twoFA}"`);
         });
 
         const csvString = csvRows.join("\n");
         
-        // UTF-8 BOM যুক্ত করা হলো যাতে এক্সেল/গুগল শিট বাংলা/স্পেশাল ক্যারেক্টার ও কলাম নিখুঁতভাবে চেনে
+        // UTF-8 BOM સેટિંગ્સ જેથી ડેટા કૉલમ ગૂગલ શીટ્સમાં ઓટોમેટિક અલગ થઈ જાય
         const blob = new Blob(["\ufeff" + csvString], { type: 'text/csv;charset=utf-8;' });
         const url = URL.createObjectURL(blob);
         
