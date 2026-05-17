@@ -2,189 +2,202 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Premium Bulk UID Checker Panel</title>
     <style>
+        /* প্রফেশনাল ডার্ক থিম গ্লোবাল স্টাইল */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background-color: #090b0e;
-            color: #333;
+            background-color: #0b0f19; /* রিচ ডার্ক ব্যাকগ্রাউন্ড */
+            color: #f1f5f9;
             min-height: 100vh;
-            padding: 12px;
+            padding: 20px 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            overflow-x: hidden;
-            -webkit-text-size-adjust: 100%;
         }
 
-        /* Top Header Navigation - Mobile Friendly */
+        /* শীর্ষ নেভিগেশন বার - প্রফেশনাল লুক */
         .top-navbar {
             width: 100%;
-            max-width: 1100px;
+            max-width: 800px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            gap: 8px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .nav-left .nav-btn-home {
-            background: #6366f1;
+        .nav-btn-home {
+            background: #4f46e5;
             color: white;
             border: none;
-            padding: 8px 16px;
+            padding: 10px 20px;
             border-radius: 8px;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 0 12px rgba(99, 102, 241, 0.4);
-            font-size: 12px;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            font-size: 14px;
         }
 
         .nav-right {
             display: flex;
-            gap: 6px;
+            gap: 10px;
         }
 
-        .nav-right .nav-btn {
-            background: #4f46e5;
-            color: white;
-            border: none;
-            padding: 8px 12px;
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.07);
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 16px;
             border-radius: 8px;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 0 12px rgba(79, 70, 229, 0.4);
-            font-size: 11px;
+            font-size: 13px;
+            transition: all 0.3s;
         }
 
-        /* Main Panel Card */
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* মূল প্যানেল কন্টেইনার (গ্লসি ডার্ক কার্ড) */
         .main-panel {
             width: 100%;
-            max-width: 1100px;
-            background: #ffffff;
+            max-width: 800px;
+            background: #111827; /* সাইবার ডার্ক প্যানেল */
             border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            position: relative;
+            padding: 25px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 30px;
         }
 
         .panel-title {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 700;
-            color: #8b5cf6;
-            margin-bottom: 15px;
+            color: #818cf8; /* নিয়ন পার্পল টাইটেল */
+            margin-bottom: 20px;
             text-align: center;
+            letter-spacing: 0.5px;
         }
 
-        /* Input Box - [FIXED MOBILE SCROLL] */
+        /* ইনপুট বক্স - নোম্যাল সাইজ ও স্ক্রল ফ্রেন্ডলি */
         .input-area-wrapper {
-            margin-bottom: 12px;
-            position: relative;
+            margin-bottom: 15px;
         }
 
         textarea {
             width: 100%;
-            height: 130px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 10px;
-            font-size: 13px;
-            color: #475569;
+            height: 160px;
+            background: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 14px;
+            color: #f3f4f6;
             outline: none;
-            resize: none;
+            resize: vertical; /* ইউজার চাইলে টেনে বড় করতে পারবে */
             font-weight: 500;
+            line-height: 1.5;
             overflow-y: auto;
-            position: relative;
-            z-index: 10;
-            -webkit-overflow-scrolling: touch; /* আইফোনে স্ক্রল ফিক্স */
+            -webkit-overflow-scrolling: touch;
         }
 
-        /* Action Buttons */
+        textarea:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        /* অ্যাকশন বাটন গ্রুপ */
         .action-row {
             display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 12px;
+            margin-bottom: 18px;
         }
 
         .btn-start {
             flex: 1;
-            background: linear-gradient(90deg, #6366f1, #3b82f6);
+            background: linear-gradient(135deg, #4f46e5, #3b82f6);
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: bold;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
             letter-spacing: 0.5px;
             cursor: pointer;
             text-transform: uppercase;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+            transition: opacity 0.2s;
         }
+
+        .btn-start:active { opacity: 0.9; }
 
         .btn-clear {
-            background: #ef4444;
+            background: #dc2626;
             color: white;
             border: none;
-            padding: 0 18px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: bold;
+            padding: 0 25px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
             text-transform: uppercase;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
         }
 
-        /* Black Console Box - [FIXED MOBILE SCROLL] */
+        /* ব্ল্যাক কনসোল বক্স - স্ক্রল ফ্রেন্ডলি */
         .console-box {
             width: 100%;
-            height: 220px;
-            background: #090d16;
+            height: 260px;
+            background: #030712;
             border-radius: 12px;
-            padding: 12px;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            color: #10b981;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            color: #34d399; /* গ্লোয়িং গ্রিন */
             overflow-y: auto;
-            margin-bottom: 15px;
-            box-shadow: inset 0 3px 8px rgba(0,0,0,0.8);
-            line-height: 1.5;
-            position: relative;
-            z-index: 10;
-            -webkit-overflow-scrolling: touch; /* টাচ স্ক্রল অ্যাক্টিভেট */
+            margin-bottom: 20px;
+            border: 1px solid #1f2937;
+            box-shadow: inset 0 4px 12px rgba(0,0,0,0.6);
+            line-height: 1.6;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .console-log { margin-bottom: 3px; word-break: break-all; }
-        .log-live { color: #10b981; }
-        .log-die { color: #ef4444; }
+        .console-log { margin-bottom: 4px; word-break: break-all; }
+        .log-live { color: #34d399; font-weight: 600; }
+        .log-die { color: #f87171; }
 
-        /* Footer Stats & Download Button */
+        /* ফুটারে থাকা কাউন্টার এবং ডাউনলোড বাটন */
         .footer-row {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
             align-items: center;
         }
 
+        /* ল্যাপটপ বা বড় স্ক্রিনের জন্য সাইড-বাই-সাইড ভিউ */
         @media (min-width: 600px) {
             .footer-row {
                 flex-direction: row;
                 justify-content: space-between;
             }
-            .panel-title { text-align: left; }
         }
 
         .stats-group {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             width: 100%;
-            justify-content: space-between;
         }
 
         @media (min-width: 600px) {
@@ -192,54 +205,55 @@
         }
 
         .stat-card {
-            background: #f1f5f9;
-            border: 1px solid #e2e8f0;
+            background: #1f2937;
+            border: 1px solid #374151;
             border-radius: 10px;
-            padding: 8px;
+            padding: 10px 15px;
             text-align: center;
             flex: 1;
-            min-width: 75px;
+            min-width: 85px;
         }
 
         .stat-num {
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 700;
             display: block;
             margin-bottom: 2px;
         }
 
         .stat-label {
-            font-size: 9px;
-            color: #64748b;
-            font-weight: bold;
+            font-size: 10px;
+            color: #9ca3af;
+            font-weight: 700;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .total-color { color: #334155; }
-        .live-color { color: #10b981; }
-        .die-color { color: #ef4444; }
+        .total-color { color: #e5e7eb; }
+        .live-color { color: #34d399; }
+        .die-color { color: #f87171; }
 
         .btn-download {
             width: 100%;
-            background: #10b981;
+            background: #059669; /* প্রিমিয়াম গ্রিন */
             color: white;
             border: none;
-            padding: 14px 20px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: bold;
+            padding: 15px 28px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-            transition: 0.2s;
+            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.4);
+            transition: background 0.2s;
             text-align: center;
-            -webkit-appearance: none; /* মোবাইল ব্রাউজার ওভাররাইડ রিমুভ */
+            text-transform: uppercase;
         }
 
         @media (min-width: 600px) {
             .btn-download { width: auto; }
         }
 
-        .btn-download:hover { background: #059669; }
+        .btn-download:hover { background: #047857; }
     </style>
 </head>
 <body>
@@ -256,10 +270,10 @@
     </div>
 
     <div class="main-panel">
-        <div class="panel-title">Bulk UID Checker</div>
+        <div class="panel-title">Bulk UID Checker Pro</div>
         
         <div class="input-area-wrapper">
-            <textarea id="inputData" placeholder="Paste data here... (Supports UID|PASS|2FA or Space/Tab formats)"></textarea>
+            <textarea id="inputData" placeholder="Paste data here... (Supports UID|PASS|2FA or Space/Tab separated formats)"></textarea>
         </div>
 
         <div class="action-row">
@@ -285,14 +299,15 @@
                 </div>
             </div>
             
-            <button class="btn-download" onclick="downloadLiveCSV()">DOWNLOAD GOOGLE SHEET FILE</button>
+            <button class="btn-download" onclick="downloadLiveCSV()">Download Live Accounts</button>
         </div>
     </div>
 
 <script>
     let liveAccounts = []; 
-    const CONCURRENCY_LIMIT = 5; 
+    const CONCURRENCY_LIMIT = 5; // একসাথে ৫টি আইডি প্যারালাল চেক হবে
 
+    // ফেসবুক ইউআইডি লাইভ চেক করার মূল মেথড
     async function checkFacebookUID(uid) {
         try {
             const cleanUID = uid.trim().replace(/[^a-zA-Z0-9.]/g, "");
@@ -309,6 +324,7 @@
         }
     }
 
+    // স্ক্যান ইঞ্জিন ফাংশন
     async function startScanner() {
         const inputStr = document.getElementById('inputData').value.trim();
         const consoleScreen = document.getElementById('consoleScreen');
@@ -321,7 +337,7 @@
 
         const lines = inputStr.split('\n').map(line => line.trim()).filter(line => line.length > 0);
         
-        consoleScreen.innerHTML = "Initializing multi-threaded engine...<br>";
+        consoleScreen.innerHTML = "Initializing fast multi-threaded engine...<br>";
         liveAccounts = [];
         let total = lines.length;
         let live = 0;
@@ -366,6 +382,7 @@
                     logLine.className += ' log-live';
                     logLine.innerText = `[LIVE] ID: ${uid}`;
                     live++;
+                    // সম্পূর্ণ ডেটা অবজেক্টে পুশ করা হচ্ছে
                     liveAccounts.push({ uid, pass, twoFA });
                 } else {
                     logLine.className += ' log-die';
@@ -389,9 +406,10 @@
         await Promise.all(workers);
 
         const finalLog = document.createElement('div');
-        finalLog.style.color = '#58a6ff';
+        finalLog.style.color = '#818cf8';
         finalLog.style.paddingTop = '10px';
-        finalLog.innerText = `⚡ Completed! Live: ${live}, Die: ${die}`;
+        finalLog.style.fontWeight = 'bold';
+        finalLog.innerText = `⚡ Completed! Total Live: ${live}, Total Die: ${die}`;
         consoleScreen.appendChild(finalLog);
         consoleScreen.scrollTop = consoleScreen.scrollHeight;
         
@@ -399,7 +417,7 @@
         startBtn.innerText = "Start Scanner";
     }
 
-    // [FIXED PHONE DOWNLOAD] মোবাইল ব্রাউজার ফ্রেন্ডলি ইউনিভার্সাল ডাউনলোডার
+    // [FIXED 100% 2FA] স্পেশাল ক্যারেক্টার প্রোটেক্টেড এক্সেল/গুগল শিট ডাউনলোডার
     function downloadLiveCSV() {
         if (liveAccounts.length === 0) {
             alert("No live accounts found to download!");
@@ -414,20 +432,26 @@
 
         const csvString = csvRows.join("\n");
         
-        // UTF-8 BOM যুক্ত প্রোপার ডাটা ফরম্যাট
+        // UTF-8 BOM অ্যাড করা হলো যাতে প্লাস (+), ইকুয়াল (=) বা স্ল্যাশ (/) কেটে না যায়
         const contentWithBOM = "\ufeff" + csvString;
         
-        // মোবাইল ডাউনলোডের ইউনিভার্সাল মেথড (Data URI)
+        // অবজেক্ট ব্লব মেথড (এটি ফোনের ব্রাউজারেও ১০০% কাজ করে এবং ডাটা মিস হয় না)
+        const blob = new Blob([contentWithBOM], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        
         const link = document.createElement("a");
-        link.setAttribute("href", "data:text/csv;charset=utf-8," + encodeURIComponent(contentWithBOM));
+        link.setAttribute("href", url);
         link.setAttribute("download", "live_accounts.csv");
         
-        // কিছু মোবাইল ব্রাউজারে ট্রিগার করার জন্য বডিতে অ্যাপেন্ড করে ক্লিক করা হলো
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        
+        // মেমোরি রিলিজ করা
+        setTimeout(() => URL.revokeObjectURL(url), 100);
     }
 
+    // রিসেট বাটন ফাংশন
     function clearTool() {
         document.getElementById('inputData').value = '';
         document.getElementById('consoleScreen').innerHTML = 'Console ready...';
