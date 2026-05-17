@@ -150,7 +150,7 @@
         .log-live { color: #10b981; }
         .log-die { color: #ef4444; }
 
-        /* Footer Stats & Download Button */
+        /* Footer Stats */
         .footer-row {
             display: flex;
             justify-content: space-between;
@@ -224,7 +224,7 @@
         <div class="panel-title">Bulk UID Checker</div>
         
         <div class="input-area-wrapper">
-            <textarea id="inputData" placeholder="UID|PASS|2FA"></textarea>
+            <textarea id="inputData" placeholder="Paste data here (Supports UID|PASS|2FA or Space/Tab separated formats)"></textarea>
         </div>
 
         <div class="action-row">
@@ -256,13 +256,14 @@
 
 <script>
     let liveAccounts = []; 
-    const CONCURRENCY_LIMIT = 5; // থ্রেড কাউন্ট (একসাথে ৫টি আইডি প্যারালাল চেক হবে)
+    const CONCURRENCY_LIMIT = 5; // থ্রেড কাউন্ট স্পিড
 
-    // ফেসবুক ইউআইডি লাইভ চেকিং ফাংশন
+    // ফেসবুক ইউআইডি ভ্যালিডেশন
     async function checkFacebookUID(uid) {
         try {
-            // আইডি ক্লিন করে শুধু সংখ্যা/ইউজারনেম নেওয়া হচ্ছে
             const cleanUID = uid.trim().replace(/[^a-zA-Z0-9.]/g, "");
+            if(!cleanUID) return "DEAD ❌";
+            
             const response = await fetch(`https://graph.facebook.com/${cleanUID}/picture?type=normal&_ts=${Date.now()}`);
             if (response.ok && response.url.includes('100x100')) {
                 return "LIVE ✅";
@@ -286,7 +287,7 @@
 
         const lines = inputStr.split('\n').map(line => line.trim()).filter(line => line.length > 0);
         
-        consoleScreen.innerHTML = "Initializing fast multi-threaded engine...<br>";
+        consoleScreen.innerHTML = "Initializing smart parsing multi-threaded engine...<br>";
         liveAccounts = [];
         let total = lines.length;
         let live = 0;
@@ -310,15 +311,21 @@
                 const currentLine = queue.shift();
                 if (!currentLine) continue;
 
-                // ইনপুট ডেটা নিখুঁতভাবে স্প্লিট করা এবং স্পেস ট্রিম (ক্লিন) করা
-                const parts = currentLine.split('|');
+                // [FIXED] পাইপ (|), স্পেস ( ), অথবা ট্যাব (\t) যেকোনো ফরম্যাট থেকে ডেটা আলাদা করার রেগুলার এক্সপ্রেশন
+                let parts = [];
+                if (currentLine.includes('|')) {
+                    parts = currentLine.split('|');
+                } else {
+                    parts = currentLine.split(/\s+/); // একাধিক স্পেস বা ট্যাব থাকলে ভেঙে আলাদা করবে
+                }
+
                 const uid = parts[0] ? parts[0].trim() : '';
                 const pass = parts[1] ? parts[1].trim() : '';
                 const twoFA = parts[2] ? parts[2].trim() : '';
 
                 if (!uid) continue;
 
-                // চেকিং এ শুধু UID পাঠানো হচ্ছে
+                // চেকিং এ শুধু মূল UID পাঠানো হচ্ছে
                 const result = await checkFacebookUID(uid);
                 const logLine = document.createElement('div');
                 logLine.className = 'console-log';
@@ -327,7 +334,6 @@
                     logLine.className += ' log-live';
                     logLine.innerText = `[LIVE] ID: ${uid} | Status: Success`;
                     live++;
-                    // গুগল শিটের জন্য সম্পূর্ণ ডেটা (UID, PASS, 2FA) স্টোর করা হচ্ছে
                     liveAccounts.push({ uid, pass, twoFA });
                 } else {
                     logLine.className += ' log-die';
@@ -361,14 +367,13 @@
         startBtn.innerText = "Start Scanner";
     }
 
-    // গুগল শিট ফরম্যাট ডাউনলোড ইঞ্জিন (A=UID, B=PASS, C=2FA)
+    // গুগল শিট ডাউনলোড ইঞ্জিন (A=UID, B=PASS, C=2FA)
     function downloadLiveCSV() {
         if (liveAccounts.length === 0) {
             alert("No live accounts found to download!");
             return;
         }
 
-        // CSV ফরম্যাট জেনারেট করা হচ্ছে (কমা দিয়ে আলাদা করা, যা সরাসরি গুগল শিট চিনে নেয়)
         let csvContent = "data:text/csv;charset=utf-8,UID,PASSWORD,2FA\n";
 
         liveAccounts.forEach(account => {
