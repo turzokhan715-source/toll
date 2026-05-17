@@ -16,80 +16,83 @@
             background-color: #090b0e;
             color: #333;
             min-height: 100vh;
-            padding: 30px;
+            padding: 15px; /* মোবাইলের জন্য প্যাডিং কমানো হয়েছে */
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* Top Header Navigation */
+        /* Top Header Navigation - Responsive */
         .top-navbar {
             width: 100%;
             max-width: 1100px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            padding: 0 10px;
+            margin-bottom: 20px;
+            gap: 10px;
         }
 
         .nav-left .nav-btn-home {
             background: #6366f1;
             color: white;
             border: none;
-            padding: 10px 24px;
+            padding: 10px 18px;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+            font-size: 13px;
         }
 
         .nav-right {
             display: flex;
-            gap: 12px;
+            gap: 8px;
         }
 
         .nav-right .nav-btn {
             background: #4f46e5;
             color: white;
             border: none;
-            padding: 10px 24px;
+            padding: 10px 14px;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 0 15px rgba(79, 70, 229, 0.4);
+            font-size: 12px;
         }
 
-        /* Main Panel Card */
+        /* Main Panel Card - Responsive Width */
         .main-panel {
             width: 100%;
             max-width: 1100px;
             background: #ffffff;
-            border-radius: 24px;
-            padding: 35px;
+            border-radius: 20px;
+            padding: 20px; /* মোবাইলের জন্য প্যাডিং অ্যাডজাস্ট করা হয়েছে */
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
         }
 
         .panel-title {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
             color: #8b5cf6;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            text-align: center;
         }
 
         /* Input Box */
         .input-area-wrapper {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         textarea {
             width: 100%;
-            height: 140px;
+            height: 150px;
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 12px;
-            padding: 15px;
-            font-size: 14px;
+            padding: 12px;
+            font-size: 13px;
             color: #475569;
             outline: none;
             resize: none;
@@ -99,8 +102,8 @@
         /* Action Buttons */
         .action-row {
             display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
         .btn-start {
@@ -108,9 +111,9 @@
             background: linear-gradient(90deg, #6366f1, #3b82f6);
             color: white;
             border: none;
-            padding: 15px;
+            padding: 14px;
             border-radius: 12px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             letter-spacing: 0.5px;
             cursor: pointer;
@@ -122,9 +125,9 @@
             background: #ef4444;
             color: white;
             border: none;
-            padding: 0 25px;
+            padding: 0 20px;
             border-radius: 12px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             text-transform: uppercase;
@@ -133,55 +136,72 @@
         /* Black Console Box */
         .console-box {
             width: 100%;
-            height: 300px;
+            height: 250px;
             background: #090d16;
             border-radius: 16px;
-            padding: 20px;
+            padding: 15px;
             font-family: 'Courier New', monospace;
-            font-size: 14px;
+            font-size: 13px;
             color: #10b981;
             overflow-y: auto;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             box-shadow: inset 0 4px 10px rgba(0,0,0,0.8);
-            line-height: 1.6;
+            line-height: 1.5;
         }
 
-        .console-log { margin-bottom: 4px; }
+        .console-log { margin-bottom: 4px; word-break: break-all; }
         .log-live { color: #10b981; }
         .log-die { color: #ef4444; }
 
-        /* Footer Stats */
+        /* Footer Stats & Download Button */
         .footer-row {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
+            flex-direction: column; /* মোবাইলে উপর-নিচ হবে */
             gap: 15px;
+            align-items: center;
+        }
+
+        /* ল্যাপটপ বা বড় স্ক্রিনের জন্য রেসপনসিভ ব্রেকপয়েন্ট */
+        @media (min-width: 600px) {
+            .footer-row {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            .panel-title { text-align: left; }
         }
 
         .stats-group {
             display: flex;
-            gap: 12px;
+            gap: 10px;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        @media (min-width: 600px) {
+            .stats-group {
+                width: auto;
+            }
         }
 
         .stat-card {
             background: #f1f5f9;
             border: 1px solid #e2e8f0;
             border-radius: 12px;
-            padding: 10px 20px;
+            padding: 10px;
             text-align: center;
-            min-width: 95px;
+            flex: 1;
+            min-width: 80px;
         }
 
         .stat-num {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             display: block;
             margin-bottom: 2px;
         }
 
         .stat-label {
-            font-size: 11px;
+            font-size: 10px;
             color: #64748b;
             font-weight: bold;
             text-transform: uppercase;
@@ -192,16 +212,24 @@
         .die-color { color: #ef4444; }
 
         .btn-download {
+            width: 100%; /* মোবাইলে ফুল উইথ হবে */
             background: #10b981;
             color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 14px 25px;
             border-radius: 12px;
             font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
             transition: 0.2s;
+            text-align: center;
+        }
+
+        @media (min-width: 600px) {
+            .btn-download {
+                width: auto; /* পিসিতে নরমাল সাইজ */
+            }
         }
 
         .btn-download:hover { background: #059669; }
@@ -224,7 +252,7 @@
         <div class="panel-title">Bulk UID Checker</div>
         
         <div class="input-area-wrapper">
-            <textarea id="inputData" placeholder="Paste data here (Supports UID|PASS|2FA or Space/Tab separated formats)"></textarea>
+            <textarea id="inputData" placeholder="Paste data here... (Supports UID|PASS|2FA or Space/Tab formats)"></textarea>
         </div>
 
         <div class="action-row">
@@ -250,15 +278,14 @@
                 </div>
             </div>
             
-            <button class="btn-download" onclick="downloadLiveCSV()">DOWNLOAD LIVE</button>
+            <button class="btn-download" onclick="downloadLiveCSV()">DOWNLOAD LIVE (EXCEL/SHEET)</button>
         </div>
     </div>
 
 <script>
     let liveAccounts = []; 
-    const CONCURRENCY_LIMIT = 5; // থ্রেড কাউন্ট স্পিড
+    const CONCURRENCY_LIMIT = 5; 
 
-    // ফেসবুক ইউআইডি ভ্যালিডেশন
     async function checkFacebookUID(uid) {
         try {
             const cleanUID = uid.trim().replace(/[^a-zA-Z0-9.]/g, "");
@@ -287,7 +314,7 @@
 
         const lines = inputStr.split('\n').map(line => line.trim()).filter(line => line.length > 0);
         
-        consoleScreen.innerHTML = "Initializing smart parsing multi-threaded engine...<br>";
+        consoleScreen.innerHTML = "Initializing multi-threaded engine...<br>";
         liveAccounts = [];
         let total = lines.length;
         let live = 0;
@@ -311,12 +338,11 @@
                 const currentLine = queue.shift();
                 if (!currentLine) continue;
 
-                // [FIXED] পাইপ (|), স্পেস ( ), অথবা ট্যাব (\t) যেকোনো ফরম্যাট থেকে ডেটা আলাদা করার রেগুলার এক্সপ্রেশন
                 let parts = [];
                 if (currentLine.includes('|')) {
                     parts = currentLine.split('|');
                 } else {
-                    parts = currentLine.split(/\s+/); // একাধিক স্পেস বা ট্যাব থাকলে ভেঙে আলাদা করবে
+                    parts = currentLine.split(/\s+/); 
                 }
 
                 const uid = parts[0] ? parts[0].trim() : '';
@@ -325,19 +351,18 @@
 
                 if (!uid) continue;
 
-                // চেকিং এ শুধু মূল UID পাঠানো হচ্ছে
                 const result = await checkFacebookUID(uid);
                 const logLine = document.createElement('div');
                 logLine.className = 'console-log';
 
                 if (result === "LIVE ✅") {
                     logLine.className += ' log-live';
-                    logLine.innerText = `[LIVE] ID: ${uid} | Status: Success`;
+                    logLine.innerText = `[LIVE] ID: ${uid}`;
                     live++;
                     liveAccounts.push({ uid, pass, twoFA });
                 } else {
                     logLine.className += ' log-die';
-                    logLine.innerText = `[DIE] ID: ${uid} | Status: Dead`;
+                    logLine.innerText = `[DIE] ID: ${uid}`;
                     die++;
                 }
 
@@ -359,7 +384,7 @@
         const finalLog = document.createElement('div');
         finalLog.style.color = '#58a6ff';
         finalLog.style.paddingTop = '10px';
-        finalLog.innerText = `⚡ Scanning Completed! Total Live: ${live}, Total Die: ${die}`;
+        finalLog.innerText = `⚡ Completed! Live: ${live}, Die: ${die}`;
         consoleScreen.appendChild(finalLog);
         consoleScreen.scrollTop = consoleScreen.scrollHeight;
         
@@ -367,22 +392,29 @@
         startBtn.innerText = "Start Scanner";
     }
 
-    // গুগল শিট ডাউনলোড ইঞ্জিন (A=UID, B=PASS, C=2FA)
+    // [FIXED] গুগল শিট ও এক্সেল ফ্রেন্ডলি ডাউনলোডার ইঞ্জিন
     function downloadLiveCSV() {
         if (liveAccounts.length === 0) {
             alert("No live accounts found to download!");
             return;
         }
 
-        let csvContent = "data:text/csv;charset=utf-8,UID,PASSWORD,2FA\n";
+        // কলাম হেডার সেট করা হলো
+        let csvRows = ["UID,PASSWORD,2FA"];
 
+        // প্রতিটি ডেটাকে কমা দিয়ে এবং ডাবল কোটেশন দিয়ে সুরক্ষিত করা হলো
         liveAccounts.forEach(account => {
-            csvContent += `"${account.uid}","${account.pass}","${account.twoFA}"\n`;
+            csvRows.push(`"${account.uid}","${account.pass}","${account.twoFA}"`);
         });
 
-        const encodedUri = encodeURI(csvContent);
+        const csvString = csvRows.join("\n");
+        
+        // UTF-8 BOM যুক্ত করা হলো যাতে এক্সেল/গুগল শিট বাংলা/স্পেশাল ক্যারেক্টার ও কলাম নিখুঁতভাবে চেনে
+        const blob = new Blob(["\ufeff" + csvString], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        
         const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
+        link.setAttribute("href", url);
         link.setAttribute("download", "live_accounts.csv");
         document.body.appendChild(link);
         
