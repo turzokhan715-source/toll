@@ -6,106 +6,133 @@
     <title>FB & IG OTP Extractor</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* আপনার পিকচারের মতো স্মুথ শ্যাডো এবং কাস্টম ফন্ট স্টাইল */
+        .premium-card {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-radius: 24px;
+        }
+        .inner-box {
+            border-radius: 16px;
+        }
+    </style>
 </head>
-<body class="bg-slate-950 text-gray-100 min-h-screen flex flex-col justify-center items-center p-4 font-sans">
+<body class="bg-[#f0f4f8] text-slate-800 min-h-screen flex flex-col justify-center items-center p-4 font-sans">
 
-    <div class="w-full max-w-xl border border-slate-800 rounded-2xl shadow-2xl p-6 bg-slate-900">
-        <div class="flex flex-col items-center border-b border-slate-800 pb-4 mb-5">
-            <div class="flex space-x-2 text-2xl font-bold text-white tracking-tight">
-                <i class="fas fa-boxes text-blue-500"></i>
-                <h1>FB & IG OTP Extractor</h1>
+    <div class="w-full max-w-lg bg-white premium-card border border-slate-100 p-8 transition-all duration-300">
+        
+        <div class="flex flex-col items-center mb-6">
+            <div class="flex items-center space-x-3 text-3xl font-black text-slate-800 tracking-tight">
+                <i class="fas fa-shopping-bag text-indigo-600 text-2xl"></i>
+                <h1 class="text-2xl font-black bg-gradient-to-r from-slate-900 to-indigo-950 bg-clip-text text-transparent">FB & IG OTP Extractor</h1>
             </div>
-            <p class="text-xs text-gray-400 mt-1">Multi-Platform Verification Cloud System</p>
+            <p class="text-xs text-slate-400 font-medium mt-1">Facebook & Instagram Verification Code Extractor</p>
+            
+            <div id="modeBadge" class="mt-3 inline-flex items-center space-x-1.5 bg-amber-50 border border-amber-200/60 px-4 py-1 rounded-full shadow-sm">
+                <i class="fas fa-star text-amber-500 text-xs"></i>
+                <span id="badgeText" class="text-[11px] font-extrabold text-amber-700 tracking-wide uppercase">Facebook Priority Mode</span>
+            </div>
         </div>
 
-        <div class="mb-5 bg-slate-950 p-1.5 rounded-xl flex space-x-2 border border-slate-800">
-            <button onclick="setPlatform('fb')" id="fbBtn" class="flex-1 bg-blue-600 text-white text-sm font-bold py-2.5 px-4 rounded-lg flex justify-center items-center transition cursor-pointer shadow-md">
-                <i class="fab fa-facebook mr-2 text-base"></i> Facebook
+        <div class="mb-6 bg-slate-100 p-1.5 inner-box flex space-x-1 border border-slate-200/50">
+            <button onclick="setPlatform('fb')" id="fbBtn" class="flex-1 bg-blue-600 text-white text-xs font-black py-2.5 px-4 rounded-xl flex justify-center items-center transition-all duration-200 shadow-sm cursor-pointer">
+                <i class="fas fa-book-bookmark mr-2 text-xs"></i> Facebook
+                <span class="ml-1.5 bg-amber-400 text-slate-900 text-[9px] font-black px-1.5 py-0.5 rounded-md">1st</span>
             </button>
-            <button onclick="setPlatform('ig')" id="igBtn" class="flex-1 bg-transparent text-gray-400 hover:text-white text-sm font-bold py-2.5 px-4 rounded-lg flex justify-center items-center transition cursor-pointer">
-                <i class="fab fa-instagram mr-2 text-base"></i> Instagram
-            </button>
-        </div>
-
-        <div class="mb-4 flex space-x-2">
-            <button onclick="loadAccount(1)" class="flex-1 bg-slate-800 hover:bg-slate-700 text-xs font-semibold py-2 rounded-lg border border-slate-700 transition cursor-pointer">
-                <i class="fas fa-user mr-1 text-blue-400"></i> Account 1
-            </button>
-            <button onclick="loadAccount(2)" class="flex-1 bg-slate-800 hover:bg-slate-700 text-xs font-semibold py-2 rounded-lg border border-slate-700 transition cursor-pointer">
-                <i class="fas fa-user mr-1 text-purple-400"></i> Account 2
+            <button onclick="setPlatform('ig')" id="igBtn" class="flex-1 bg-transparent text-slate-400 hover:text-slate-600 text-xs font-bold py-2.5 px-4 rounded-xl flex justify-center items-center transition-all duration-200 cursor-pointer">
+                <i class="fas fa-camera mr-2 text-xs"></i> Instagram
+                <span class="ml-1.5 bg-slate-200 text-slate-500 text-[9px] font-bold px-1.5 py-0.5 rounded-md">2nd</span>
             </button>
         </div>
 
-        <div class="mb-4">
-            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2"><i class="fas fa-paste mr-1"></i> Paste Your Email Data Here:</label>
+        <div class="mb-5 flex space-x-2">
+            <button onclick="loadAccount(1)" class="flex-1 bg-slate-50 hover:bg-slate-100 text-slate-600 text-xs font-bold py-2 px-3 inner-box border border-slate-200/80 transition cursor-pointer flex justify-center items-center">
+                <i class="fas fa-user-circle mr-1.5 text-blue-500"></i> Account 1
+            </button>
+            <button onclick="loadAccount(2)" class="flex-1 bg-slate-50 hover:bg-slate-100 text-slate-600 text-xs font-bold py-2 px-3 inner-box border border-slate-200/80 transition cursor-pointer flex justify-center items-center">
+                <i class="fas fa-user-circle mr-1.5 text-purple-500"></i> Account 2
+            </button>
+        </div>
+
+        <div class="mb-5 relative px-4 border-l-2 border-r-2 border-slate-900/80">
+            <label class="block text-xs font-extrabold text-slate-700 tracking-wide mb-2">
+                📋 Paste Your Email Data Here:
+            </label>
             <textarea 
                 id="rawData" 
-                class="w-full h-24 bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm font-mono text-cyan-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                class="w-full h-24 bg-white border border-slate-200 inner-box p-3 text-xs font-mono text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 shadow-inner transition"
                 placeholder="email|password|refresh_token|client_id"
             ></textarea>
         </div>
 
-        <div class="bg-slate-950 border border-slate-800 p-3 rounded-xl flex justify-between items-center mb-5">
-            <div>
-                <span class="text-xs text-gray-500 block">Target Email:</span>
-                <span id="targetEmail" class="text-xs font-mono font-medium text-gray-300">Waiting for data...</span>
-            </div>
-        </div>
-
-        <button onclick="getOtpCode()" id="actionBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-xl transition duration-200 shadow-lg flex justify-center items-center cursor-pointer text-sm tracking-wide">
-            <span id="btnText"><i class="fas fa-bolt mr-2"></i> Extract OTP Code</span>
+        <button onclick="getOtpCode()" id="actionBtn" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-500 font-extrabold py-3.5 px-4 inner-box border border-slate-200 transition-all duration-200 flex justify-center items-center cursor-pointer text-xs tracking-wider uppercase">
+            <span id="btnText"><i class="fas fa-search mr-2"></i> Extract OTP Code</span>
         </button>
 
-        <div id="resultBox" class="mt-6 border border-slate-800 rounded-xl p-4 bg-slate-950 hidden">
-            <div class="flex justify-between items-center border-b border-slate-900 pb-2 mb-3">
-                <span class="text-xs font-bold text-gray-500">PLATFORM MODE: <span id="currentModeLabel" class="text-blue-400 uppercase">FACEBOOK</span></span>
-                <span id="statusLabel" class="text-[10px] font-black px-2 py-0.5 rounded tracking-wider"></span>
-            </div>
-            <div class="flex items-center justify-between bg-slate-900 p-4 rounded-xl border border-slate-800">
-                <div>
-                    <span class="text-[10px] font-bold text-gray-400 block mb-1 uppercase tracking-wider">Retrieved Code:</span>
-                    <span id="otpOutput" class="text-4xl font-mono font-black tracking-widest text-green-400">XXXXXX</span>
+        <div id="resultBox" class="mt-6 border border-emerald-100 rounded-2xl p-5 bg-emerald-50/60 hidden">
+            
+            <div id="detectInfo" class="px-4 border-l-2 border-r-2 border-slate-900/80 mb-4">
+                <div class="flex items-center text-xs font-black text-emerald-800 tracking-wide">
+                    <i class="fas fa-check-circle mr-1.5 text-emerald-500 text-sm"></i>
+                    <span id="successMsg">Email Retrieved Successfully</span>
                 </div>
-                <button onclick="copyCode()" class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-xs font-bold transition cursor-pointer border border-slate-700">
-                    <i class="fas fa-copy mr-1"></i> Copy
+                <div class="text-[11px] text-slate-500 mt-1 font-mono break-all">
+                    For: <span id="displayEmail" class="text-emerald-700 font-bold">...</span>
+                </div>
+                <div id="detectLabel" class="text-[11px] text-emerald-600 font-bold mt-0.5">
+                    ✓ Verification code detected
+                </div>
+            </div>
+
+            <div class="bg-white p-4 inner-box border border-emerald-100/80 flex items-center justify-between shadow-sm">
+                <div>
+                    <span id="codeTitle" class="text-[10px] font-bold text-slate-400 block mb-1 uppercase tracking-wider">Verification Code:</span>
+                    <span id="otpOutput" class="text-5xl font-black tracking-widest text-emerald-500 font-mono">XXXXXX</span>
+                </div>
+                <button onclick="copyCode()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-black transition-all cursor-pointer shadow-sm flex items-center">
+                    <i class="fas fa-copy mr-1.5"></i> Copy Code
                 </button>
             </div>
         </div>
+
     </div>
 
     <script>
-        let currentPlatform = 'fb'; // ডিফল্ট ফেসবুক মোড
+        let currentPlatform = 'fb';
 
-        // ⚠️ আপনার একাউন্ট ডাটা লাইনে থাকলে এখানে সেভ করে রাখতে পারেন
+        // ⚠️ আপনার অ্যাকাউন্টের ডাটাগুলো এখানে সেট করে রাখতে পারেন
         const account1_data = "email1@outlook.com|pass1|refresh_token_1|client_id_1";
         const account2_data = "email2@outlook.com|pass2|refresh_token_2|client_id_2";
-
-        document.getElementById('rawData').addEventListener('input', function(e) {
-            const val = e.target.value.trim();
-            document.getElementById('targetEmail').innerText = val.includes('|') ? val.split('|')[0] : "Waiting for data...";
-        });
 
         function setPlatform(platform) {
             currentPlatform = platform;
             const fbBtn = document.getElementById('fbBtn');
             const igBtn = document.getElementById('igBtn');
-            const actionBtn = document.getElementById('actionBtn');
+            const modeBadge = document.getElementById('modeBadge');
+            const badgeText = document.getElementById('badgeText');
 
             if(platform === 'fb') {
-                fbBtn.className = "flex-1 bg-blue-600 text-white text-sm font-bold py-2.5 px-4 rounded-lg flex justify-center items-center transition cursor-pointer shadow-md";
-                igBtn.className = "flex-1 bg-transparent text-gray-400 hover:text-white text-sm font-bold py-2.5 px-4 rounded-lg flex justify-center items-center transition cursor-pointer";
-                actionBtn.className = "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-xl transition duration-200 shadow-lg flex justify-center items-center cursor-pointer text-sm tracking-wide";
+                fbBtn.className = "flex-1 bg-blue-600 text-white text-xs font-black py-2.5 px-4 rounded-xl flex justify-center items-center transition-all duration-200 shadow-sm cursor-pointer";
+                igBtn.className = "flex-1 bg-transparent text-slate-400 hover:text-slate-600 text-xs font-bold py-2.5 px-4 rounded-xl flex justify-center items-center transition-all duration-200 cursor-pointer";
+                
+                // ফেসবুক মোড কালার
+                modeBadge.className = "mt-3 inline-flex items-center space-x-1.5 bg-amber-50 border border-amber-200/60 px-4 py-1 rounded-full shadow-sm";
+                badgeText.className = "text-[11px] font-extrabold text-amber-700 tracking-wide uppercase";
+                badgeText.innerText = "Facebook Priority Mode";
             } else {
-                igBtn.className = "flex-1 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white text-sm font-bold py-2.5 px-4 rounded-lg flex justify-center items-center transition cursor-pointer shadow-md";
-                fbBtn.className = "flex-1 bg-transparent text-gray-400 hover:text-white text-sm font-bold py-2.5 px-4 rounded-lg flex justify-center items-center transition cursor-pointer";
-                actionBtn.className = "w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white font-bold py-3.5 px-4 rounded-xl transition duration-200 shadow-lg flex justify-center items-center cursor-pointer text-sm tracking-wide";
+                igBtn.className = "flex-1 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 text-white text-xs font-black py-2.5 px-4 rounded-xl flex justify-center items-center transition-all duration-200 shadow-sm cursor-pointer";
+                fbBtn.className = "flex-1 bg-transparent text-slate-400 hover:text-slate-600 text-xs font-bold py-2.5 px-4 rounded-xl flex justify-center items-center transition-all duration-200 cursor-pointer";
+                
+                // ইনস্টাগ্রাম মোড কালার
+                modeBadge.className = "mt-3 inline-flex items-center space-x-1.5 bg-purple-50 border border-purple-200/60 px-4 py-1 rounded-full shadow-sm";
+                badgeText.className = "text-[11px] font-extrabold text-purple-700 tracking-wide uppercase";
+                badgeText.innerText = "Instagram Priority Mode";
             }
         }
 
         function loadAccount(num) {
             const data = num === 1 ? account1_data : account2_data;
             document.getElementById('rawData').value = data;
-            document.getElementById('targetEmail').innerText = data.includes('|') ? data.split('|')[0] : "Waiting for data...";
         }
 
         async function getOtpCode() {
@@ -113,27 +140,36 @@
             const actionBtn = document.getElementById('actionBtn');
             const btnText = document.getElementById('btnText');
             const resultBox = document.getElementById('resultBox');
-            const statusLabel = document.getElementById('statusLabel');
             const otpOutput = document.getElementById('otpOutput');
-            const currentModeLabel = document.getElementById('currentModeLabel');
+            const displayEmail = document.getElementById('displayEmail');
+            const detectInfo = document.getElementById('detectInfo');
+            const detectLabel = document.getElementById('detectLabel');
+            const successMsg = document.getElementById('successMsg');
 
             if(!rawInput) {
                 alert('Please enter or select account data line!');
                 return;
             }
 
+            // বাটন লোডিং স্টেট (আপনার পিকের মতো একটিভ কালার)
             actionBtn.disabled = true;
-            btnText.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> Connecting Cloud API...';
-            resultBox.classList.remove('hidden');
-            currentModeLabel.innerText = currentPlatform === 'fb' ? 'Facebook' : 'Instagram';
-            currentModeLabel.className = currentPlatform === 'fb' ? 'text-blue-400 font-bold' : 'text-pink-400 font-bold';
+            actionBtn.className = "w-full bg-indigo-600 text-white font-extrabold py-3.5 px-4 inner-box transition-all duration-200 flex justify-center items-center text-xs tracking-wider uppercase shadow-md";
+            btnText.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Extracting Live Session...';
             
-            statusLabel.className = "text-[10px] font-bold px-2 py-0.5 rounded bg-yellow-500/20 text-yellow-400 border border-yellow-500/30";
-            statusLabel.innerText = "PROCESSING";
+            resultBox.classList.remove('hidden');
+            displayEmail.innerText = rawInput.includes('|') ? rawInput.split('|')[0] : "Target Account";
+
+            // লোডিং অবস্থা থিম
+            detectInfo.className = "px-4 border-l-2 border-r-2 border-slate-900/80 mb-4";
+            successMsg.className = "text-xs font-black text-amber-800 tracking-wide";
+            successMsg.innerText = "Exchanging Microsoft Token...";
+            detectLabel.className = "text-[11px] text-amber-600 font-bold mt-0.5";
+            detectLabel.innerText = "Connecting Render cloud servers...";
             otpOutput.innerText = "XXXXXX";
+            otpOutput.className = "text-5xl font-black tracking-widest text-slate-300 font-mono";
 
             try {
-                // ⚠️ আপনার Render লাইভ URL লিঙ্কটি নিচে বসিয়ে দিন
+                // ⚠️ আপনার Render লাইভ URL লিঙ্কটি নিচে বসাবেন
                 const API_URL = "https://fb-code-api.onrender.com/get-code"; 
 
                 const response = await fetch(API_URL, {
@@ -143,33 +179,53 @@
                 });
                 const data = await response.json();
 
-                actionBtn.disabled = false;
-                btnText.innerHTML = '<i class="fas fa-bolt mr-2"></i> Extract OTP Code';
+                resetButton();
 
                 if(data.status === 'success') {
-                    statusLabel.className = "text-[10px] font-bold px-2 py-0.5 rounded bg-green-500/20 text-green-400 border border-green-500/30";
-                    statusLabel.innerText = "SUCCESS";
+                    // ওটিপি সফল হলে সবুজ থিম (হুবহু পিকচারের মতো)
+                    detectInfo.className = "px-4 border-l-2 border-r-2 border-slate-900/80 mb-4";
+                    successMsg.className = "text-xs font-black text-emerald-800 tracking-wide";
+                    successMsg.innerText = "Email Retrieved Successfully";
+                    detectLabel.className = "text-[11px] text-emerald-600 font-bold mt-0.5";
+                    detectLabel.innerText = `✓ ${currentPlatform === 'fb' ? 'Facebook' : 'Instagram'} verification code detected`;
+                    
                     otpOutput.innerText = data.code;
-                    otpOutput.className = "text-4xl font-mono font-black tracking-widest text-green-400";
+                    otpOutput.className = "text-5xl font-black tracking-widest text-emerald-500 font-mono";
                 } else {
-                    statusLabel.className = "text-[10px] font-bold px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/30";
-                    statusLabel.innerText = "FAILED";
-                    otpOutput.innerText = data.message;
-                    otpOutput.className = "text-xs font-sans font-medium text-red-400";
+                    // ফেইলড হলে রেড থিম
+                    detectInfo.className = "px-4 border-l-2 border-r-2 border-red-500 mb-4";
+                    successMsg.className = "text-xs font-black text-red-800 tracking-wide";
+                    successMsg.innerText = "Verification Failed";
+                    detectLabel.className = "text-[11px] text-red-500 font-bold mt-0.5";
+                    detectLabel.innerText = "❌ No code found or session expired";
+
+                    otpOutput.innerText = "FAILED";
+                    otpOutput.className = "text-2xl font-black text-red-500 font-sans";
                 }
             } catch (err) {
-                actionBtn.disabled = false;
-                btnText.innerHTML = '<i class="fas fa-bolt mr-2"></i> Extract OTP Code';
-                statusLabel.className = "text-[10px] font-bold px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/30";
-                statusLabel.innerText = "ERROR";
-                otpOutput.innerText = "Server is waking up. Please wait 20-30 seconds and try again.";
-                otpOutput.className = "text-xs font-sans font-medium text-red-400";
+                resetButton();
+                detectInfo.className = "px-4 border-l-2 border-r-2 border-amber-500 mb-4";
+                successMsg.className = "text-xs font-black text-amber-800 tracking-wide";
+                successMsg.innerText = "API Server Waking Up";
+                detectLabel.className = "text-[11px] text-amber-600 font-bold mt-0.5";
+                detectLabel.innerText = "Render is starting up. Retry in 15 seconds.";
+                
+                otpOutput.innerText = "SLEEP";
+                otpOutput.className = "text-2xl font-black text-amber-500 font-sans";
             }
+        }
+
+        function resetButton() {
+            const actionBtn = document.getElementById('actionBtn');
+            const btnText = document.getElementById('btnText');
+            actionBtn.disabled = false;
+            actionBtn.className = "w-full bg-slate-100 hover:bg-slate-200 text-slate-500 font-extrabold py-3.5 px-4 inner-box border border-slate-200 transition-all duration-200 flex justify-center items-center cursor-pointer text-xs tracking-wider uppercase";
+            btnText.innerHTML = '<i class="fas fa-search mr-2"></i> Extract OTP Code';
         }
 
         function copyCode() {
             const text = document.getElementById('otpOutput').innerText;
-            if(text && text !== 'XXXXXX' && !text.includes('waking up')) {
+            if(text && text !== 'XXXXXX' && text !== 'FAILED' && text !== 'SLEEP') {
                 navigator.clipboard.writeText(text);
                 alert('Code Copied to Clipboard!');
             }
