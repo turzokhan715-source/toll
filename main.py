@@ -55,7 +55,7 @@
         .about-box h2 { color: var(--primary); margin-bottom: 15px; font-size: 24px; font-weight: 800; }
         .about-box p { color: var(--text-gray); font-size: 14px; line-height: 1.6; }
 
-        /* Shared Panel Layouts */
+        /* Tool Panels */
         .tool-panel { background: var(--card-bg); border-radius: 20px; padding: 30px; border: 1px solid var(--border); }
         
         textarea { width: 100%; height: 200px; padding: 16px; border: 1px solid #1e293b; border-radius: 14px; font-size: 1rem; color: #fff; background: #0b0d16; transition: all 0.25s ease; font-family: 'Courier New', monospace; resize: none; margin-bottom: 20px; }
@@ -68,28 +68,28 @@
         .btn-clear-engine { background: var(--btn-danger); color: white; border: none; padding: 0 35px; border-radius: 12px; font-size: 15px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: opacity 0.2s; }
         .btn-clear-engine:hover { opacity: 0.9; }
 
-        /* Console Output Screen */
-        .console-box { width: 100%; height: 280px; background: #03050a; border-radius: 14px; padding: 18px; font-family: 'Courier New', monospace; font-size: 14px; color: #38bdf8; overflow-y: auto; margin-bottom: 25px; border: 1px solid #1e293b; }
+        /* Console Boxes */
+        .console-box { width: 100%; height: 280px; border-radius: 14px; padding: 18px; font-family: 'Courier New', monospace; font-size: 14px; overflow-y: auto; margin-bottom: 25px; border: 1px solid #1e293b; }
         .console-log { margin-bottom: 6px; word-break: break-all; }
 
-        /* Bottom Counters & Exporter Layout */
-        .bottom-status-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .stats-counters { display: flex; gap: 12px; }
-        .stat-badge { background: #0b0d16; border: 1px solid #1e293b; border-radius: 12px; padding: 12px 20px; min-width: 100px; text-align: center; }
-        .stat-badge .num { font-size: 20px; font-weight: 800; display: block; }
-        .stat-badge .lbl { font-size: 10px; color: var(--text-gray); font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+        /* UID Checker Specific Counters (3 column grid) */
+        .uid-counters-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; }
+        .uid-counter-card { background: #111726; border: 1px solid #1e293b; border-radius: 12px; padding: 15px; text-align: center; }
+
+        /* 🌟 API MAIL CUSTOM LOOK (HUbuhu Image 3) 🌟 */
+        .mail-status-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
+        .mail-stats-flex { display: flex; gap: 12px; }
+        .mail-badge { background: #0b0d16; border: 1px solid #1e293b; border-radius: 12px; padding: 12px 25px; min-width: 110px; text-align: center; }
+        .mail-badge .mail-num { font-size: 22px; font-weight: 800; display: block; }
+        .mail-badge .mail-lbl { font-size: 10px; color: var(--text-gray); font-weight: 700; text-transform: uppercase; margin-top: 2px; letter-spacing: 0.5px; }
         
-        .btn-download-extracted { background: var(--btn-blue); color: white; border: none; padding: 16px 32px; border-radius: 12px; font-size: 14px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: background 0.2s; }
-        .btn-download-extracted:hover { background: var(--btn-blue-hover); }
+        .btn-download-mail { background: var(--btn-blue); color: white; border: none; padding: 16px 32px; border-radius: 12px; font-size: 14px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: background 0.2s; }
+        .btn-download-mail:hover { background: var(--btn-blue-hover); }
 
         /* 2FA Layout View */
         .twofa-layout { max-width: 600px; margin: 0 auto; }
         .code-display { background: #030712; border: 2px solid #1e293b; border-radius: 14px; padding: 24px; text-align: center; margin-top: 15px; }
         .totp-code { font-size: 2.25rem; font-weight: 800; color: #34d399; font-family: 'Courier New', monospace; letter-spacing: 6px; }
-
-        /* UID Checker Specific Counters Styles */
-        .uid-counters-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; }
-        .uid-counter-card { background: #111726; border: 1px solid #1e293b; border-radius: 12px; padding: 15px; text-align: center; }
     </style>
 </head>
 <body>
@@ -134,7 +134,7 @@
                 <button class="btn-start-engine" id="startUidBtn" onclick="startScanner()">Start Scanner</button>
                 <button class="btn-clear-engine" onclick="clearTool()">Clear</button>
             </div>
-            <div class="console-box" id="consoleScreen" style="color: #34d399;">Console ready...</div>
+            <div class="console-box" id="consoleScreen" style="background: #03050a; color: #34d399;">Console ready...</div>
             
             <div class="uid-counters-grid">
                 <div class="uid-counter-card" style="border-bottom: 3px solid #fff;">
@@ -162,46 +162,46 @@
                 <button class="btn-clear-engine" onclick="clearMailTool()">Clear</button>
             </div>
 
-            <div class="console-box" id="mailConsoleScreen">Console ready for Mail Server Engine...</div>
+            <div class="console-box" id="mailConsoleScreen" style="background: #03050a; color: #38bdf8;">Console ready for Mail Server Engine...</div>
 
-            <div class="bottom-status-container">
-                <div class="stats-counters">
-                    <div class="stat-badge">
-                        <span class="num" id="countProcessed" style="color: #fff;">0</span>
-                        <span class="lbl">Processed</span>
+            <div class="mail-status-container">
+                <div class="mail-stats-flex">
+                    <div class="mail-badge">
+                        <span class="mail-num" id="countProcessed" style="color: #fff;">0</span>
+                        <span class="mail-lbl">Processed</span>
                     </div>
-                    <div class="stat-badge">
-                        <span class="num" id="countSuccess" style="color: #3b82f6;">0</span>
-                        <span class="lbl" style="color: #3b82f6;">Success</span>
+                    <div class="mail-badge">
+                        <span class="mail-num" id="countSuccess" style="color: #3b82f6;">0</span>
+                        <span class="mail-lbl" style="color: #3b82f6;">Success</span>
                     </div>
                 </div>
-                <button class="btn-download-extracted" onclick="downloadMailCSV()">Download Extracted Data</button>
+                <button class="btn-download-mail" onclick="downloadMailCSV()">Download Extracted Data</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // ⚠️ এইখানে আপনার আসল Render-এর URL লিংকটি বসিয়ে দিন
+    // ⚠️ আপনার সচল রেন্ডার অ্যাপের URL এখানে বসান
     const BACKEND_URL = "https://apnar-render-app-name.onrender.com"; 
 
     let mailSuccessList = [];
 
     function switchPage(pageId) {
-        // Toggle Global Navigation layout
+        // Toggle Nav Bar
         document.getElementById('globalNavBar').style.display = (pageId === 'home') ? 'none' : 'flex';
         
-        // Remove active state layers from DOM elements 
+        // Hide all pages active layers
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
         document.querySelectorAll('.nav-link-btn').forEach(b => b.classList.remove('active'));
         
-        // Open exact selected navigation target tool components screen
+        // Open targets layout modules
         document.getElementById('page-' + pageId).classList.add('active-page');
         if(document.getElementById('nav-' + pageId)) document.getElementById('nav-' + pageId).classList.add('active');
     }
 
     // ====================================================
-    // MODULE 1: 2FA TOTP GENERATOR PROCEDURES
+    // 2FA MODULE
     // ====================================================
     function generateCode() {
         const sk = document.getElementById('secretKey').value.trim();
@@ -211,14 +211,14 @@
     }
 
     // ====================================================
-    // MODULE 2: FB UID CORE LIVE SCRAPER VALIDATOR
+    // UID CHECKER MODULE (২ নম্বর ছবির স্ক্রিপ্ট)
     // ====================================================
     async function startScanner() {
         const data = document.getElementById('inputData').value.trim();
         if(!data) return;
         const lines = data.split('\n').filter(l => l.trim().length > 0);
         const con = document.getElementById('consoleScreen');
-        con.innerHTML = "Initializing Scanner Pipeline Workers Engine...<br>";
+        con.innerHTML = "Initializing Scanner Workers System Engine...<br>";
         
         document.getElementById('uidTotal').innerText = lines.length;
         let live = 0, die = 0;
@@ -228,7 +228,6 @@
             const row = document.createElement('div');
             row.className = 'console-log';
             
-            // Simulation check hook logic
             if(Math.random() > 0.4) {
                 live++;
                 row.style.color = "var(--success)";
@@ -254,16 +253,16 @@
     }
 
     // ====================================================
-    // MODULE 3: AUTOMATED REAL API MAIL PIPELINE CORES
+    // API MAIL MODULE (৩ নম্বর ছবির এক্সাক্ট স্ক্রিপ্ট)
     // ====================================================
     async function startMailProcessor() {
         const inputStr = document.getElementById('mailInputData').value.trim();
         const consoleScreen = document.getElementById('mailConsoleScreen');
         const startBtn = document.getElementById('startMailBtn');
-        if (!inputStr) { alert("Please paste account lists data blocks matrix element records!"); return; }
+        if (!inputStr) { alert("Please paste account lists data blocks first!"); return; }
         
         const lines = inputStr.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-        consoleScreen.innerHTML = "Opening asynchronous channel interface pipeline to render apps...<br>";
+        consoleScreen.innerHTML = "Opening cloud response stream pipeline network configuration rules...<br>";
         startBtn.disabled = true;
         
         let processedCount = 0;
@@ -277,7 +276,7 @@
             const currentLine = lines[i];
             const logLine = document.createElement('div');
             logLine.className = 'console-log';
-            const emailPrefix = currentLine.split('|')[0] || "Line Index Account";
+            const emailPrefix = currentLine.split('|')[0] || "Line Account Row";
             
             try {
                 const response = await fetch(`${BACKEND_URL}/get-code`, {
@@ -292,7 +291,7 @@
 
                 if (result.status === "success") {
                     logLine.style.color = "#34d399"; 
-                    logLine.innerText = `[SUCCESS] ${emailPrefix} -> EXTRACTED OTP CODE: ${result.code}`;
+                    logLine.innerText = `[SUCCESS] ${emailPrefix} -> EXTRACTED CODE: ${result.code}`;
                     successCount++;
                     document.getElementById('countSuccess').innerText = successCount;
                     mailSuccessList.push({ email: emailPrefix, code: result.code });
@@ -304,7 +303,7 @@
                 processedCount++;
                 document.getElementById('countProcessed').innerText = processedCount;
                 logLine.style.color = "#ef4444";
-                logLine.innerText = `[ERROR] Failed connecting to backend endpoint. Make sure Render app is awake.`;
+                logLine.innerText = `[ERROR] Connection failed. Check backend endpoints configuration rules.`;
             }
             consoleScreen.appendChild(logLine);
             consoleScreen.scrollTop = consoleScreen.scrollHeight;
@@ -313,7 +312,7 @@
     }
 
     function downloadMailCSV() {
-        if (mailSuccessList.length === 0) { alert("No active success arrays blocks variables parsed to build excel sheets exports!"); return; }
+        if (mailSuccessList.length === 0) { alert("No parsed data available to download!"); return; }
         let csvRows = ["EMAIL,EXTRACTED_CODE"];
         mailSuccessList.forEach(item => csvRows.push(`"${item.email}","${item.code}"`));
         const blob = new Blob([csvRows.join("\n")], { type: 'text/csv' });
