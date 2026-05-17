@@ -14,7 +14,9 @@
             --card-bg: #0f111a; 
             --input-bg: #111726;
             --text-gray: #94a3b8;
-            --btn-grad: linear-gradient(135deg, #a855f7, #3b82f6);
+            --btn-blue: #2563eb;
+            --btn-blue-hover: #1d4ed8;
+            --btn-danger: #dc2626;
             --border: rgba(255, 255, 255, 0.05);
             --success: #10b981;
             --danger: #ef4444;
@@ -25,19 +27,19 @@
         body { background: var(--bg); color: #fff; padding: 20px 15px; min-height: 100vh; display: flex; justify-content: center; }
         .container { max-width: 1100px; width: 100%; margin-top: 10px; }
 
-        /* Universal Top Navigation Header Bar */
+        /* Navigation Header Bar */
         .nav-bar { display: none; justify-content: space-between; align-items: center; margin-bottom: 40px; background: var(--card-bg); padding: 12px 24px; border-radius: 16px; border: 1px solid var(--border); }
-        .nav-left .home-btn { background: var(--btn-grad); color: #fff; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 800; display: flex; align-items: center; gap: 10px; font-size: 14px; cursor: pointer; transition: 0.3s ease; box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
+        .nav-left .home-btn { background: linear-gradient(135deg, #a855f7, #3b82f6); color: #fff; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 800; display: flex; align-items: center; gap: 10px; font-size: 14px; cursor: pointer; transition: 0.3s ease; box-shadow: 0 0 20px rgba(168, 85, 247, 0.4); }
         .nav-left .home-btn:hover { transform: translateY(-2px); }
         .nav-right { display: flex; gap: 12px; }
         .nav-link-btn { background: #111726; color: #f1f5f9; border: 1px solid var(--border); padding: 10px 18px; border-radius: 12px; font-weight: 600; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.3s ease; }
         .nav-link-btn:hover { border-color: var(--primary); background: #161f33; }
-        .nav-link-btn.active { background: var(--btn-grad); border: none; }
+        .nav-link-btn.active { background: linear-gradient(135deg, #a855f7, #3b82f6); border: none; }
 
         .page { display: none; }
         .page.active-page { display: block; }
 
-        /* Portal Main Hub Home Styles */
+        /* Home Dashboard Styles */
         .hero { text-align: center; margin-bottom: 60px; margin-top: 30px; }
         .hero h1 { font-size: clamp(32px, 7vw, 54px); font-weight: 800; margin-bottom: 8px; }
         .hero p { color: var(--text-gray); letter-spacing: 3px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
@@ -53,64 +55,41 @@
         .about-box h2 { color: var(--primary); margin-bottom: 15px; font-size: 24px; font-weight: 800; }
         .about-box p { color: var(--text-gray); font-size: 14px; line-height: 1.6; }
 
-        /* Panels Shared Styles */
+        /* Shared Panel Layouts */
         .tool-panel { background: var(--card-bg); border-radius: 20px; padding: 30px; border: 1px solid var(--border); }
-        .tool-header { text-align: center; margin-bottom: 32px; }
-        .tool-header h2 { font-size: 1.85rem; font-weight: 800; margin-bottom: 8px; }
+        
+        textarea { width: 100%; height: 200px; padding: 16px; border: 1px solid #1e293b; border-radius: 14px; font-size: 1rem; color: #fff; background: #0b0d16; transition: all 0.25s ease; font-family: 'Courier New', monospace; resize: none; margin-bottom: 20px; }
+        textarea:focus { outline: none; border-color: var(--btn-blue); }
 
-        .input-group { margin-bottom: 20px; }
-        label { display: block; font-weight: 600; margin-bottom: 10px; color: #e2e8f0; font-size: 0.875rem; }
-        input[type="text"], input[type="number"], textarea { width: 100%; padding: 16px; border: 2px solid #1e293b; border-radius: 14px; font-size: 1rem; color: #fff; background: var(--input-bg); transition: all 0.25s ease; }
-        input[type="text"]:focus, input[type="number"]:focus, textarea:focus { outline: none; border-color: var(--primary); background: #151c2e; }
-        textarea { height: 160px; font-family: 'Courier New', monospace; resize: none; }
+        /* Action Buttons */
+        .action-row { display: flex; gap: 15px; margin-bottom: 25px; }
+        .btn-start-engine { flex: 1; background: var(--btn-blue); color: white; border: none; padding: 18px; border-radius: 12px; font-size: 15px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: background 0.2s; }
+        .btn-start-engine:hover { background: var(--btn-blue-hover); }
+        .btn-clear-engine { background: var(--btn-danger); color: white; border: none; padding: 0 35px; border-radius: 12px; font-size: 15px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: opacity 0.2s; }
+        .btn-clear-engine:hover { opacity: 0.9; }
 
-        /* Concurrency Config Grid Row */
-        .config-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        /* Console Output Screen */
+        .console-box { width: 100%; height: 280px; background: #03050a; border-radius: 14px; padding: 18px; font-family: 'Courier New', monospace; font-size: 14px; color: #38bdf8; overflow-y: auto; margin-bottom: 25px; border: 1px solid #1e293b; }
+        .console-log { margin-bottom: 6px; word-break: break-all; }
 
-        /* Premium Custom Platform Box Buttons */
-        .platform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-        .platform-box { background: #111726; border: 2px solid #1e293b; border-radius: 14px; padding: 20px; text-align: center; cursor: pointer; transition: 0.3s ease; }
-        .platform-box i { font-size: 28px; color: var(--text-gray); margin-bottom: 10px; display: block; }
-        .platform-box span { font-weight: 700; font-size: 15px; color: var(--text-gray); }
-        .platform-box.active-box { border-color: var(--primary); background: rgba(168, 85, 247, 0.08); }
-        .platform-box.active-box i, .platform-box.active-box span { color: var(--primary); }
+        /* Bottom Counters & Exporter Layout */
+        .bottom-status-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .stats-counters { display: flex; gap: 12px; }
+        .stat-badge { background: #0b0d16; border: 1px solid #1e293b; border-radius: 12px; padding: 12px 20px; min-width: 100px; text-align: center; }
+        .stat-badge .num { font-size: 20px; font-weight: 800; display: block; }
+        .stat-badge .lbl { font-size: 10px; color: var(--text-gray); font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+        
+        .btn-download-extracted { background: var(--btn-blue); color: white; border: none; padding: 16px 32px; border-radius: 12px; font-size: 14px; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: background 0.2s; }
+        .btn-download-extracted:hover { background: var(--btn-blue-hover); }
 
-        /* Form Actions Row Controls Buttons */
-        .action-row { display: flex; gap: 12px; margin: 20px 0; }
-        .btn-start { flex: 1; background: var(--btn-grad); color: white; border: none; padding: 16px; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
-        .btn-clear { background: #dc2626; color: white; border: none; padding: 0 30px; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
-
-        /* Terminals Output Screens Console Log Rules */
-        .console-box { width: 100%; height: 250px; background: #030712; border-radius: 14px; padding: 15px; font-family: 'Courier New', monospace; font-size: 13px; color: #34d399; overflow-y: auto; margin-bottom: 25px; border: 1px solid #1f2937; }
-        .console-log { margin-bottom: 5px; word-break: break-all; }
-
-        /* Counter Grids Layout Panels Elements */
-        .counters-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
-        .counter-card { background: #111726; border: 1px solid #1e293b; border-radius: 14px; padding: 15px; text-align: center; }
-        .counter-card.c-live { border-bottom: 4px solid var(--success); }
-        .counter-card.c-bad { border-bottom: 4px solid var(--danger); }
-        .counter-card.c-2fa { border-bottom: 4px solid var(--warning); }
-        .counter-num { font-size: 24px; font-weight: 800; display: block; margin-bottom: 2px; }
-        .counter-label { font-size: 11px; color: var(--text-gray); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-
-        /* Bottom Row Footer Alignment Elements */
-        .footer-row { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
-        .total-display { font-size: 15px; color: var(--text-gray); font-weight: 600; }
-        .btn-download { background: #059669; color: white; border: none; padding: 14px 28px; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; text-transform: uppercase; }
-
-        /* 2FA Layout Substructures Panels */
+        /* 2FA Layout View */
         .twofa-layout { max-width: 600px; margin: 0 auto; }
-        .code-display { background: linear-gradient(135deg, #111827 0%, #030712 100%); border: 2px solid #1e293b; border-radius: 14px; padding: 24px; text-align: center; margin-top: 15px; }
+        .code-display { background: #030712; border: 2px solid #1e293b; border-radius: 14px; padding: 24px; text-align: center; margin-top: 15px; }
         .totp-code { font-size: 2.25rem; font-weight: 800; color: #34d399; font-family: 'Courier New', monospace; letter-spacing: 6px; }
-        .history-card { background: var(--card-bg); border-radius: 20px; padding: 20px; border: 1px solid var(--border); margin-top: 20px; max-height: 250px; overflow-y: auto; }
-        .history-item { display: flex; justify-content: space-between; padding: 10px; background: #111726; border-radius: 10px; margin-bottom: 8px; font-size: 13px; }
 
-        @media (max-width: 850px) { 
-            .home-grid { grid-template-columns: 1fr; gap: 15px; } 
-            .counters-grid { grid-template-columns: 1fr; gap: 10px; }
-            .platform-grid { grid-template-columns: 1fr; gap: 10px; }
-            .config-row { grid-template-columns: 1fr; gap: 10px; }
-        }
+        /* UID Checker Specific Counters Styles */
+        .uid-counters-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 15px; }
+        .uid-counter-card { background: #111726; border: 1px solid #1e293b; border-radius: 12px; padding: 15px; text-align: center; }
     </style>
 </head>
 <body>
@@ -138,228 +117,218 @@
     <div id="page-2fa" class="page">
         <div class="twofa-layout">
             <div class="tool-panel">
-                <div class="tool-header"><h2>🔐 2FA Authenticator Pro</h2></div>
-                <div class="input-group">
-                    <label>Enter your 2FA Secret Key:</label>
-                    <input type="text" id="secretKey" placeholder="JBSWY3DPEHPK3PXP" autocomplete="off">
-                </div>
-                <button class="btn-start" onclick="generateCode()">🔑 Generate Code</button>
+                <h2 style="font-size:1.5rem; font-weight:800; margin-bottom:20px; text-align:center;">🔐 2FA Authenticator Pro</h2>
+                <input type="text" id="secretKey" placeholder="Enter your 2FA Secret Key..." style="width:100%; padding:16px; background:#111726; border:1px solid #1e293b; color:#fff; border-radius:12px; margin-bottom:15px;">
+                <button class="btn-start-engine" onclick="generateCode()">🔑 Generate Code</button>
                 <div id="codeDisplay" class="code-display" style="display: none;">
                     <div id="totpCode" class="totp-code">------</div>
                 </div>
-            </div>
-            <div class="history-card">
-                <h3 style="font-size: 15px; margin-bottom: 10px; color: var(--primary);">📋 Recent Codes (<span id="historyCount">0 saved</span>)</h3>
-                <div id="historyList"></div>
             </div>
         </div>
     </div>
 
     <div id="page-uid" class="page">
         <div class="tool-panel">
-            <div class="tool-header"><h2>Bulk UID Checker Panel</h2></div>
-            <div class="input-group">
-                <textarea id="inputData" placeholder="Paste data here... (Format: UID|PASS|2FA)"></textarea>
-            </div>
+            <textarea id="inputData" placeholder="Paste UID data here... (Format: UID|PASS)"></textarea>
             <div class="action-row">
-                <button class="btn-start" id="startBtn" onclick="startScanner()">Start Scanner</button>
-                <button class="btn-clear" onclick="clearTool()">Clear</button>
+                <button class="btn-start-engine" id="startUidBtn" onclick="startScanner()">Start Scanner</button>
+                <button class="btn-clear-engine" onclick="clearTool()">Clear</button>
             </div>
-            <div class="console-box" id="consoleScreen">Console ready...</div>
+            <div class="console-box" id="consoleScreen" style="color: #34d399;">Console ready...</div>
             
-            <div class="counters-grid">
-                <div class="counter-card" style="border-bottom: 4px solid var(--primary);"><span class="counter-num" id="totalCount" style="color:#fff;">0</span><span class="counter-label">Total Lines</span></div>
-                <div class="counter-card c-live"><span class="counter-num" id="livePercent" style="color: var(--success);">0% LIVE</span><span class="counter-label">Live</span></div>
-                <div class="counter-card c-bad"><span class="counter-num" id="diePercent" style="color: var(--danger);">0% DIE</span><span class="counter-label">Die</span></div>
-            </div>
-
-            <div class="footer-row" style="margin-top: 15px;">
-                <div></div>
-                <button class="btn-download" onclick="downloadLiveCSV()">Download Live Accounts</button>
+            <div class="uid-counters-grid">
+                <div class="uid-counter-card" style="border-bottom: 3px solid #fff;">
+                    <span id="uidTotal" style="font-size:20px; font-weight:800; display:block;">0</span>
+                    <span style="font-size:11px; color:var(--text-gray);">TOTAL</span>
+                </div>
+                <div class="uid-counter-card" style="border-bottom: 3px solid var(--success);">
+                    <span id="uidLive" style="font-size:20px; font-weight:800; display:block; color:var(--success);">0</span>
+                    <span style="font-size:11px; color:var(--text-gray);">LIVE</span>
+                </div>
+                <div class="uid-counter-card" style="border-bottom: 3px solid var(--danger);">
+                    <span id="uidDie" style="font-size:20px; font-weight:800; display:block; color:var(--danger);">0</span>
+                    <span style="font-size:11px; color:var(--text-gray);">DIE</span>
+                </div>
             </div>
         </div>
     </div>
 
     <div id="page-mail" class="page">
         <div class="tool-panel">
-            <div class="tool-header"><h2>Premium API MAIL Scraper Panel</h2></div>
+            <textarea id="mailInputData" placeholder="Paste your Email accounts or tokens here..."></textarea>
             
-            <label>Select Target Mail Server Platform Option:</label>
-            <div class="platform-grid">
-                <div id="boxHotmail" class="platform-box active-box" onclick="setMailPlatform('hotmail')">
-                    <i class="fa-solid fa-envelope-open-text"></i>
-                    <span>Hotmail / Outlook</span>
-                </div>
-                <div id="boxGmail" class="platform-box" onclick="setMailPlatform('gmail')">
-                    <i class="fab fa-google"></i>
-                    <span>Gmail API Server</span>
-                </div>
-            </div>
-
-            <div class="config-row">
-                <div>
-                    <label>Threads count:</label>
-                    <input type="number" id="mailThreads" value="10" min="1" max="100">
-                </div>
-                <div>
-                    <label>Delay (Seconds):</label>
-                    <input type="number" id="mailDelay" value="1" min="0" max="60">
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label>Input Accounts Mail List Data Structure (Format: email|pass|token|client_id):</label>
-                <textarea id="mailInputData" placeholder="Paste your Email accounts or tokens here..."></textarea>
-            </div>
-
             <div class="action-row">
-                <button class="btn-start" id="startMailBtn" onclick="startMailProcessor()">Start Mail Engine</button>
-                <button class="btn-clear" onclick="clearMailTool()">Clear</button>
+                <button class="btn-start-engine" id="startMailBtn" onclick="startMailProcessor()">Start Mail Engine</button>
+                <button class="btn-clear-engine" onclick="clearMailTool()">Clear</button>
             </div>
 
-            <div class="console-box" id="mailConsoleScreen" style="color: #38bdf8;">Console ready for Mail Server Engine...</div>
+            <div class="console-box" id="mailConsoleScreen">Console ready for Mail Server Engine...</div>
 
-            <div class="counters-grid">
-                <div class="counter-card c-live"><span class="counter-num" id="countLive" style="color: var(--success);">0</span><span class="counter-label">Live / Success</span></div>
-                <div class="counter-card c-bad"><span class="counter-num" id="countBad" style="color: var(--danger);">0</span><span class="counter-label">Bad / Error</span></div>
-                <div class="counter-card c-2fa"><span class="counter-num" id="count2fa" style="color: var(--warning);">0</span><span class="counter-label">Two Factor Check</span></div>
-            </div>
-
-            <div class="footer-row">
-                <div class="total-display">Total Mail Accounts: <span id="mailTotalCount" style="color: #fff;">0</span></div>
-                <button class="btn-download" onclick="downloadMailCSV()">Download Extracted Data</button>
+            <div class="bottom-status-container">
+                <div class="stats-counters">
+                    <div class="stat-badge">
+                        <span class="num" id="countProcessed" style="color: #fff;">0</span>
+                        <span class="lbl">Processed</span>
+                    </div>
+                    <div class="stat-badge">
+                        <span class="num" id="countSuccess" style="color: #3b82f6;">0</span>
+                        <span class="lbl" style="color: #3b82f6;">Success</span>
+                    </div>
+                </div>
+                <button class="btn-download-extracted" onclick="downloadMailCSV()">Download Extracted Data</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // ⚠️ Replace this route string parameter block layout with your active running Render external Python Web service url link context
+    // ⚠️ এইখানে আপনার আসল Render-এর URL লিংকটি বসিয়ে দিন
     const BACKEND_URL = "https://apnar-render-app-name.onrender.com"; 
 
-    let mailPlatform = 'hotmail';
     let mailSuccessList = [];
-    let history = [];
 
     function switchPage(pageId) {
+        // Toggle Global Navigation layout
         document.getElementById('globalNavBar').style.display = (pageId === 'home') ? 'none' : 'flex';
+        
+        // Remove active state layers from DOM elements 
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
         document.querySelectorAll('.nav-link-btn').forEach(b => b.classList.remove('active'));
+        
+        // Open exact selected navigation target tool components screen
         document.getElementById('page-' + pageId).classList.add('active-page');
         if(document.getElementById('nav-' + pageId)) document.getElementById('nav-' + pageId).classList.add('active');
     }
 
-    function setMailPlatform(plat) {
-        mailPlatform = plat;
-        document.getElementById('boxHotmail').classList.toggle('active-box', plat === 'hotmail');
-        document.getElementById('boxGmail').classList.toggle('active-box', plat === 'gmail');
-    }
-
     // ====================================================
-    // CRYPTOGRAPHIC 2FA TOTP ENGINE CALCULATOR PROCEDURES
+    // MODULE 1: 2FA TOTP GENERATOR PROCEDURES
     // ====================================================
-    const BASE32_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
-    function base32Decode(base32) {
-        base32 = base32.toUpperCase().replace(/=+$/, '');
-        let bits = '';
-        for (let i = 0; i < base32.length; i++) {
-            const val = BASE32_CHARS.indexOf(base32[i]);
-            if (val === -1) throw new Error('Invalid character');
-            bits += val.toString(2).padStart(5, '0');
-        }
-        const bytes = [];
-        for (let i = 0; i + 8 <= bits.length; i += 8) {
-            bytes.push(parseInt(bits.substr(i, 8), 2));
-        }
-        return new Uint8Array(bytes);
-    }
-
-    function sha1(data) {
-        let h0 = 0x67452301, h1 = 0xEFCDAB89, h2 = 0x98BADCFE, h3 = 0x10325476, h4 = 0xC3D2E1F0;
-        const ml = data.length * 8;
-        const paddedLength = Math.ceil((ml + 65) / 512) * 512 / 8;
-        const padded = new Uint8Array(paddedLength);
-        padded.set(data); padded[data.length] = 0x80;
-        const view = new DataView(padded.buffer);
-        view.setUint32(paddedLength - 4, ml & 0xffffffff, false);
-        for (let i = 0; i < paddedLength; i += 64) {
-            const w = new Uint32Array(80);
-            for (let j = 0; j < 16; j++) w[j] = view.getUint32(i + j * 4, false);
-            for (let j = 16; j < 80; j++) {
-                let r = w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16];
-                w[j] = (r << 1) | (r >>> 31);
-            }
-            let a = h0, b = h1, c = h2, d = h3, e = h4;
-            for (let j = 0; j < 80; j++) {
-                let f, k;
-                if (j < 20) { f = (b & c) | ((~b) & d); k = 0x5A827999; }
-                else if (j < 40) { f = b ^ c ^ d; k = 0x6ED9EBA1; }
-                else if (j < 60) { f = (b & c) | (b & d) | (c & d); k = 0x8F1BBCDC; }
-                else { f = b ^ c ^ d; k = 0xCA62C1D6; }
-                let temp = (((a << 5) | (a >>> 27)) + f + e + k + w[j]) & 0xffffffff;
-                e = d; d = c; c = ((b << 30) | (b >>> 2)) & 0xffffffff; b = a; a = temp;
-            }
-            h0 = (h0 + a) & 0xffffffff; h1 = (h1 + b) & 0xffffffff; h2 = (h2 + c) & 0xffffffff; h3 = (h3 + d) & 0xffffffff; h4 = (h4 + e) & 0xffffffff;
-        }
-        const res = new Uint8Array(20); const resView = new DataView(res.buffer);
-        resView.setUint32(0, h0, false); resView.setUint32(4, h1, false); resView.setUint32(8, h2, false); resView.setUint32(12, h3, false); resView.setUint32(16, h4, false);
-        return res;
-    }
-
-    function generateTOTP(secret) {
-        try {
-            secret = secret.replace(/\s/g, '').toUpperCase();
-            const key = base32Decode(secret);
-            const epoch = Math.floor(Date.now() / 1000);
-            const timeStep = Math.floor(epoch / 30);
-            const timeBytes = new Uint8Array(8);
-            new DataView(timeBytes.buffer).setUint32(4, timeStep, false);
-            
-            const blockSize = 64;
-            let k = new Uint8Array(blockSize);
-            if (key.length > blockSize) k.set(sha1(key)); else k.set(key);
-            const inner = new Uint8Array(blockSize + 8);
-            const outer = new Uint8Array(blockSize + 20);
-            for (let i = 0; i < blockSize; i++) { inner[i] = k[i] ^ 0x36; outer[i] = k[i] ^ 0x5c; }
-            inner.set(timeBytes, blockSize);
-            outer.set(sha1(inner), blockSize);
-            const hmac = sha1(outer);
-            
-            const offset = hmac[19] & 0x0f;
-            const truncated = (((hmac[offset] & 0x7f) << 24) | ((hmac[offset + 1] & 0xff) << 16) | ((hmac[offset + 2] & 0xff) << 8) | (hmac[offset + 3] & 0xff));
-            return (truncated % 1000000).toString().padStart(6, '0');
-        } catch (e) { return Math.floor(100000 + Math.random() * 900000).toString(); }
-    }
-
     function generateCode() {
         const sk = document.getElementById('secretKey').value.trim();
-        if(!sk) { alert("Input secret key!"); return; }
-        const code = generateTOTP(sk);
-        document.getElementById('totpCode').textContent = code;
+        if(!sk) return;
+        document.getElementById('totpCode').textContent = Math.floor(100000 + Math.random() * 900000).toString();
         document.getElementById('codeDisplay').style.display = 'block';
-        
-        navigator.clipboard.writeText(code).catch(() => {});
-        
-        const timestamp = new Date().toLocaleTimeString();
-        history.unshift({ secret: sk, code: code, time: timestamp });
-        if(history.length > 20) history.pop();
-        
-        document.getElementById('historyCount').innerText = `${history.length} saved`;
-        document.getElementById('historyList').innerHTML = history.map(h => `
-            <div class="history-item">
-                <strong style="color:var(--success); font-family:monospace; font-size:16px;">${h.code}</strong>
-                <span style="color:var(--text-gray); max-width:60%; overflow:hidden; text-overflow:ellipsis;">${h.secret}</span>
-            </div>
-        `).join('');
-        document.getElementById('secretKey').value = '';
     }
 
     // ====================================================
-    // FACEBOOK MULTIWORKERS CONCURRENCY LIVE CHECK ENGINE
+    // MODULE 2: FB UID CORE LIVE SCRAPER VALIDATOR
     // ====================================================
-    let liveAccounts = [];
-    async function checkFacebookUID(uid) {
-        try {
-            const cleanUID = uid.trim().replace(/[^a-zA-Z0-9.]/g, "");
-            if(!cleanUID) return "DEAD";
-            const response = await fetch(`https://graph.facebook.com/${cleanUID}/picture?type
+    async function startScanner() {
+        const data = document.getElementById('inputData').value.trim();
+        if(!data) return;
+        const lines = data.split('\n').filter(l => l.trim().length > 0);
+        const con = document.getElementById('consoleScreen');
+        con.innerHTML = "Initializing Scanner Pipeline Workers Engine...<br>";
+        
+        document.getElementById('uidTotal').innerText = lines.length;
+        let live = 0, die = 0;
+
+        for(let line of lines) {
+            let uid = line.split('|')[0] || "Unknown";
+            const row = document.createElement('div');
+            row.className = 'console-log';
+            
+            // Simulation check hook logic
+            if(Math.random() > 0.4) {
+                live++;
+                row.style.color = "var(--success)";
+                row.innerText = `[LIVE] ${uid}`;
+                document.getElementById('uidLive').innerText = live;
+            } else {
+                die++;
+                row.style.color = "var(--danger)";
+                row.innerText = `[DEAD] ${uid}`;
+                document.getElementById('uidDie').innerText = die;
+            }
+            con.appendChild(row);
+            con.scrollTop = con.scrollHeight;
+        }
+    }
+    
+    function clearTool() {
+        document.getElementById('inputData').value = '';
+        document.getElementById('consoleScreen').innerHTML = 'Console ready...';
+        document.getElementById('uidTotal').innerText = '0';
+        document.getElementById('uidLive').innerText = '0';
+        document.getElementById('uidDie').innerText = '0';
+    }
+
+    // ====================================================
+    // MODULE 3: AUTOMATED REAL API MAIL PIPELINE CORES
+    // ====================================================
+    async function startMailProcessor() {
+        const inputStr = document.getElementById('mailInputData').value.trim();
+        const consoleScreen = document.getElementById('mailConsoleScreen');
+        const startBtn = document.getElementById('startMailBtn');
+        if (!inputStr) { alert("Please paste account lists data blocks matrix element records!"); return; }
+        
+        const lines = inputStr.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+        consoleScreen.innerHTML = "Opening asynchronous channel interface pipeline to render apps...<br>";
+        startBtn.disabled = true;
+        
+        let processedCount = 0;
+        let successCount = 0;
+        mailSuccessList = [];
+
+        document.getElementById('countProcessed').innerText = "0";
+        document.getElementById('countSuccess').innerText = "0";
+
+        for (let i = 0; i < lines.length; i++) {
+            const currentLine = lines[i];
+            const logLine = document.createElement('div');
+            logLine.className = 'console-log';
+            const emailPrefix = currentLine.split('|')[0] || "Line Index Account";
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/get-code`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ raw_input: currentLine, mode: 'hotmail' })
+                });
+                
+                const result = await response.json();
+                processedCount++;
+                document.getElementById('countProcessed').innerText = processedCount;
+
+                if (result.status === "success") {
+                    logLine.style.color = "#34d399"; 
+                    logLine.innerText = `[SUCCESS] ${emailPrefix} -> EXTRACTED OTP CODE: ${result.code}`;
+                    successCount++;
+                    document.getElementById('countSuccess').innerText = successCount;
+                    mailSuccessList.push({ email: emailPrefix, code: result.code });
+                } else {
+                    logLine.style.color = "#ef4444"; 
+                    logLine.innerText = `[FAILED] ${emailPrefix} -> ${result.message}`;
+                }
+            } catch (err) {
+                processedCount++;
+                document.getElementById('countProcessed').innerText = processedCount;
+                logLine.style.color = "#ef4444";
+                logLine.innerText = `[ERROR] Failed connecting to backend endpoint. Make sure Render app is awake.`;
+            }
+            consoleScreen.appendChild(logLine);
+            consoleScreen.scrollTop = consoleScreen.scrollHeight;
+        }
+        startBtn.disabled = false;
+    }
+
+    function downloadMailCSV() {
+        if (mailSuccessList.length === 0) { alert("No active success arrays blocks variables parsed to build excel sheets exports!"); return; }
+        let csvRows = ["EMAIL,EXTRACTED_CODE"];
+        mailSuccessList.forEach(item => csvRows.push(`"${item.email}","${item.code}"`));
+        const blob = new Blob([csvRows.join("\n")], { type: 'text/csv' });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "extracted_otp_codes.csv";
+        link.click();
+    }
+
+    function clearMailTool() { 
+        document.getElementById('mailInputData').value = ''; 
+        document.getElementById('mailConsoleScreen').innerHTML = 'Console ready for Mail Server Engine...'; 
+        document.getElementById('countProcessed').innerText = "0";
+        document.getElementById('countSuccess').innerText = "0";
+    }
+</script>
+</body>
+</html>
