@@ -3,58 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facebook Code Retriever</title>
+    <title>FB & IG OTP Extractor</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col justify-center items-center p-4">
+<body class="bg-slate-950 text-gray-100 min-h-screen flex flex-col justify-center items-center p-4 font-sans">
 
-    <div class="w-full max-w-xl border border-gray-800 rounded-xl shadow-2xl p-6 bg-slate-800">
-        <div class="flex items-center space-x-3 border-b border-gray-700 pb-4 mb-4">
-            <i class="fab fa-facebook text-blue-500 text-3xl"></i>
-            <h1 class="text-xl font-bold tracking-tight text-white">FB Multi-Account Retriever</h1>
+    <div class="w-full max-w-xl border border-slate-800 rounded-2xl shadow-2xl p-6 bg-slate-900">
+        <div class="flex flex-col items-center border-b border-slate-800 pb-4 mb-5">
+            <div class="flex space-x-2 text-2xl font-bold text-white tracking-tight">
+                <i class="fas fa-boxes text-blue-500"></i>
+                <h1>FB & IG OTP Extractor</h1>
+            </div>
+            <p class="text-xs text-gray-400 mt-1">Multi-Platform Verification Cloud System</p>
+        </div>
+
+        <div class="mb-5 bg-slate-950 p-1.5 rounded-xl flex space-x-2 border border-slate-800">
+            <button onclick="setPlatform('fb')" id="fbBtn" class="flex-1 bg-blue-600 text-white text-sm font-bold py-2.5 px-4 rounded-lg flex justify-center items-center transition cursor-pointer shadow-md">
+                <i class="fab fa-facebook mr-2 text-base"></i> Facebook
+            </button>
+            <button onclick="setPlatform('ig')" id="igBtn" class="flex-1 bg-transparent text-gray-400 hover:text-white text-sm font-bold py-2.5 px-4 rounded-lg flex justify-center items-center transition cursor-pointer">
+                <i class="fab fa-instagram mr-2 text-base"></i> Instagram
+            </button>
         </div>
 
         <div class="mb-4 flex space-x-2">
-            <button onclick="loadAccount(1)" class="flex-1 bg-slate-700 hover:bg-slate-600 text-xs font-bold py-2 px-3 rounded border border-gray-600 transition cursor-pointer">
+            <button onclick="loadAccount(1)" class="flex-1 bg-slate-800 hover:bg-slate-700 text-xs font-semibold py-2 rounded-lg border border-slate-700 transition cursor-pointer">
                 <i class="fas fa-user mr-1 text-blue-400"></i> Account 1
             </button>
-            <button onclick="loadAccount(2)" class="flex-1 bg-slate-700 hover:bg-slate-600 text-xs font-bold py-2 px-3 rounded border border-gray-600 transition cursor-pointer">
-                <i class="fas fa-user mr-1 text-green-400"></i> Account 2
+            <button onclick="loadAccount(2)" class="flex-1 bg-slate-800 hover:bg-slate-700 text-xs font-semibold py-2 rounded-lg border border-slate-700 transition cursor-pointer">
+                <i class="fas fa-user mr-1 text-purple-400"></i> Account 2
             </button>
         </div>
 
         <div class="mb-4">
-            <label class="block text-sm font-semibold text-gray-300 mb-2">Account Data Line</label>
+            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2"><i class="fas fa-paste mr-1"></i> Paste Your Email Data Here:</label>
             <textarea 
                 id="rawData" 
-                class="w-full h-24 bg-gray-900 border border-gray-700 rounded-lg p-3 text-sm font-mono text-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="w-full h-24 bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm font-mono text-cyan-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 placeholder="email|password|refresh_token|client_id"
             ></textarea>
         </div>
 
-        <div class="bg-gray-900 border border-gray-700 p-3 rounded-lg flex justify-between items-center mb-4">
+        <div class="bg-slate-950 border border-slate-800 p-3 rounded-xl flex justify-between items-center mb-5">
             <div>
-                <span class="text-xs text-gray-400 block">Target Email:</span>
-                <span id="targetEmail" class="text-sm font-semibold text-gray-200">Waiting for data...</span>
+                <span class="text-xs text-gray-500 block">Target Email:</span>
+                <span id="targetEmail" class="text-xs font-mono font-medium text-gray-300">Waiting for data...</span>
             </div>
         </div>
 
-        <button onclick="getCode()" id="actionBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200 shadow-md flex justify-center items-center cursor-pointer">
-            <span id="btnText"><i class="fas fa-key mr-2"></i> Get Facebook Code</span>
+        <button onclick="getOtpCode()" id="actionBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-xl transition duration-200 shadow-lg flex justify-center items-center cursor-pointer text-sm tracking-wide">
+            <span id="btnText"><i class="fas fa-bolt mr-2"></i> Extract OTP Code</span>
         </button>
 
-        <div id="resultBox" class="mt-5 border border-gray-700 rounded-lg p-4 bg-gray-900 hidden">
-            <div class="flex justify-between items-center border-b border-gray-800 pb-2 mb-3">
-                <span class="text-xs font-semibold text-gray-400">STATUS:</span>
-                <span id="statusLabel" class="text-xs font-bold px-2 py-0.5 rounded"></span>
+        <div id="resultBox" class="mt-6 border border-slate-800 rounded-xl p-4 bg-slate-950 hidden">
+            <div class="flex justify-between items-center border-b border-slate-900 pb-2 mb-3">
+                <span class="text-xs font-bold text-gray-500">PLATFORM MODE: <span id="currentModeLabel" class="text-blue-400 uppercase">FACEBOOK</span></span>
+                <span id="statusLabel" class="text-[10px] font-black px-2 py-0.5 rounded tracking-wider"></span>
             </div>
-            <div class="flex justify-between items-center bg-slate-800 p-3 rounded-lg border border-gray-700">
+            <div class="flex items-center justify-between bg-slate-900 p-4 rounded-xl border border-slate-800">
                 <div>
-                    <span class="text-xs text-gray-400 block">OTP Code:</span>
-                    <span id="otpOutput" class="text-3xl font-mono font-bold tracking-wider text-green-400">XXXXXX</span>
+                    <span class="text-[10px] font-bold text-gray-400 block mb-1 uppercase tracking-wider">Retrieved Code:</span>
+                    <span id="otpOutput" class="text-4xl font-mono font-black tracking-widest text-green-400">XXXXXX</span>
                 </div>
-                <button onclick="copyCode()" class="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1.5 rounded text-xs font-semibold transition cursor-pointer">
+                <button onclick="copyCode()" class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-xs font-bold transition cursor-pointer border border-slate-700">
                     <i class="fas fa-copy mr-1"></i> Copy
                 </button>
             </div>
@@ -62,83 +74,96 @@
     </div>
 
     <script>
-        // ⚠️ আপনার ২টা অ্যাকাউন্টের সম্পূর্ণ ডাটা লাইন (email|pass|token|id) নিচে কোটেশনের ভেতর বসিয়ে রাখতে পারেন
+        let currentPlatform = 'fb'; // ডিফল্ট ফেসবুক মোড
+
+        // ⚠️ আপনার একাউন্ট ডাটা লাইনে থাকলে এখানে সেভ করে রাখতে পারেন
         const account1_data = "email1@outlook.com|pass1|refresh_token_1|client_id_1";
         const account2_data = "email2@outlook.com|pass2|refresh_token_2|client_id_2";
 
-        // ডাটা লাইন ইনপুট দেওয়ার সাথে সাথে ইমেইলটি আলাদা করার লজিক
         document.getElementById('rawData').addEventListener('input', function(e) {
             const val = e.target.value.trim();
-            if(val.includes('|')) {
-                document.getElementById('targetEmail').innerText = val.split('|')[0];
-            } else {
-                document.getElementById('targetEmail').innerText = "Waiting for data...";
-            }
+            document.getElementById('targetEmail').innerText = val.includes('|') ? val.split('|')[0] : "Waiting for data...";
         });
 
-        function loadAccount(num) {
-            if(num === 1) {
-                document.getElementById('rawData').value = account1_data;
-                document.getElementById('targetEmail').innerText = account1_data.split('|')[0];
-            }
-            if(num === 2) {
-                document.getElementById('rawData').value = account2_data;
-                document.getElementById('targetEmail').innerText = account2_data.split('|')[0];
+        function setPlatform(platform) {
+            currentPlatform = platform;
+            const fbBtn = document.getElementById('fbBtn');
+            const igBtn = document.getElementById('igBtn');
+            const actionBtn = document.getElementById('actionBtn');
+
+            if(platform === 'fb') {
+                fbBtn.className = "flex-1 bg-blue-600 text-white text-sm font-bold py-2.5 px-4 rounded-lg flex justify-center items-center transition cursor-pointer shadow-md";
+                igBtn.className = "flex-1 bg-transparent text-gray-400 hover:text-white text-sm font-bold py-2.5 px-4 rounded-lg flex justify-center items-center transition cursor-pointer";
+                actionBtn.className = "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-xl transition duration-200 shadow-lg flex justify-center items-center cursor-pointer text-sm tracking-wide";
+            } else {
+                igBtn.className = "flex-1 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 text-white text-sm font-bold py-2.5 px-4 rounded-lg flex justify-center items-center transition cursor-pointer shadow-md";
+                fbBtn.className = "flex-1 bg-transparent text-gray-400 hover:text-white text-sm font-bold py-2.5 px-4 rounded-lg flex justify-center items-center transition cursor-pointer";
+                actionBtn.className = "w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white font-bold py-3.5 px-4 rounded-xl transition duration-200 shadow-lg flex justify-center items-center cursor-pointer text-sm tracking-wide";
             }
         }
 
-        async function getCode() {
+        function loadAccount(num) {
+            const data = num === 1 ? account1_data : account2_data;
+            document.getElementById('rawData').value = data;
+            document.getElementById('targetEmail').innerText = data.includes('|') ? data.split('|')[0] : "Waiting for data...";
+        }
+
+        async function getOtpCode() {
             const rawInput = document.getElementById('rawData').value.trim();
             const actionBtn = document.getElementById('actionBtn');
             const btnText = document.getElementById('btnText');
             const resultBox = document.getElementById('resultBox');
             const statusLabel = document.getElementById('statusLabel');
             const otpOutput = document.getElementById('otpOutput');
+            const currentModeLabel = document.getElementById('currentModeLabel');
 
             if(!rawInput) {
-                alert('Please enter or select your data line!');
+                alert('Please enter or select account data line!');
                 return;
             }
 
             actionBtn.disabled = true;
-            btnText.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Fetching from Render Cloud...';
+            btnText.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> Connecting Cloud API...';
             resultBox.classList.remove('hidden');
-            statusLabel.className = "text-xs font-bold px-2 py-0.5 rounded bg-yellow-500/20 text-yellow-400";
+            currentModeLabel.innerText = currentPlatform === 'fb' ? 'Facebook' : 'Instagram';
+            currentModeLabel.className = currentPlatform === 'fb' ? 'text-blue-400 font-bold' : 'text-pink-400 font-bold';
+            
+            statusLabel.className = "text-[10px] font-bold px-2 py-0.5 rounded bg-yellow-500/20 text-yellow-400 border border-yellow-500/30";
             statusLabel.innerText = "PROCESSING";
             otpOutput.innerText = "XXXXXX";
 
             try {
-                // ⚠️ আপনার Render-এ ডেপ্লয় করার পর যে লাইভ URL পাবেন, সেটা নিচের লিংকের জায়গায় বসাবেন
+                // ⚠️ আপনার Render লাইভ URL লিঙ্কটি নিচে বসিয়ে দিন
                 const API_URL = "https://fb-code-api.onrender.com/get-code"; 
 
                 const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ raw_input: rawInput })
+                    body: JSON.stringify({ raw_input: rawInput, mode: currentPlatform })
                 });
                 const data = await response.json();
 
                 actionBtn.disabled = false;
-                btnText.innerHTML = '<i class="fas fa-key mr-2"></i> Get Facebook Code';
+                btnText.innerHTML = '<i class="fas fa-bolt mr-2"></i> Extract OTP Code';
 
                 if(data.status === 'success') {
-                    statusLabel.className = "text-xs font-bold px-2 py-0.5 rounded bg-green-500/20 text-green-400";
+                    statusLabel.className = "text-[10px] font-bold px-2 py-0.5 rounded bg-green-500/20 text-green-400 border border-green-500/30";
                     statusLabel.innerText = "SUCCESS";
                     otpOutput.innerText = data.code;
-                    otpOutput.className = "text-3xl font-mono font-bold tracking-wider text-green-400";
+                    otpOutput.className = "text-4xl font-mono font-black tracking-widest text-green-400";
                 } else {
-                    statusLabel.className = "text-xs font-bold px-2 py-0.5 rounded bg-red-500/20 text-red-400";
+                    statusLabel.className = "text-[10px] font-bold px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/30";
                     statusLabel.innerText = "FAILED";
                     otpOutput.innerText = data.message;
-                    otpOutput.className = "text-sm font-sans font-medium text-red-400";
+                    otpOutput.className = "text-xs font-sans font-medium text-red-400";
                 }
             } catch (err) {
                 actionBtn.disabled = false;
-                btnText.innerHTML = '<i class="fas fa-key mr-2"></i> Get Facebook Code';
-                statusLabel.className = "text-xs font-bold px-2 py-0.5 rounded bg-red-500/20 text-red-400";
+                btnText.innerHTML = '<i class="fas fa-bolt mr-2"></i> Extract OTP Code';
+                statusLabel.className = "text-[10px] font-bold px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/30";
                 statusLabel.innerText = "ERROR";
-                otpOutput.innerText = "Render Server is waking up. Please try again after 30 seconds.";
-                otpOutput.className = "text-sm font-sans font-medium text-red-400";
+                otpOutput.innerText = "Server is waking up. Please wait 20-30 seconds and try again.";
+                otpOutput.className = "text-xs font-sans font-medium text-red-400";
             }
         }
 
@@ -146,7 +171,7 @@
             const text = document.getElementById('otpOutput').innerText;
             if(text && text !== 'XXXXXX' && !text.includes('waking up')) {
                 navigator.clipboard.writeText(text);
-                alert('Code Copied!');
+                alert('Code Copied to Clipboard!');
             }
         }
     </script>
