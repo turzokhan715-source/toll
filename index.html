@@ -1,12 +1,399 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔐 Premium 2FA Authenticator Pro</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Longisir VIP Portal - Free Tools</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
 
+:root {
+--primary: rgb(168, 85, 247);
+--bg: rgb(10, 11, 18);
+--card-bg: rgb(21, 23, 37);
+--text-gray: rgb(156, 163, 175);
+--btn-grad: linear-gradient(135deg, rgb(168, 85, 247), rgb(139, 92, 246));
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+body {
+background: var(--bg);
+color: rgb(255, 255, 255);
+min-height: 100vh;
+}
+
+.section {
+display: none;
+}
+
+.section.active {
+display: block;
+}
+
+.top-nav {
+background: rgba(15, 17, 26, 0.95);
+backdrop-filter: blur(10px);
+border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+padding: 15px 0;
+position: sticky;
+top: 0;
+z-index: 1000;
+}
+
+.nav-container {
+max-width: 1200px;
+margin: 0 auto;
+padding: 0 20px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+flex-wrap: wrap;
+gap: 15px;
+}
+
+.logo {
+display: flex;
+align-items: center;
+gap: 10px;
+font-size: 20px;
+font-weight: 800;
+color: var(--primary);
+cursor: pointer;
+}
+
+.logo i { font-size: 24px; }
+
+.nav-links {
+display: flex;
+gap: 20px;
+align-items: center;
+flex-wrap: wrap;
+}
+
+.nav-links a {
+color: var(--text-gray);
+text-decoration: none;
+font-weight: 600;
+font-size: 14px;
+transition: all 0.3s;
+cursor: pointer;
+padding: 8px 16px;
+border-radius: 8px;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+color: rgb(255, 255, 255);
+background: rgba(168, 85, 247, 0.1);
+}
+
+.container {
+max-width: 1100px;
+margin: 0 auto;
+padding: 60px 20px 40px 20px;
+}
+
+.hero {
+text-align: center;
+margin-bottom: 60px;
+}
+
+.hero h1 {
+font-size: clamp(32px, 7vw, 54px);
+font-weight: 800;
+margin-bottom: 8px;
+}
+
+.hero p {
+color: var(--text-gray);
+letter-spacing: 3px;
+font-size: 11px;
+font-weight: 600;
+text-transform: uppercase;
+margin-bottom: 20px;
+}
+
+.hero-desc {
+color: var(--text-gray);
+font-size: 16px;
+max-width: 700px;
+margin: 0 auto 30px auto;
+line-height: 1.6;
+}
+
+.home-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+gap: 25px;
+margin-bottom: 40px;
+}
+
+.h-card {
+background: var(--card-bg);
+border: 1px solid rgba(255,255,255,0.05);
+padding: 50px 20px;
+border-radius: 20px;
+text-align: center;
+transition: 0.3s ease;
+cursor: pointer;
+}
+
+.h-card i {
+font-size: 48px;
+color: var(--primary);
+margin-bottom: 20px;
+display: block;
+filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.5));
+}
+
+.h-card h3 {
+font-size: 20px;
+font-weight: 800;
+margin-bottom: 10px;
+}
+
+.h-card p {
+font-size: 13px;
+color: var(--text-gray);
+}
+
+.h-card:hover {
+transform: translateY(-6px);
+border-color: rgba(168, 85, 247, 0.3);
+background: rgb(26, 29, 46);
+}
+
+.about-box {
+background: var(--card-bg);
+padding: 35px;
+border-radius: 20px;
+border: 1px solid rgba(255,255,255,0.03);
+}
+
+.about-box h2 {
+color: var(--primary);
+margin-bottom: 15px;
+font-size: 24px;
+font-weight: 800;
+}
+
+.about-box p {
+color: var(--text-gray);
+font-size: 14px;
+line-height: 1.6;
+margin-bottom: 15px;
+}
+
+.page-header {
+text-align: center;
+margin-bottom: 50px;
+}
+
+.page-header h1 {
+font-size: 42px;
+font-weight: 800;
+margin-bottom: 15px;
+color: var(--primary);
+}
+
+.page-header p {
+color: var(--text-gray);
+font-size: 16px;
+}
+
+.content-box {
+background: var(--card-bg);
+padding: 40px;
+border-radius: 20px;
+border: 1px solid rgba(255, 255, 255, 0.05);
+margin-bottom: 30px;
+}
+
+.content-box h2 {
+color: var(--primary);
+font-size: 24px;
+margin-bottom: 20px;
+}
+
+.content-box p {
+color: var(--text-gray);
+line-height: 1.8;
+margin-bottom: 15px;
+}
+
+.tool-wrapper {
+width: 100%;
+}
+
+@media (max-width: 850px) {
+.nav-container {
+flex-direction: column;
+align-items: flex-start;
+}
+
+.nav-links {
+width: 100%;
+justify-content: center;
+}
+
+.hero {
+margin-bottom: 40px;
+}
+
+.home-grid {
+grid-template-columns: 1fr;
+gap: 15px;
+}
+
+.h-card {
+padding: 30px 15px;
+}
+
+.about-box {
+padding: 25px 20px;
+}
+
+.page-header h1 {
+font-size: 32px;
+}
+
+.content-box {
+padding: 25px 20px;
+}
+}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<nav class="top-nav">
+<div class="nav-container">
+<div class="logo" onclick="showSection('home')">
+<i class="fa-solid fa-cube"></i>
+<span>LONGISIR</span>
+</div>
+
+<div class="nav-links">
+<a onclick="showSection('home')" class="nav-link active" data-section="home">Home</a>
+<a onclick="showSection('tool-2fa')" class="nav-link" data-section="tool-2fa">2FA AUTH</a>
+<a onclick="showSection('tool-mail')" class="nav-link" data-section="tool-mail">API MAIL</a>
+<a onclick="showSection('tool-uid')" class="nav-link" data-section="tool-uid">UID CHECKER</a>
+<a onclick="showSection('about')" class="nav-link" data-section="about">About</a>
+<a onclick="showSection('sales')" class="nav-link" data-section="sales">Sales</a>
+</div>
+</div>
+</nav>
+
+<div id="home" class="section active">
+<div class="container">
+<header class="hero">
+<h1>Longisir VIP Portal:</h1>
+<p>THE NEXT GEN AUTOMATION HUB</p>
+<p class="hero-desc">Your unified solution for all security and productivity tools. Professionally built for efficiency, speed, and reliability. 100% FREE!</p>
+</header>
+
+<main class="home-grid">
+<div class="h-card" onclick="showSection('tool-2fa')">
+<i class="fa-solid fa-shield-halved"></i>
+<h3>2FA AUTH</h3>
+<p>Fast Code Gen</p>
+</div>
+
+<div class="h-card" onclick="showSection('tool-mail')">
+<i class="fa-solid fa-envelope"></i>
+<h3>API MAIL</h3>
+<p>Email Scraper</p>
+</div>
+
+<div class="h-card" onclick="showSection('tool-uid')">
+<i class="fa-solid fa-bolt"></i>
+<h3>UID CHECKER</h3>
+<p>Bulk Validator</p>
+</div>
+</main>
+
+<footer class="about-box">
+<h2>About Our Ecosystem</h2>
+<p>Longisir VIP provides top-tier automation tools for professionals. Our infrastructure is optimized for multi-threaded performance, ensuring that your data processing is not only fast but also secure and reliable. All tools are 100% FREE with no limitations!</p>
+</footer>
+</div>
+</div>
+
+<div id="about" class="section">
+<div class="container">
+<div class="page-header">
+<h1>About Longisir VIP</h1>
+<p>The Next Generation Automation Hub</p>
+</div>
+
+<div class="content-box">
+<h2>Our Mission</h2>
+<p>Longisir VIP was built with one goal in mind: to provide professionals with the most powerful, efficient, and reliable automation tools available - completely FREE. We understand that time is valuable, and our platform is designed to save you hours of manual work.</p>
+<p>Our ecosystem combines cutting-edge technology with user-friendly interfaces, ensuring that even complex tasks can be completed with just a few clicks.</p>
+</div>
+
+<div class="content-box">
+<h2>Why Choose Longisir VIP?</h2>
+<p><strong>⚡ Lightning Fast:</strong> Multi-threaded processing ensures maximum speed and efficiency.</p>
+<p><strong>🔒 Secure & Private:</strong> Your data is encrypted and never stored on our servers.</p>
+<p><strong>🎯 Precision Tools:</strong> Each tool is built for accuracy and reliability.</p>
+<p><strong>💎 100% FREE:</strong> No subscriptions, no hidden fees, unlimited usage.</p>
+</div>
+
+<div class="content-box">
+<h2>Our Tools</h2>
+<p><strong>2FA Authenticator:</strong> Generate secure time-based one-time passwords instantly with full history tracking.</p>
+<p><strong>API Mail Scraper:</strong> Extract verification codes from Outlook/Hotmail emails automatically with one click.</p>
+<p><strong>UID Bulk Checker:</strong> Validate thousands of Facebook UIDs in seconds with our multi-threaded engine.</p>
+</div>
+</div>
+</div>
+
+<div id="sales" class="section">
+<div class="container">
+<div class="page-header">
+<h1>💎 100% FREE Tools</h1>
+<p>No payment required - All features unlocked</p>
+</div>
+
+<div class="content-box">
+<h2>Completely FREE Access</h2>
+<p>All Longisir VIP tools are 100% FREE with no limitations. No subscriptions, no hidden fees, no credit card required.</p>
+<p><strong>✅ Unlimited Usage:</strong> Use all tools as much as you want</p>
+<p><strong>✅ No Registration:</strong> Start using immediately without signup</p>
+<p><strong>✅ No Ads:</strong> Clean interface with no annoying advertisements</p>
+<p><strong>✅ No Rate Limits:</strong> Process unlimited data without throttling</p>
+</div>
+
+<div class="content-box">
+<h2>What's Included?</h2>
+<p>✅ Unlimited 2FA code generation with history</p>
+<p>✅ Unlimited email API scraping</p>
+<p>✅ Unlimited UID bulk checking</p>
+<p>✅ Multi-threaded fast processing</p>
+<p>✅ CSV export functionality</p>
+<p>✅ Mobile & desktop responsive design</p>
+<p>✅ Regular updates and new features</p>
+</div>
+
+<div class="about-box">
+<h2>Why FREE?</h2>
+<p>We believe powerful automation tools should be accessible to everyone. Longisir VIP is built by developers, for developers and professionals who need reliable tools without breaking the bank.</p>
+</div>
+</div>
+</div>
+
+<div id="tool-2fa" class="section">
+<div class="tool-wrapper">
+<iframe id="iframe-2fa" style="width:100%; height:100vh; border:none;" srcdoc="
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap');
         :root {
             --bg: rgb(10, 11, 18);
             --card-bg: rgb(21, 23, 37);
@@ -17,611 +404,204 @@
             --text-gray: rgb(148, 163, 184);
             --border: rgba(255, 255, 255, 0.05);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        body {
-            background: var(--bg);
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* --- Tool Top Sub-Navigation --- */
-        .tool-nav {
-            background: rgba(15, 17, 26, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 12px 0;
-            width: 100%;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-
-        .home-link {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #fff;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 14px;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .home-link:hover {
-            background: var(--primary);
-            border-color: var(--primary);
-            transform: translateY(-1px);
-        }
-
-        .tool-links {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .tool-btn {
-            background: rgb(30, 32, 50);
-            color: var(--text-gray);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .tool-btn:hover {
-            color: #fff;
-            border-color: rgba(168, 85, 247, 0.4);
-            background: rgba(168, 85, 247, 0.1);
-        }
-
-        /* --- Layout Container --- */
-        .wrapper {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 40px 20px;
-        }
-
-        .container {
-            max-width: 520px;
-            width: 100%;
-        }
-
-        /* Main Card */
-        .main-card {
-            background: var(--card-bg);
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border);
-            margin-bottom: 24px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .main-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .card-header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        .card-header h1 {
-            font-size: 1.85rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff 40%, var(--text-gray));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
-
-        .card-header p {
-            font-size: 0.85rem;
-            color: var(--text-gray);
-            font-weight: 500;
-        }
-
-        .input-group {
-            margin-bottom: 24px;
-        }
-
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #e2e8f0;
-            font-size: 0.875rem;
-            letter-spacing: 0.5px;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 16px;
-            border: 2px solid rgb(30, 41, 59);
-            border-radius: 14px;
-            font-size: 1rem;
-            color: #fff;
-            transition: all 0.25s ease;
-            font-family: 'Courier New', monospace;
-            font-weight: 600;
-            background: var(--input-bg);
-            letter-spacing: 1px;
-        }
-
-        input[type="text"]:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: rgb(21, 28, 46);
-            box-shadow: 0 0 20px var(--primary-glow);
-        }
-
-        /* Generate Button */
-        button {
-            width: 100%;
-            padding: 16px;
-            background: var(--btn-grad);
-            color: #fff;
-            border: none;
-            border-radius: 14px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 16px;
-            box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3);
-        }
-
-        button:hover {
-            opacity: 0.95;
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(168, 85, 247, 0.4);
-        }
-
-        button:active { transform: translateY(0); }
-
-        /* Code Display Box */
-        .code-display {
-            background: linear-gradient(135deg, rgb(17, 24, 39) 0%, rgb(3, 7, 18) 100%);
-            border: 2px solid rgb(30, 41, 59);
-            border-radius: 14px;
-            padding: 24px;
-            text-align: center;
-            margin-bottom: 12px;
-            box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.5);
-        }
-
-        .code-label {
-            font-size: 0.8rem;
-            color: var(--primary);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 8px;
-        }
-
-        .totp-code {
-            font-size: 2.25rem;
-            font-weight: 800;
-            color: rgb(52, 211, 153);
-            font-family: 'Courier New', monospace;
-            letter-spacing: 6px;
-            text-shadow: 0 0 12px rgba(52, 211, 153, 0.3);
-        }
-
-        .copy-hint {
-            text-align: center;
-            color: rgb(52, 211, 153);
-            font-weight: 700;
-            font-size: 0.875rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg); color: #fff; min-height: 100vh; padding: 40px 20px; display: flex; justify-content: center; align-items: center; }
+        .container { max-width: 520px; width: 100%; }
+        .main-card { background: var(--card-bg); border-radius: 24px; padding: 40px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid var(--border); margin-bottom: 24px; position: relative; overflow: hidden; }
+        .card-header { text-align: center; margin-bottom: 32px; }
+        .card-header h1 { font-size: 1.85rem; font-weight: 800; background: linear-gradient(135deg, #fff 40%, var(--text-gray)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+        .card-header p { font-size: 0.85rem; color: var(--text-gray); }
+        .input-group { margin-bottom: 24px; }
+        label { display: block; font-weight: 600; margin-bottom: 10px; color: #e2e8f0; font-size: 0.875rem; }
+        input[type='text'] { width: 100%; padding: 16px; border: 2px solid rgb(30, 41, 59); border-radius: 14px; font-size: 1rem; color: #fff; background: var(--input-bg); font-family: 'Courier New', monospace; font-weight: 600; }
+        input[type='text']:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
+        button { width: 100%; padding: 16px; background: var(--btn-grad); color: #fff; border: none; border-radius: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3); }
+        button:hover { transform: translateY(-2px); opacity: 0.95; }
+        .code-display { background: linear-gradient(135deg, rgb(17, 24, 39) 0%, rgb(3, 7, 18) 100%); border: 2px solid rgb(30, 41, 59); border-radius: 14px; padding: 24px; text-align: center; margin-bottom: 12px; }
+        .code-label { font-size: 0.8rem; color: var(--primary); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+        .totp-code { font-size: 2.25rem; font-weight: 800; color: rgb(52, 211, 153); font-family: 'Courier New', monospace; letter-spacing: 6px; }
+        .copy-hint { text-align: center; color: rgb(52, 211, 153); font-weight: 700; font-size: 0.875rem; opacity: 0; transition: opacity 0.3s; }
         .copy-hint.show { opacity: 1; }
-
-        /* History Card */
-        .history-card {
-            background: var(--card-bg);
-            border-radius: 24px;
-            padding: 32px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border);
-            max-height: 500px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .history-header h2 {
-            font-size: 1.15rem;
-            font-weight: 800;
-            color: #f1f5f9;
-        }
-
-        #historyCount {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: rgb(192, 132, 252);
-            background: rgba(168, 85, 247, 0.15);
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid rgba(168, 85, 247, 0.2);
-        }
-
-        .history-list {
-            overflow-y: auto;
-            max-height: 400px;
-            padding-right: 4px;
-        }
-
+        .history-card { background: var(--card-bg); border-radius: 24px; padding: 32px; border: 1px solid var(--border); max-height: 400px; display: flex; flex-direction: column; }
+        .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        .history-header h2 { font-size: 1.15rem; color: #f1f5f9; font-weight: 800; }
+        #historyCount { font-size: 0.75rem; color: rgb(192, 132, 252); background: rgba(168, 85, 247, 0.15); padding: 6px 14px; border-radius: 20px; }
+        .history-list { overflow-y: auto; padding-right: 4px; }
         .history-list::-webkit-scrollbar { width: 6px; }
-        .history-list::-webkit-scrollbar-track { background: transparent; }
-        .history-list::-webkit-scrollbar-thumb {
-            background: rgb(30, 41, 59);
-            border-radius: 10px;
-        }
-
-        .empty-state {
-            text-align: center;
-            color: var(--text-gray);
-            padding: 40px 20px;
-            font-size: 0.9rem;
-            font-style: italic;
-        }
-
-        .history-item {
-            padding: 16px;
-            background: rgb(17, 23, 38);
-            border-radius: 14px;
-            margin-bottom: 12px;
-            transition: all 0.2s ease;
-            border: 1px solid rgba(255, 255, 255, 0.02);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            align-items: center;
-        }
-
-        .history-item:hover {
-            background: rgb(22, 31, 51);
-            border-color: rgba(168, 85, 247, 0.2);
-            transform: translateX(2px);
-        }
-
-        .history-code {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: rgb(56, 189, 248);
-            font-family: 'Courier New', monospace;
-            letter-spacing: 1px;
-        }
-
+        .history-list::-webkit-scrollbar-thumb { background: rgb(30, 41, 59); border-radius: 10px; }
+        .empty-state { text-align: center; color: var(--text-gray); padding: 40px 20px; font-style: italic; font-size: 0.9rem; }
+        .history-item { padding: 16px; background: rgb(17, 23, 38); border-radius: 14px; margin-bottom: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center; border: 1px solid rgba(255, 255, 255, 0.02); }
+        .history-code { font-size: 1.25rem; font-weight: 700; color: rgb(56, 189, 248); font-family: 'Courier New', monospace; }
         .history-details { text-align: right; }
-        .history-key {
-            font-size: 0.75rem;
-            color: var(--text-gray);
-            font-family: 'Courier New', monospace;
-            word-break: break-all;
-            margin-bottom: 4px;
-            font-weight: 500;
-        }
-
-        .history-time {
-            font-size: 0.7rem;
-            color: rgb(100, 116, 139);
-            font-weight: 600;
-        }
-
-        @media (max-width: 600px) {
-            .wrapper { padding: 20px 14px; }
-            .main-card { padding: 28px 20px; border-radius: 20px; }
-            .card-header h1 { font-size: 1.5rem; }
-            button { padding: 14px; font-size: 0.95rem; }
-            .totp-code { font-size: 1.85rem; letter-spacing: 4px; }
-            .history-card { padding: 24px 16px; border-radius: 20px; }
-            .history-item { grid-template-columns: 1fr; gap: 8px; }
-            .history-details {
-                text-align: left;
-                border-top: 1px solid rgba(255, 255, 255, 0.05);
-                padding-top: 6px;
-            }
-        }
+        .history-key { font-size: 0.75rem; color: var(--text-gray); word-break: break-all; font-family: 'Courier New', monospace; }
+        .history-time { font-size: 0.7rem; color: rgb(100, 116, 139); font-weight: 600; }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-
-    <nav class="tool-nav">
-        <div class="nav-container">
-            <a href="javascript:void(0);" onclick="window.parent.showSection('home')" class="home-link">
-                <i class="fa-solid fa-house"></i> Home
-            </a>
-
-            <div class="tool-links">
-                <a href="javascript:void(0);" onclick="window.parent.showSection('tool-mail')" class="tool-btn"><i class="fa-solid fa-envelope"></i> API Mail</a>
-                <a href="javascript:void(0);" onclick="window.parent.showSection('tool-uid')" class="tool-btn"><i class="fa-solid fa-bolt"></i> UID Checker</a>
-                <a href="javascript:void(0);" onclick="window.parent.showSection('home')" class="tool-btn"><i class="fa-solid fa-ghost"></i> Ghost Monitor</a>
+    <div class='container'>
+        <div class='main-card'>
+            <div class='card-header'>
+                <h1>🔐 2FA Authenticator Pro</h1>
+                <p>Secure Time-based One-Time Password Generator</p>
             </div>
+            <div class='input-group'>
+                <label>Enter your 2FA Secret Key:</label>
+                <input type='text' id='secretKey' placeholder='JBSWY3DPEHPK3PXP' autocomplete='off'>
+            </div>
+            <button onclick='generateCode()'>🔑 Generate Code</button>
+            <div id='codeDisplay' class='code-display' style='display: none;'>
+                <div class='code-label'>Your Code:</div>
+                <div id='totpCode' class='totp-code'>------</div>
+            </div>
+            <p class='copy-hint' id='copyHint'>✓ Code copied to clipboard!</p>
         </div>
-    </nav>
-
-    <div class="wrapper">
-        <div class="container">
-            <div class="main-card">
-                <div class="card-header">
-                    <h1>🔐 2FA Authenticator Pro</h1>
-                    <p>Secure Time-based One-Time Password Generator</p>
-                </div>
-                
-                <div class="input-group">
-                    <label for="secretKey">Enter your 2FA Secret Key:</label>
-                    <input type="text" id="secretKey" placeholder="JBSWY3DPEHPK3PXP" autocomplete="off">
-                </div>
-                
-                <button id="generateBtn" onclick="generateCode()">
-                    <span class="btn-icon">🔑</span>
-                    <span class="btn-text">Generate Code</span>
-                </button>
-                
-                <div id="codeDisplay" class="code-display" style="display: none;">
-                    <div class="code-label">Your Code:</div>
-                    <div id="totpCode" class="totp-code">------</div>
-                </div>
-                
-                <p class="copy-hint" id="copyHint">✓ Code copied to clipboard!</p>
+        <div class='history-card'>
+            <div class='history-header'>
+                <h2>📋 Recent Codes</h2>
+                <span id='historyCount'>0 saved</span>
             </div>
-
-            <div class="history-card">
-                <div class="history-header">
-                    <h2>📋 Recent Codes</h2>
-                    <span id="historyCount">0 saved</span>
-                </div>
-                <div id="historyList" class="history-list">
-                    <p class="empty-state">No codes generated yet</p>
-                </div>
+            <div id='historyList' class='history-list'>
+                <p class='empty-state'>No codes generated yet</p>
             </div>
         </div>
     </div>
-
-<script>
-    // CORE TOTP ENGINE
-    const BASE32_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
-
-    function base32Decode(base32) {
-        base32 = base32.toUpperCase().replace(/=+$/, '');
-        let bits = '';
-        for (let i = 0; i < base32.length; i++) {
-            const val = BASE32_CHARS.indexOf(base32[i]);
-            if (val === -1) throw new Error('Invalid base32 character');
-            bits += val.toString(2).padStart(5, '0');
-        }
-        const bytes = [];
-        for (let i = 0; i + 8 <= bits.length; i += 8) {
-            bytes.push(parseInt(bits.substr(i, 8), 2));
-        }
-        return new Uint8Array(bytes);
-    }
-
-    function hmacSha1Sync(key, message) {
-        const blockSize = 64;
-        if (key.length > blockSize) key = sha1(key);
-        if (key.length < blockSize) {
-            const padded = new Uint8Array(blockSize);
-            padded.set(key);
-            key = padded;
-        }
-        const innerKey = new Uint8Array(blockSize);
-        const outerKey = new Uint8Array(blockSize);
-        for (let i = 0; i < blockSize; i++) {
-            innerKey[i] = key[i] ^ 0x36;
-            outerKey[i] = key[i] ^ 0x5c;
-        }
-        const innerHash = sha1(concat(innerKey, message));
-        return sha1(concat(outerKey, innerHash));
-    }
-
-    function sha1(data) {
-        if (!(data instanceof Uint8Array)) data = new Uint8Array(data);
-        let h0 = 0x67452301, h1 = 0xEFCDAB89, h2 = 0x98BADCFE, h3 = 0x10325476, h4 = 0xC3D2E1F0;
-        const ml = data.length * 8;
-        const paddedLength = Math.ceil((ml + 65) / 512) * 512 / 8;
-        const padded = new Uint8Array(paddedLength);
-        padded.set(data);
-        padded[data.length] = 0x80;
-        const view = new DataView(padded.buffer);
-        view.setUint32(paddedLength - 4, ml & 0xffffffff, false);
-        
-        for (let i = 0; i < paddedLength; i += 64) {
-            const w = new Uint32Array(80);
-            for (let j = 0; j < 16; j++) w[j] = view.getUint32(i + j * 4, false);
-            for (let j = 16; j < 80; j++) w[j] = leftRotate(w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16], 1);
-            let a = h0, b = h1, c = h2, d = h3, e = h4;
-            for (let j = 0; j < 80; j++) {
-                let f, k;
-                if (j < 20) { f = (b & c) | ((~b) & d); k = 0x5A827999; }
-                else if (j < 40) { f = b ^ c ^ d; k = 0x6ED9EBA1; }
-                else if (j < 60) { f = (b & c) | (b & d) | (c & d); k = 0x8F1BBCDC; }
-                else { f = b ^ c ^ d; k = 0xCA62C1D6; }
-                const temp = (leftRotate(a, 5) + f + e + k + w[j]) & 0xffffffff;
-                e = d; d = c; c = leftRotate(b, 30); b = a; a = temp;
+    <script>
+        const BASE32_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+        function base32Decode(b32) {
+            b32 = b32.toUpperCase().replace(/=+$/, '');
+            let bits = '';
+            for (let i = 0; i < b32.length; i++) {
+                const val = BASE32_CHARS.indexOf(b32[i]);
+                if (val === -1) throw new Error('Invalid base32');
+                bits += val.toString(2).padStart(5, '0');
             }
-            h0 = (h0 + a) & 0xffffffff; h1 = (h1 + b) & 0xffffffff; h2 = (h2 + c) & 0xffffffff; h3 = (h3 + d) & 0xffffffff; h4 = (h4 + e) & 0xffffffff;
+            const bytes = [];
+            for (let i = 0; i + 8 <= bits.length; i += 8) bytes.push(parseInt(bits.substr(i, 8), 2));
+            return new Uint8Array(bytes);
         }
-        const result = new Uint8Array(20);
-        const resultView = new DataView(result.buffer);
-        resultView.setUint32(0, h0, false); resultView.setUint32(4, h1, false); resultView.setUint32(8, h2, false); resultView.setUint32(12, h3, false); resultView.setUint32(16, h4, false);
-        return result;
-    }
-
-    function leftRotate(n, s) { return ((n << s) | (n >>> (32 - s))) & 0xffffffff; }
-    function concat(a, b) {
-        const result = new Uint8Array(a.length + b.length);
-        result.set(a); result.set(b, a.length);
-        return result;
-    }
-
-    function generateTOTP(secret) {
-        try {
+        function hmacSha1Sync(key, msg) {
+            const bs = 64;
+            if (key.length > bs) key = sha1(key);
+            if (key.length < bs) { const p = new Uint8Array(bs); p.set(key); key = p; }
+            const ik = new Uint8Array(bs), ok = new Uint8Array(bs);
+            for (let i = 0; i < bs; i++) { ik[i] = key[i] ^ 0x36; ok[i] = key[i] ^ 0x5c; }
+            return sha1(concat(ok, sha1(concat(ik, msg))));
+        }
+        function sha1(data) {
+            if (!(data instanceof Uint8Array)) data = new Uint8Array(data);
+            let h0 = 0x67452301, h1 = 0xEFCDAB89, h2 = 0x98BADCFE, h3 = 0x10325476, h4 = 0xC3D2E1F0;
+            const ml = data.length * 8, pl = Math.ceil((ml + 65) / 512) * 512 / 8, p = new Uint8Array(pl);
+            p.set(data); p[data.length] = 0x80;
+            const view = new DataView(p.buffer); view.setUint32(pl - 4, ml & 0xffffffff, false);
+            for (let i = 0; i < pl; i += 64) {
+                const w = new Uint32Array(80);
+                for (let j = 0; j < 16; j++) w[j] = view.getUint32(i + j * 4, false);
+                for (let j = 16; j < 80; j++) w[j] = ((w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16]) << 1 | (w[j-3] ^ w[j-8] ^ w[j-14] ^ w[j-16]) >>> 31) & 0xffffffff;
+                let a = h0, b = h1, c = h2, d = h3, e = h4;
+                for (let j = 0; j < 80; j++) {
+                    let f, k;
+                    if (j < 20) { f = (b & c) | ((~b) & d); k = 0x5A827999; }
+                    else if (j < 40) { f = b ^ c ^ d; k = 0x6ED9EBA1; }
+                    else if (j < 60) { f = (b & c) | (b & d) | (c & d); k = 0x8F1BBCDC; }
+                    else { f = b ^ c ^ d; k = 0xCA62C1D6; }
+                    const temp = (((a << 5) | (a >>> 27)) + f + e + k + w[j]) & 0xffffffff;
+                    e = d; d = c; c = ((b << 30) | (b >>> 2)) & 0xffffffff; b = a; a = temp;
+                }
+                h0 = (h0 + a) & 0xffffffff; h1 = (h1 + b) & 0xffffffff; h2 = (h2 + c) & 0xffffffff; h3 = (h3 + d) & 0xffffffff; h4 = (h4 + e) & 0xffffffff;
+            }
+            const res = new Uint8Array(20), resView = new DataView(res.buffer);
+            resView.setUint32(0, h0, false); resView.setUint32(4, h1, false); resView.setUint32(8, h2, false); resView.setUint32(12, h3, false); resView.setUint32(16, h4, false);
+            return res;
+        }
+        function concat(a, b) { const r = new Uint8Array(a.length + b.length); r.set(a); r.set(b, a.length); return r; }
+        function generateTOTP(secret) {
             secret = secret.replace(/\s/g, '').toUpperCase();
-            const key = base32Decode(secret);
-            const epoch = Math.floor(Date.now() / 1000);
-            const timeStep = Math.floor(epoch / 30);
-            const timeBytes = new Uint8Array(8);
-            const timeView = new DataView(timeBytes.buffer);
-            timeView.setUint32(4, timeStep, false);
-            const hmac = hmacSha1Sync(key, timeBytes);
-            const offset = hmac[19] & 0x0f;
+            const key = base32Decode(secret), epoch = Math.floor(Date.now() / 1000), ts = Math.floor(epoch / 30);
+            const tb = new Uint8Array(8), tv = new DataView(tb.buffer); tv.setUint32(4, ts, false);
+            const hmac = hmacSha1Sync(key, tb), offset = hmac[19] & 0x0f;
             const truncated = (((hmac[offset] & 0x7f) << 24) | ((hmac[offset + 1] & 0xff) << 16) | ((hmac[offset + 2] & 0xff) << 8) | (hmac[offset + 3] & 0xff));
             return (truncated % 1000000).toString().padStart(6, '0');
-        } catch (error) {
-            throw new Error('Invalid secret key');
         }
-    }
-
-    // INTERFACE & HISTORY
-    let history = [];
-    let autoHideTimeout = null;
-
-    function loadHistory() {
-        const saved = localStorage.getItem('totpHistory');
-        if (saved) {
+        let history = [];
+        function generateCode() {
+            const input = document.getElementById('secretKey');
+            const secret = input.value.trim().toUpperCase().replace(/\s/g, '');
+            if (!secret) { alert('⚠️ Enter key!'); return; }
             try {
-                history = JSON.parse(saved).slice(0, 20);
-                updateHistoryDisplay();
-            } catch (e) { history = []; }
+                const code = generateTOTP(secret);
+                document.getElementById('totpCode').textContent = code;
+                document.getElementById('codeDisplay').style.display = 'block';
+                navigator.clipboard.writeText(code);
+                showHint();
+                addHist(secret, code);
+                input.value = '';
+            } catch (e) { alert('❌ Invalid Key'); }
         }
-    }
-
-    function saveHistory() {
-        localStorage.setItem('totpHistory', JSON.stringify(history));
-    }
-
-    function generateCode() {
-        const secretInput = document.getElementById('secretKey');
-        const secret = secretInput.value.trim().toUpperCase().replace(/\s/g, '');
-        if (!secret) { alert('⚠️ Please enter a secret key!'); return; }
-        try {
-            const code = generateTOTP(secret);
-            document.getElementById('totpCode').textContent = code;
-            document.getElementById('codeDisplay').style.display = 'block';
-            copyToClipboard(code);
-            addToHistory(secret, code);
-            secretInput.value = '';
-            
-            if (autoHideTimeout) clearTimeout(autoHideTimeout);
-            autoHideTimeout = setTimeout(() => {
-                document.getElementById('codeDisplay').style.display = 'none';
-                document.getElementById('totpCode').textContent = '------';
-            }, 30000);
-        } catch (error) {
-            alert('❌ Invalid secret key! Please check and try again.');
+        function showHint() {
+            const h = document.getElementById('copyHint'); h.classList.add('show');
+            setTimeout(() => h.classList.remove('show'), 2000);
         }
-    }
-
-    function copyToClipboard(text) {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(text).then(() => showCopyHint());
-        } else {
-            const textarea = document.createElement('textarea');
-            textarea.value = text; textarea.style.position = 'fixed'; textarea.style.opacity = '0';
-            document.body.appendChild(textarea); textarea.select();
-            document.execCommand('copy'); showCopyHint();
-            document.body.removeChild(textarea);
+        function addHist(sec, cod) {
+            const time = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
+            history.unshift({ sec, cod, time });
+            if (history.length > 20) history = history.slice(0, 20);
+            renderHist();
         }
-    }
-
-    function showCopyHint() {
-        const hint = document.getElementById('copyHint');
-        hint.classList.add('show');
-        setTimeout(() => hint.classList.remove('show'), 2000);
-    }
-
-    function addToHistory(secret, code) {
-        const now = new Date();
-        const timestamp = now.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
-        history.unshift({ secret: secret, code: code, time: timestamp });
-        if (history.length > 20) history = history.slice(0, 20);
-        saveHistory();
-        updateHistoryDisplay();
-    }
-
-    function updateHistoryDisplay() {
-        const historyList = document.getElementById('historyList');
-        const historyCount = document.getElementById('historyCount');
-        historyCount.textContent = `${history.length} saved`;
-        if (history.length === 0) {
-            historyList.innerHTML = '<p class="empty-state">No codes generated yet</p>';
-            return;
-        }
-        historyList.innerHTML = history.map(item => `
-            <div class="history-item">
-                <div class="history-code">${item.code}</div>
-                <div class="history-details">
-                    <div class="history-key">Key: ${item.secret}</div>
-                    <div class="history-time">${item.time}</div>
+        function renderHist() {
+            const list = document.getElementById('historyList');
+            document.getElementById('historyCount').textContent = `${history.length} saved`;
+            if(history.length === 0) return;
+            list.innerHTML = history.map(i => `
+                <div class='history-item'>
+                    <div class='history-code'>${i.cod}</div>
+                    <div class='history-details'>
+                        <div class='history-key'>Key: ${i.sec}</div>
+                        <div class='history-time'>${i.time}</div>
+                    </div>
                 </div>
-            </div>
-        `).join('');
-    }
+            `).join('');
+        }
+    </script>
+</body>
+</html>
+"></iframe>
+</div>
+</div>
 
-    document.getElementById('secretKey').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') generateCode();
-    });
+<div id="tool-uid" class="section">
+<div class="tool-wrapper">
+<iframe id="iframe-uid" style="width:100%; height:100vh; border:none;" srcdoc=""></iframe>
+</div>
+</div>
 
-    document.addEventListener('DOMContentLoaded', loadHistory);
+<div id="tool-mail" class="section">
+<div class="tool-wrapper">
+<iframe id="iframe-mail" style="width:100%; height:100vh; border:none;" srcdoc=""></iframe>
+</div>
+</div>
+
+<script>
+function showSection(sectionId) {
+document.querySelectorAll('.section').forEach(section => {
+section.classList.remove('active');
+});
+
+document.getElementById(sectionId).classList.add('active');
+
+document.querySelectorAll('.nav-link').forEach(link => {
+link.classList.remove('active');
+if (link.getAttribute('data-section') === sectionId) {
+link.classList.add('active');
+}
+});
+
+window.scrollTo(0, 0);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+showSection('home');
+});
 </script>
+
 </body>
 </html>
