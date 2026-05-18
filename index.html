@@ -29,7 +29,6 @@ color: #fff;
 min-height: 100vh;
 }
 
-/* Hide all sections by default */
 .section {
 display: none;
 }
@@ -38,9 +37,8 @@ display: none;
 display: block;
 }
 
-/* Top Navigation */
 .top-nav {
-background: rgba(15, 17, 26, 0.8);
+background: rgba(15, 17, 26, 0.95);
 backdrop-filter: blur(10px);
 border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 padding: 15px 0;
@@ -74,7 +72,7 @@ cursor: pointer;
 
 .nav-links {
 display: flex;
-gap: 25px;
+gap: 20px;
 align-items: center;
 flex-wrap: wrap;
 }
@@ -84,41 +82,24 @@ color: var(--text-gray);
 text-decoration: none;
 font-weight: 600;
 font-size: 14px;
-transition: color 0.3s;
+transition: all 0.3s;
 cursor: pointer;
+padding: 8px 16px;
+border-radius: 8px;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
 color: #fff;
+background: rgba(168, 85, 247, 0.1);
 }
 
-.nav-btn {
-background: var(--btn-grad);
-color: #fff;
-border: none;
-padding: 10px 24px;
-border-radius: 10px;
-font-weight: 700;
-font-size: 14px;
-cursor: pointer;
-box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
-transition: all 0.3s;
-}
-
-.nav-btn:hover {
-transform: translateY(-2px);
-box-shadow: 0 0 25px rgba(168, 85, 247, 0.6);
-}
-
-/* Container */
 .container {
 max-width: 1100px;
 margin: 0 auto;
 padding: 60px 20px 40px 20px;
 }
 
-/* Homepage Styles */
 .hero {
 text-align: center;
 margin-bottom: 60px;
@@ -211,7 +192,6 @@ line-height: 1.6;
 margin-bottom: 15px;
 }
 
-/* Page Header */
 .page-header {
 text-align: center;
 margin-bottom: 50px;
@@ -249,36 +229,10 @@ line-height: 1.8;
 margin-bottom: 15px;
 }
 
-/* Tool Container */
 .tool-wrapper {
 width: 100%;
-max-width: 100%;
 }
 
-/* Back Button */
-.back-btn {
-background: var(--btn-grad);
-color: #fff;
-border: none;
-padding: 12px 28px;
-border-radius: 10px;
-font-weight: 700;
-font-size: 14px;
-cursor: pointer;
-box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
-transition: all 0.3s;
-margin-bottom: 30px;
-display: inline-flex;
-align-items: center;
-gap: 10px;
-}
-
-.back-btn:hover {
-transform: translateY(-2px);
-box-shadow: 0 0 25px rgba(168, 85, 247, 0.6);
-}
-
-/* Mobile Responsive */
 @media (max-width: 850px) {
 .nav-container {
 flex-direction: column;
@@ -320,7 +274,6 @@ padding: 25px 20px;
 </head>
 <body>
 
-<!-- Top Navigation -->
 <nav class="top-nav">
 <div class="nav-container">
 <div class="logo" onclick="showSection('home')">
@@ -330,15 +283,15 @@ padding: 25px 20px;
 
 <div class="nav-links">
 <a onclick="showSection('home')" class="nav-link active" data-section="home">Home</a>
+<a onclick="showSection('tool-2fa')" class="nav-link" data-section="tool-2fa">2FA AUTH</a>
+<a onclick="showSection('tool-mail')" class="nav-link" data-section="tool-mail">API MAIL</a>
+<a onclick="showSection('tool-uid')" class="nav-link" data-section="tool-uid">UID CHECKER</a>
 <a onclick="showSection('about')" class="nav-link" data-section="about">About</a>
 <a onclick="showSection('sales')" class="nav-link" data-section="sales">Sales</a>
 </div>
-
-<button class="nav-btn" onclick="showSection('home')">Free Tools</button>
 </div>
 </nav>
 
-<!-- HOME SECTION -->
 <div id="home" class="section active">
 <div class="container">
 <header class="hero">
@@ -374,7 +327,6 @@ padding: 25px 20px;
 </div>
 </div>
 
-<!-- ABOUT SECTION -->
 <div id="about" class="section">
 <div class="container">
 <div class="page-header">
@@ -405,7 +357,6 @@ padding: 25px 20px;
 </div>
 </div>
 
-<!-- SALES SECTION -->
 <div id="sales" class="section">
 <div class="container">
 <div class="page-header">
@@ -440,57 +391,32 @@ padding: 25px 20px;
 </div>
 </div>
 
-<!-- 2FA TOOL SECTION -->
 <div id="tool-2fa" class="section">
-<div class="container">
-<button class="back-btn" onclick="showSection('home')">
-<i class="fa-solid fa-arrow-left"></i> Back to Home
-</button>
-
 <div class="tool-wrapper">
-<iframe id="iframe-2fa" style="width:100%; height:100vh; border:none; border-radius:20px;" srcdoc=""></iframe>
-</div>
+<iframe id="iframe-2fa" style="width:100%; height:100vh; border:none;" srcdoc=""></iframe>
 </div>
 </div>
 
-<!-- UID CHECKER TOOL SECTION -->
 <div id="tool-uid" class="section">
-<div class="container">
-<button class="back-btn" onclick="showSection('home')">
-<i class="fa-solid fa-arrow-left"></i> Back to Home
-</button>
-
 <div class="tool-wrapper">
-<iframe id="iframe-uid" style="width:100%; height:100vh; border:none; border-radius:20px;" srcdoc=""></iframe>
-</div>
+<iframe id="iframe-uid" style="width:100%; height:100vh; border:none;" srcdoc=""></iframe>
 </div>
 </div>
 
-<!-- MAIL API TOOL SECTION -->
 <div id="tool-mail" class="section">
-<div class="container">
-<button class="back-btn" onclick="showSection('home')">
-<i class="fa-solid fa-arrow-left"></i> Back to Home
-</button>
-
 <div class="tool-wrapper">
-<iframe id="iframe-mail" style="width:100%; height:100vh; border:none; border-radius:20px;" srcdoc=""></iframe>
-</div>
+<iframe id="iframe-mail" style="width:100%; height:100vh; border:none;" srcdoc=""></iframe>
 </div>
 </div>
 
 <script>
-// Page Navigation System
 function showSection(sectionId) {
-// Hide all sections
 document.querySelectorAll('.section').forEach(section => {
 section.classList.remove('active');
 });
 
-// Show selected section
 document.getElementById(sectionId).classList.add('active');
 
-// Update nav links
 document.querySelectorAll('.nav-link').forEach(link => {
 link.classList.remove('active');
 if (link.getAttribute('data-section') === sectionId) {
@@ -498,43 +424,20 @@ link.classList.add('active');
 }
 });
 
-// Load tool iframes on demand
 if (sectionId === 'tool-2fa' && !document.getElementById('iframe-2fa').getAttribute('data-loaded')) {
 load2FATool();
 }
-if (sectionId === 'tool-uid' && !document.getElementById('iframe-uid').getAttribute('data-loaded')) {
-loadUIDTool();
-}
-if (sectionId === 'tool-mail' && !document.getElementById('iframe-mail').getAttribute('data-loaded')) {
-loadMailTool();
-}
 
-// Scroll to top
 window.scrollTo(0, 0);
 }
 
-// Load 2FA Tool
 function load2FATool() {
 const iframe = document.getElementById('iframe-2fa');
 iframe.setAttribute('data-loaded', 'true');
-iframe.srcdoc = `আপনার 2FA tool এর complete HTML code এখানে paste করবেন`;
+// আপনার 2FA tool এর complete HTML code এখানে
+iframe.src = '2fa-tool.html'; // অথবা srcdoc ব্যবহার করুন
 }
 
-// Load UID Checker Tool
-function loadUIDTool() {
-const iframe = document.getElementById('iframe-uid');
-iframe.setAttribute('data-loaded', 'true');
-iframe.srcdoc = `আপনার UID Checker tool এর complete HTML code এখানে paste করবেন`;
-}
-
-// Load Mail API Tool  
-function loadMailTool() {
-const iframe = document.getElementById('iframe-mail');
-iframe.setAttribute('data-loaded', 'true');
-iframe.srcdoc = `আপনার Mail API tool এর complete HTML code এখানে paste করবেন`;
-}
-
-// Initialize
 document.addEventListener('DOMContentLoaded', function() {
 showSection('home');
 });
