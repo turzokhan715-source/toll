@@ -111,7 +111,6 @@
             border-radius: 8px;
             border: 1px solid 
 ;
-            display: none;
         }
         
         .email-label {
@@ -179,10 +178,6 @@
         .btn-primary:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-        }
-        
-        .result-card {
-            display: none;
         }
         
         .result-header {
@@ -354,7 +349,7 @@
             <textarea 
                 class="input-box" 
                 id="accountInput" 
-                placeholder="sylvesterfisher2001nescium@outlook.com|kar1a09H|M.C902_SN1.0.U.-CwEAAAApqGccSx1RbKP+nKS1bUOVTz6j2+DH5z2bLorL3BkS..."></textarea>
+                placeholder="sylvesterfisher2001nescium@outlook.com|kar1a09H|M.C902_SN1.0.U.-CwEAAAApqGccSx1RbKP+nKS1bUOVTz6j2+DH5z2bLorL3BkS...">sylvesterfisher2001nescium@outlook.com|kar1a09H|M.C902_SN1.0.U.-CwEAAAApqGccSx1RbKP+nKS1bUOVTz6j2+DH5z2bLorL3BkS...</textarea>
 
             <div class="hint">
                 <span class="hint-icon">ℹ️</span>
@@ -364,10 +359,11 @@
                 </div>
             </div>
 
-            <div class="email-display" id="emailDisplay">
+            <!-- Always Visible Email Display -->
+            <div class="email-display">
                 <div class="email-label">Extracted Email:</div>
                 <div class="email-value">
-                    <span class="email-text" id="extractedEmail">-</span>
+                    <span class="email-text" id="extractedEmail">sylvesterfisher2001nescium@outlook.com</span>
                     <button class="btn-copy-small" onclick="copyEmail()">📋 Copy Email</button>
                 </div>
             </div>
@@ -377,8 +373,8 @@
             </button>
         </div>
 
-        <!-- Result Card -->
-        <div class="card result-card" id="resultCard">
+        <!-- Always Visible Result Card -->
+        <div class="card">
             <div class="result-header" id="resultHeader">
                 <span class="result-icon" id="resultIcon">✅</span>
                 <div class="result-content">
@@ -388,7 +384,7 @@
                 </div>
             </div>
 
-            <div class="code-box" id="codeBox">
+            <div class="code-box">
                 <div class="code-label">Verification Code:</div>
                 <div class="code-display">
                     <div class="code-value" id="codeValue">090841</div>
@@ -418,12 +414,15 @@
     </div>
 
     <script>
-        let extractedCode = '';
-
-        // Show result for demo
-        window.addEventListener('load', () => {
-            // Uncomment to show demo result
-            // document.getElementById('resultCard').style.display = 'block';
+        // Auto-extract email on input change
+        document.getElementById('accountInput').addEventListener('input', function() {
+            const input = this.value.trim();
+            if (input) {
+                const email = input.split('|')[0].trim();
+                if (email) {
+                    document.getElementById('extractedEmail').textContent = email;
+                }
+            }
         });
 
         async function getVerificationCode() {
@@ -442,18 +441,11 @@
 
             const [email, password, token, clientId] = parts.map(p => p.trim());
 
-            // Show extracted email
-            document.getElementById('extractedEmail').textContent = email;
-            document.getElementById('emailDisplay').style.display = 'block';
-
             const btn = document.getElementById('getCodeBtn');
-            const resultCard = document.getElementById('resultCard');
             const resultHeader = document.getElementById('resultHeader');
-            const codeBox = document.getElementById('codeBox');
             
             btn.disabled = true;
             btn.innerHTML = '<span class="loader"></span> Fetching verification code...';
-            resultCard.style.display = 'none';
 
             try {
                 const response = await fetch('/api/get-code', {
@@ -464,17 +456,12 @@
 
                 const data = await response.json();
 
-                resultCard.style.display = 'block';
-
                 if (data.success) {
                     resultHeader.classList.remove('error');
                     document.getElementById('resultIcon').textContent = '✅';
                     document.getElementById('resultTitle').textContent = 'Email Retrieved Successfully';
                     document.getElementById('resultDetail').textContent = `For: ${data.email}`;
                     document.getElementById('codeValue').textContent = data.code;
-                    codeBox.style.display = 'block';
-                    
-                    extractedCode = data.code;
 
                     // Auto-copy
                     try {
@@ -486,16 +473,15 @@
                     document.getElementById('resultIcon').textContent = '❌';
                     document.getElementById('resultTitle').textContent = 'Error';
                     document.getElementById('resultDetail').textContent = data.error;
-                    codeBox.style.display = 'none';
+                    document.getElementById('codeValue').textContent = '------';
                 }
 
             } catch (error) {
-                resultCard.style.display = 'block';
                 resultHeader.classList.add('error');
                 document.getElementById('resultIcon').textContent = '❌';
                 document.getElementById('resultTitle').textContent = 'Network Error';
                 document.getElementById('resultDetail').textContent = error.message;
-                codeBox.style.display = 'none';
+                document.getElementById('codeValue').textContent = '------';
             }
 
             btn.disabled = false;
