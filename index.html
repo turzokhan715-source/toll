@@ -8,17 +8,17 @@
         </div>
 
         <div style="display: flex; justify-content: center; margin-bottom: 25px;">
-            <div style="background: #fffbeb; border: 1px solid #fef3c7; color: #d97706; padding: 8px 24px; border-radius: 50px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(217,119,6,0.05);">
+            <div id="modeBadge" style="background: #fffbeb; border: 1px solid #fef3c7; color: #d97706; padding: 8px 24px; border-radius: 50px; font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(217,119,6,0.05);">
                 ⭐ FACEBOOK PRIORITY MODE
             </div>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
-            <button style="background: #2563eb; color: #ffffff; border: none; padding: 14px; border-radius: 14px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(37,99,235,0.2);">
+            <button id="tab-fb" onclick="setMailMode('facebook')" style="background: #2563eb; color: #ffffff; border: none; padding: 14px; border-radius: 14px; font-weight: 700; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(37,99,235,0.2); transition: all 0.2s;">
                 Facebook <span style="background: #f59e0b; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 6px; font-weight: 800;">1st</span>
             </button>
-            <button style="background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; padding: 14px; border-radius: 14px; font-weight: 600; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                📷 Instagram <span style="background: #cbd5e1; color: #64748b; font-size: 10px; padding: 2px 6px; border-radius: 6px; font-weight: 700;">2nd</span>
+            <button id="tab-ig" onclick="setMailMode('instagram')" style="background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; padding: 14px; border-radius: 14px; font-weight: 600; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;">
+                📷 Instagram <span id="igBadgeLabel" style="background: #cbd5e1; color: #64748b; font-size: 10px; padding: 2px 6px; border-radius: 6px; font-weight: 700;">2nd</span>
             </button>
         </div>
 
@@ -37,36 +37,206 @@
         </div>
 
         <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 25px;">
-            <button id="startMailBtn" onclick="startMailProcessor()" style="background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <button id="startMailBtn" onclick="startMailProcessor()" style="background: #0f172a; color: #ffffff; border: none; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 12px rgba(15,23,42,0.15);">
                 🔍 Extract OTP Code
             </button>
-            <button onclick="clearMailTool()" style="background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <button onclick="clearMailTool()" style="background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; padding: 15px; border-radius: 14px; font-size: 13px; font-weight: 800; cursor: pointer; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 6px;">
                 🗑️ Clear
             </button>
         </div>
 
-        <div id="mailConsoleScreen" style="background: #f8fafc; border: 1px solid #f1f5f9; border-left: 4px solid #ef4444; border-radius: 16px; padding: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+        <div id="mailStatusAlertBox" style="background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #cbd5e1; border-radius: 16px; padding: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s;">
             <div style="flex: 1; padding-right: 10px;">
-                <div style="font-size: 13px; font-weight: 800; color: #15803d; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">⚠️ Server Sleeping / Error</div>
-                <div style="font-size: 11px; color: #64748b; font-family: monospace; word-break: break-all;" id="currentProcessingMail">Mail: waiting_input@outlook.com</div>
+                <div id="mailStatusTitle" style="font-size: 13px; font-weight: 800; color: #475569; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">💤 Engine Idle</div>
+                <div style="font-size: 12px; color: #64748b; font-family: monospace; word-break: break-all;" id="currentProcessingMail">Mail: Waiting for data input...</div>
             </div>
-            <button style="background: #eef2ff; color: #4f46e5; border: none; padding: 10px 16px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px;">✉️ Copy Email</button>
+            <button id="copyEmailBtn" onclick="copyTextToClipboard('currentProcessingMail', 'Email Copied!')" style="background: #eef2ff; color: #4f46e5; border: none; padding: 10px 16px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: background 0.2s;">
+                ✉️ Copy Email
+            </button>
         </div>
 
-        <div style="background: #f8fafc; border: 1px solid #f1f5f9; border-radius: 18px; padding: 20px; text-align: left; position: relative;">
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 18px; padding: 20px; text-align: left; position: relative;">
             <div style="font-size: 10px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">Verification Code:</div>
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div id="extractedOtpValue" style="font-size: 28px; font-weight: 900; color: #ea580c; font-family: 'Courier New', monospace; letter-spacing: 1px;">RETRY</div>
-                <button style="background: #2563eb; color: #ffffff; border: none; padding: 12px 20px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(37,99,235,0.15);">
+                <div id="extractedOtpValue" style="font-size: 28px; font-weight: 900; color: #64748b; font-family: 'Courier New', monospace; letter-spacing: 1px;">EMPTY</div>
+                <button id="copyCodeBtn" onclick="copyTextToClipboard('extractedOtpValue', 'OTP Code Copied!')" style="background: #2563eb; color: #ffffff; border: none; padding: 12px 20px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(37,99,235,0.15); transition: background 0.2s;">
                     🔷 Copy Code
                 </button>
             </div>
         </div>
 
-        <div style="display: none;">
-            <span id="countProcessed">0</span>
-            <span id="countSuccess">0</span>
-        </div>
+        <div id="mailConsoleScreen" style="display: none;"></div>
+        <div style="display: none;"><span id="countProcessed">0</span><span id="countSuccess">0</span></div>
 
     </div>
 </div>
+
+<script>
+    // ⚠️ আপনার ব্যাকএন্ড অ্যাপ ইউআরএল
+    if (typeof BACKEND_URL === 'undefined') {
+        var BACKEND_URL = "https://apnar-render-app-name.onrender.com"; 
+    }
+
+    // গ্লোবাল ভেরিয়েবল মোড ট্র্যাক করার জন্য (Default: facebook)
+    let currentMailMode = 'facebook';
+
+    // ১. ফেসবুক এবং ইনস্টাগ্রাম ট্যাব সুইচিং ফাংশন
+    function setMailMode(mode) {
+        currentMailMode = mode;
+        const fbTab = document.getElementById('tab-fb');
+        const igTab = document.getElementById('tab-ig');
+        const modeBadge = document.getElementById('modeBadge');
+        const igLabel = document.getElementById('igBadgeLabel');
+
+        if (mode === 'facebook') {
+            // ফেসবুক একটিভ স্টাইল
+            fbTab.style.background = '#2563eb';
+            fbTab.style.color = '#ffffff';
+            fbTab.style.boxShadow = '0 4px 12px rgba(37,99,235,0.2)';
+            fbTab.style.border = 'none';
+
+            // ইনস্টাগ্রাম ইন-একটিভ স্টাইল
+            igTab.style.background = '#f1f5f9';
+            igTab.style.color = '#64748b';
+            igTab.style.border = '1px solid #e2e8f0';
+            igTab.style.boxShadow = 'none';
+            igLabel.style.background = '#cbd5e1';
+            igLabel.style.color = '#64748b';
+
+            // ব্যাজ আপডেট
+            modeBadge.innerText = "⭐ FACEBOOK PRIORITY MODE";
+            modeBadge.style.background = "#fffbeb";
+            modeBadge.style.borderColor = "#fef3c7";
+            modeBadge.style.color = "#d97706";
+        } else {
+            // ইনস্টাগ্রাম একটিভ স্টাইল
+            igTab.style.background = '#a855f7'; // Instagram Purple/Pink vibe
+            igTab.style.color = '#ffffff';
+            igTab.style.boxShadow = '0 4px 12px rgba(168,85,247,0.2)';
+            igTab.style.border = 'none';
+            igLabel.style.background = '#f59e0b';
+            igLabel.style.color = '#fff';
+
+            // ফেসবুক ইন-একটিভ স্টাইল
+            fbTab.style.background = '#f1f5f9';
+            fbTab.style.color = '#64748b';
+            fbTab.style.border = '1px solid #e2e8f0';
+            fbTab.style.boxShadow = 'none';
+
+            // ব্যাজ আপডেট
+            modeBadge.innerText = "📷 INSTAGRAM PRIORITY MODE";
+            modeBadge.style.background = "#fdf2f8";
+            modeBadge.style.borderColor = "#fce7f3";
+            modeBadge.style.color = "#db2777";
+        }
+    }
+
+    // ২. মেইন ওটিপি এক্সট্রাকশন প্রোসেসর ফাংশন
+    async function startMailProcessor() {
+        const inputData = document.getElementById('mailInputData').value.trim();
+        const startBtn = document.getElementById('startMailBtn');
+        const alertBox = document.getElementById('mailStatusAlertBox');
+        const statusTitle = document.getElementById('mailStatusTitle');
+        const mailDisplay = document.getElementById('currentProcessingMail');
+        const otpDisplay = document.getElementById('extractedOtpValue');
+
+        if (!inputData) { 
+            alert("Please input credential string sets data array!"); 
+            return; 
+        }
+
+        // প্রথম লাইনের ডাটা আলাদা করা
+        const firstLine = inputData.split('\n')[0].trim();
+        const emailPrefix = firstLine.split('|')[0] || "Unknown Mail";
+
+        // UI আপডেট প্রসেসিং মোড
+        startBtn.disabled = true;
+        startBtn.innerText = "⏳ Processing...";
+        alertBox.style.borderLeftColor = "#3b82f6"; // Blue
+        statusTitle.innerText = "⚡ Fetching OTP...";
+        statusTitle.style.color = "#2563eb";
+        mailDisplay.innerText = "Mail: " + emailPrefix;
+        otpDisplay.innerText = "WAITING";
+        otpDisplay.style.color = "#64748b";
+
+        try {
+            const response = await fetch(`${BACKEND_URL}/get-code`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    raw_input: firstLine, 
+                    mode: currentMailMode // 'facebook' অথবা 'instagram' ডাইনামিকলি পাস হবে
+                })
+            });
+            
+            const result = await response.json();
+
+            if (result.status === "success") {
+                // Success UI আপডেট
+                alertBox.style.borderLeftColor = "#22c55e"; // Green
+                statusTitle.innerText = "✅ OTP Extracted Successfully";
+                statusTitle.style.color = "#16a34a";
+                
+                otpDisplay.innerText = result.code || "NO CODE";
+                otpDisplay.style.color = "#ea580c"; // Orange Highlight Code
+            } else {
+                // Error/Retry UI আপডেট
+                alertBox.style.borderLeftColor = "#ef4444"; // Red
+                statusTitle.innerText = "⚠️ Server Sleeping / Error";
+                statusTitle.style.color = "#dc2626";
+                
+                otpDisplay.innerText = "RETRY";
+                otpDisplay.style.color = "#ef4444";
+            }
+        } catch (err) {
+            // API Connection crash হ্যান্ডেল
+            alertBox.style.borderLeftColor = "#ef4444";
+            statusTitle.innerText = "❌ Connection Failed";
+            statusTitle.style.color = "#dc2626";
+            mailDisplay.innerText = "Backend Server is offline or unreachable.";
+            otpDisplay.innerText = "RETRY";
+            otpDisplay.style.color = "#ef4444";
+        }
+
+        startBtn.disabled = false;
+        startBtn.innerText = "🔍 Extract OTP Code";
+    }
+
+    // ৩. ক্লিপবোর্ডে টেক্সট কপি করার গ্লোবাল মেথড
+    function copyTextToClipboard(elementId, successMessage) {
+        const textToCopy = document.getElementById(elementId).innerText.replace("Mail: ", "").trim();
+        
+        if (textToCopy === "EMPTY" || textToCopy === "WAITING" || textToCopy.includes("Waiting for data")) {
+            alert("No valid data available to copy!");
+            return;
+        }
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            alert(successMessage);
+        }).catch(err => {
+            // ব্যাকআপ কপি মেথড যদি সিকিউরিটি পলিসি ব্লক করে
+            const el = document.createElement('textarea');
+            el.value = textToCopy;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            alert(successMessage);
+        });
+    }
+
+    // ৪. ক্লিয়ার অল বাটন অ্যাকশন
+    function clearMailTool() { 
+        document.getElementById('mailInputData').value = ''; 
+        document.getElementById('extractedOtpValue').innerText = 'EMPTY';
+        document.getElementById('extractedOtpValue').style.color = '#64748b';
+        
+        const alertBox = document.getElementById('mailStatusAlertBox');
+        const statusTitle = document.getElementById('mailStatusTitle');
+        
+        alertBox.style.borderLeftColor = "#cbd5e1";
+        statusTitle.innerText = "💤 Engine Idle";
+        statusTitle.style.color = "#475569";
+        document.getElementById('currentProcessingMail').innerText = 'Mail: Waiting for data input...';
+    }
+</script>
