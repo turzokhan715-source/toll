@@ -8,24 +8,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
 
 :root {
---primary: 
-;
---bg: 
-;
---card-bg: 
-;
---text-gray: 
-;
---btn-grad: linear-gradient(135deg, 
-, 
-);
+--primary: rgb(168, 85, 247);
+--bg: rgb(10, 11, 18);
+--card-bg: rgb(21, 23, 37);
+--text-gray: rgb(156, 163, 175);
+--btn-grad: linear-gradient(135deg, rgb(168, 85, 247), rgb(139, 92, 246));
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
 
 body {
 background: var(--bg);
-color: #fff;
+color: rgb(255, 255, 255);
 min-height: 100vh;
 }
 
@@ -90,12 +84,12 @@ cursor: pointer;
 
 .nav-links a:hover,
 .nav-links a.active {
-color: #fff;
+color: rgb(255, 255, 255);
 }
 
 .nav-btn {
 background: var(--btn-grad);
-color: #fff;
+color: rgb(255, 255, 255);
 border: none;
 padding: 10px 24px;
 border-radius: 10px;
@@ -186,8 +180,7 @@ color: var(--text-gray);
 .h-card:hover {
 transform: translateY(-6px);
 border-color: rgba(168, 85, 247, 0.3);
-background: 
-;
+background: rgb(26, 29, 46);
 }
 
 .about-box {
@@ -291,7 +284,6 @@ padding: 25px 20px;
 </head>
 <body>
 
-<!-- Top Navigation -->
 <nav class="top-nav">
 <div class="nav-container">
 <div class="logo" onclick="showPage('home')">
@@ -311,7 +303,6 @@ padding: 25px 20px;
 </div>
 </nav>
 
-<!-- HOME PAGE -->
 <div id="home" class="page active">
 <div class="container">
 <header class="hero">
@@ -347,7 +338,6 @@ padding: 25px 20px;
 </div>
 </div>
 
-<!-- GHOST ACTIVITY PAGE -->
 <div id="ghost" class="page">
 <div class="container">
 <div class="page-header">
@@ -389,7 +379,6 @@ padding: 25px 20px;
 </div>
 </div>
 
-<!-- ABOUT PAGE -->
 <div id="about" class="page">
 <div class="container">
 <div class="page-header">
@@ -420,7 +409,6 @@ padding: 25px 20px;
 </div>
 </div>
 
-<!-- SALES PAGE -->
 <div id="sales" class="page">
 <div class="container">
 <div class="page-header">
@@ -453,7 +441,6 @@ padding: 25px 20px;
 </div>
 </div>
 
-<!-- EXPORT PAGE -->
 <div id="export" class="page">
 <div class="container">
 <div class="page-header">
