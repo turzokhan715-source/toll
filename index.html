@@ -11,15 +11,13 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
         
-        /* ================= 1. HOBHU HOME PAGE STYLES ================= */
+        /* ================= 1. HOME PAGE GLOBAL STYLES ================= */
         :root { 
             --primary: #a855f7; 
             --bg: #05060b; 
             --card-bg: #0f111a; 
             --text-gray: #94a3b8;
             --btn-grad: linear-gradient(135deg, #a855f7, #3b82f6);
-            
-            /* 2FA Unique Roots */
             --input-bg: #111726;
             --primary-glow: rgba(168, 85, 247, 0.3);
         }
@@ -46,6 +44,10 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 40px;
+            background: rgba(15, 17, 26, 0.4);
+            padding: 12px 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
         }
 
         .home-btn {
@@ -67,6 +69,34 @@
             background: rgba(255, 255, 255, 0.08);
             border-color: var(--primary);
             box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+        }
+
+        /* Quick Jumper Navigation inside Tools */
+        .quick-matrix-nav {
+            display: flex;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 6px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .matrix-lnk {
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 8px;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid transparent;
+        }
+        .matrix-lnk:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
         .hero {
@@ -110,18 +140,6 @@
             position: relative;
             overflow: hidden;
         }
-
-        .h-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: radial-gradient(800px circle at var(--x, 0px) var(--y, 0px), rgba(168, 85, 247, 0.06), transparent 40%);
-            border-radius: 24px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .h-card:hover::before { opacity: 1; }
 
         .h-card:hover {
             transform: translateY(-6px);
@@ -259,10 +277,11 @@
         .history-card { background: var(--card-bg); border-radius: 24px; padding: 32px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.05); width: 100%; max-width: 520px; margin-top: 25px; }
         .history-item { padding: 12px 15px; background: #111726; border-radius: 10px; margin-bottom: 8px; font-size: 13px; border-left: 3px solid var(--primary); font-family: monospace; }
 
-        /* Responsive UI fixes */
         @media (max-width: 768px) {
             .hero h1 { font-size: 36px; }
             .home-grid { grid-template-columns: 1fr; }
+            .nav-bar { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .quick-matrix-nav { width: 100%; justify-content: space-between; }
         }
     </style>
 </head>
@@ -272,7 +291,14 @@
     
     <nav class="nav-bar">
         <button class="home-btn" onclick="openSection('home')"><i class="fa-solid fa-house"></i> HOME</button>
-        <span class="text-xs font-bold text-slate-500 tracking-widest uppercase">Longisir VIP Engine</span>
+        
+        <div id="quickJumper" class="quick-matrix-nav hidden">
+            <div class="matrix-lnk" onclick="openSection('twofa')"><i class="fa-solid fa-shield-halved text-purple-400"></i> 2FA</div>
+            <div class="matrix-lnk" onclick="openSection('apimail')"><i class="fa-solid fa-envelope text-indigo-400"></i> API MAIL</div>
+            <div class="matrix-lnk" onclick="openSection('uidchecker')"><i class="fa-solid fa-bolt text-sky-400"></i> UID CHECKER</div>
+        </div>
+        
+        <span class="text-xs font-bold text-slate-500 tracking-widest uppercase">Longisir Engine v4</span>
     </nav>
 
     <div id="home-view">
@@ -329,8 +355,7 @@
         
         <div class="history-card">
             <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider mb-4 pb-2 border-b border-white/5"><i class="fa-solid fa-history mr-1.5"></i> Generation History</h3>
-            <div id="history-container">
-                </div>
+            <div id="history-container"></div>
         </div>
     </div>
 
@@ -437,25 +462,28 @@
 </div>
 
 <script>
-    // 1. DYNAMIC ROUTING SYSTEM
+    // 1. ADVANCED SINGLE PAGE ROUTING & CROSS-NAVIGATION CONTROL
     function openSection(viewId) {
-        // Hide all views first
+        // Hide all major screens
         document.getElementById('home-view').classList.add('hidden');
         document.getElementById('twofa-view').classList.add('hidden');
         document.getElementById('apimail-view').classList.add('hidden');
         document.getElementById('uidchecker-view').classList.add('hidden');
 
-        // Show specified view
-        if(viewId === 'home') document.getElementById('home-view').classList.remove('hidden');
-        if(viewId === 'twofa') document.getElementById('twofa-view').classList.remove('hidden');
-        if(viewId === 'apimail') document.getElementById('apimail-view').classList.remove('hidden');
-        if(viewId === 'uidchecker') document.getElementById('uidchecker-view').classList.remove('hidden');
+        // Toggle Quick Matrix Header View
+        const jumper = document.getElementById('quickJumper');
+        if (viewId === 'home') {
+            jumper.classList.add('hidden');
+            document.getElementById('home-view').classList.remove('hidden');
+        } else {
+            jumper.classList.remove('hidden');
+            document.getElementById(viewId + '-view').classList.remove('hidden');
+        }
         
-        // Scroll back smoothly to top area
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
-    // 2. 2FA CORE ENGINE LOGIC (From 2fa.txt)
+    // 2. 2FA ENGINE LOGIC
     const MAX_HISTORY = 20;
     function generateAndSave() {
         const keyInput = document.getElementById('secret-key');
@@ -489,7 +517,7 @@
         }
     }
 
-    // 3. API MAIL RUNTIME ROUTINE (From Api mail)
+    // 3. ORIGINAL API MAIL RUNTIME PROCESS
     let selectedPlatform = 'fb';
     function setPlatform(platform) {
         selectedPlatform = platform;
@@ -519,7 +547,7 @@
         const actionBtn = document.getElementById('actionBtn');
         const btnText = document.getElementById('btnText');
         
-        if(!rawInput) { alert("Input cannot be empty."); return; }
+        if(!rawInput) { alert("Input empty."); return; }
         
         actionBtn.disabled = true;
         actionBtn.className = "flex-[2] bg-slate-950 text-slate-600 font-black py-3.5 px-4 rounded-xl border border-slate-900 flex justify-center items-center cursor-not-allowed text-xs tracking-wider uppercase";
@@ -532,7 +560,7 @@
             otpOutput.innerText = Math.floor(100000 + Math.random() * 900000);
             successMsg.innerText = "Success: Extracted cloud node validation verification matrix rules successfully.";
             resetButton();
-        }, 1500);
+        }, 1200);
     }
     function resetButton() {
         const actionBtn = document.getElementById('actionBtn');
@@ -550,7 +578,7 @@
         if(code && code !== "XXXXXX" && code !== "FETCH") { navigator.clipboard.writeText(code); alert("OTP Copied: " + code); }
     }
 
-    // 4. BULK UID SCANNER ENGINE (From fb chaker.txt)
+    // 4. BULK UID CHECKER CORE ENGINE
     let liveAccounts = [];
     function startScanner() {
         const input = document.getElementById('inputData').value.trim();
@@ -589,7 +617,7 @@
                 consoleScreen.scrollTop = consoleScreen.scrollHeight;
             }
             index++;
-        }, 400);
+        }, 300);
     }
     function clearTool() {
         document.getElementById('inputData').value = '';
