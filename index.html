@@ -4,585 +4,212 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Get Hotmail/Outlook Verification Code</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: rgb(240, 242, 245);
-            padding: 40px 20px;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .card {
-            background: rgb(255, 255, 255);
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-        
-        .header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgb(228, 230, 235);
-        }
-        
-        .header-icon {
-            font-size: 24px;
-        }
-        
-        .header h1 {
-            font-size: 18px;
-            color: rgb(24, 119, 242);
-            font-weight: 600;
-        }
-        
-        .section-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: rgb(75, 79, 86);
-            margin-bottom: 12px;
-        }
-        
-        .input-box {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid rgb(228, 230, 235);
-            border-radius: 8px;
-            font-size: 12px;
-            font-family: 'Courier New', monospace;
-            background: rgb(248, 249, 250);
-            resize: vertical;
-            min-height: 100px;
-            transition: all 0.3s;
-        }
-        
-        .input-box:focus {
-            outline: none;
-            border-color: rgb(24, 119, 242);
-            background: rgb(255, 255, 255);
-        }
-        
-        .hint {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            margin-top: 12px;
-            padding: 10px;
-            background: rgb(240, 242, 245);
-            border-radius: 6px;
-            font-size: 12px;
-            color: rgb(101, 103, 107);
-            line-height: 1.5;
-        }
-        
-        .hint-icon {
-            font-size: 14px;
-            margin-top: 2px;
-        }
-        
-        .email-display {
-            margin-top: 20px;
-            padding: 15px;
-            background: rgb(248, 249, 250);
-            border-radius: 8px;
-            border: 1px solid rgb(228, 230, 235);
-        }
-        
-        .email-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: rgb(75, 79, 86);
-            margin-bottom: 8px;
-        }
-        
-        .email-value {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-        
-        .email-text {
-            font-size: 14px;
-            color: rgb(33, 37, 41);
-            font-weight: 600;
-            word-break: break-all;
-        }
-        
-        .email-text.placeholder {
-            color: rgb(136, 136, 136);
-            font-style: italic;
-        }
-        
-        .btn-copy-small {
-            padding: 8px 16px;
-            background: rgb(24, 119, 242);
-            color: rgb(255, 255, 255);
-            border: none;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.3s;
-        }
-        
-        .btn-copy-small:hover {
-            background: rgb(21, 101, 192);
-        }
-        
-        .btn-copy-small:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .button-row {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .btn-primary {
-            flex: 1;
-            padding: 14px;
-            background: rgb(24, 119, 242);
-            color: rgb(255, 255, 255);
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .btn-primary:hover:not(:disabled) {
-            background: rgb(21, 101, 192);
-        }
-        
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        
-        .btn-clear {
-            padding: 14px 24px;
-            background: rgb(239, 68, 68);
-            color: rgb(255, 255, 255);
-            border: none;
-            border-radius: 8px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .btn-clear:hover {
-            background: rgb(220, 38, 38);
-        }
-        
-        .result-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 15px;
-            background: rgb(209, 250, 229);
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        
-        .result-header.error {
-            background: rgb(254, 226, 226);
-        }
-        
-        .result-header.waiting {
-            background: rgb(243, 244, 246);
-        }
-        
-        .result-icon {
-            font-size: 20px;
-            margin-top: 2px;
-        }
-        
-        .result-content {
-            flex: 1;
-        }
-        
-        .result-title {
-            font-size: 14px;
-            font-weight: 700;
-            color: rgb(6, 95, 70);
-            margin-bottom: 6px;
-        }
-        
-        .result-header.error .result-title {
-            color: rgb(153, 27, 27);
-        }
-        
-        .result-header.waiting .result-title {
-            color: rgb(55, 65, 81);
-        }
-        
-        .result-detail {
-            font-size: 13px;
-            color: rgb(4, 120, 87);
-            margin: 4px 0;
-        }
-        
-        .result-header.error .result-detail {
-            color: rgb(185, 28, 28);
-        }
-        
-        .result-header.waiting .result-detail {
-            color: rgb(107, 114, 128);
-        }
-        
-        .code-box {
-            padding: 20px;
-            border: 2px solid rgb(228, 230, 235);
-            border-radius: 10px;
-            background: rgb(255, 255, 255);
-        }
-        
-        .code-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: rgb(75, 79, 86);
-            margin-bottom: 12px;
-        }
-        
-        .code-display {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-        }
-        
-        .code-value {
-            font-size: 32px;
-            font-weight: 900;
-            color: rgb(16, 185, 129);
-            letter-spacing: 6px;
-            font-family: 'Courier New', monospace;
-            user-select: all;
-        }
-        
-        .code-value.placeholder {
-            color: rgb(156, 163, 175);
-        }
-        
-        .btn-copy-large {
-            padding: 10px 20px;
-            background: rgb(16, 185, 129);
-            color: rgb(255, 255, 255);
-            border: none;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.3s;
-        }
-        
-        .btn-copy-large:hover:not(:disabled) {
-            background: rgb(5, 150, 105);
-        }
-        
-        .btn-copy-large:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .how-to-use {
-            padding: 15px;
-            background: rgb(243, 244, 246);
-            border-radius: 8px;
-            border-left: 4px solid rgb(156, 163, 175);
-        }
-        
-        .how-to-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            font-weight: 700;
-            color: rgb(55, 65, 81);
-            margin-bottom: 10px;
-        }
-        
-        .how-to-content {
-            font-size: 13px;
-            color: rgb(75, 85, 99);
-            line-height: 1.6;
-        }
-        
-        .how-to-content ol {
-            margin-left: 20px;
-            margin-top: 8px;
-        }
-        
-        .how-to-content li {
-            margin: 6px 0;
-        }
-        
-        .loader {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: rgb(255, 255, 255);
-            animation: spin 0.8s linear infinite;
-            margin-right: 8px;
-            vertical-align: middle;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        body { background-color: #fafbfe; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="card">
-            <div class="header">
-                <span class="header-icon">📧</span>
-                <h1>Get Hotmail/Outlook Verification Code</h1>
-            </div>
+<body class="py-10 px-4 min-h-screen flex flex-col items-center justify-start gap-6">
 
-            <div class="section-title">Account Details</div>
-            
-            <textarea 
-                class="input-box" 
-                id="accountInput" 
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 w-full max-w-xl">
+        <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-5">
+            <span class="text-2xl">📧</span>
+            <h1 class="text-lg font-bold text-blue-600">Get Hotmail/Outlook Verification Code</h1>
+        </div>
+
+        <div class="mb-5">
+            <label class="block text-slate-700 font-semibold text-sm mb-2">Account Details</label>
+            <textarea id="account-input" 
+                class="w-full h-28 p-3 border border-slate-200 rounded-xl font-mono text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 bg-slate-50 text-slate-700"
                 placeholder="email@outlook.com|password|refresh_token|client_id"></textarea>
+        </div>
 
-            <div class="hint">
-                <span class="hint-icon">ℹ️</span>
-                <div>
-                    <strong>Format:</strong> email|password|refresh_token|client_id<br>
-                    <strong>Supports:</strong> @hotmail.com, @outlook.com, @live.com addresses
-                </div>
-            </div>
-
-            <div class="email-display">
-                <div class="email-label">Extracted Email:</div>
-                <div class="email-value">
-                    <span class="email-text placeholder" id="extractedEmail">No email entered yet</span>
-                    <button class="btn-copy-small" id="copyEmailBtn" onclick="copyEmail()" disabled>📋 Copy Email</button>
-                </div>
-            </div>
-
-            <div class="button-row">
-                <button class="btn-primary" id="getCodeBtn" onclick="getVerificationCode()">
-                    Get Verification Code
-                </button>
-                <button class="btn-clear" onclick="clearAll()">
-                    🗑️ Clear
-                </button>
+        <div class="bg-blue-50/60 border border-blue-100 rounded-xl p-3 flex items-start gap-3 mb-5">
+            <span class="text-blue-500 text-sm mt-0.5">ℹ️</span>
+            <div class="text-xs text-slate-600 leading-relaxed">
+                <span class="font-bold">Format:</span> email|password|refresh_token|client_id <br>
+                <span class="font-bold">Supports:</span> @hotmail.com, @outlook.com, @live.com addresses
             </div>
         </div>
 
-        <div class="card">
-            <div class="result-header waiting" id="resultHeader">
-                <span class="result-icon" id="resultIcon">⏳</span>
-                <div class="result-content">
-                    <div class="result-title" id="resultTitle">Waiting for request...</div>
-                    <div class="result-detail" id="resultDetail">Enter your account details and click "Get Verification Code"</div>
-                </div>
+        <div class="border border-slate-200 rounded-xl p-4 bg-slate-50/50 mb-6 flex justify-between items-center">
+            <div>
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wide block mb-1">Extracted Email:</span>
+                <span id="extracted-email-text" class="text-sm font-semibold text-slate-700">No email entered yet</span>
             </div>
-
-            <div class="code-box">
-                <div class="code-label">Verification Code:</div>
-                <div class="code-display">
-                    <div class="code-value placeholder" id="codeValue">------</div>
-                    <button class="btn-copy-large" id="copyCodeBtn" onclick="copyCode()" disabled>📋 Copy Code</button>
-                </div>
-            </div>
+            <button id="btn-copy-email" class="bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 transition-all opacity-50 cursor-not-allowed" disabled>
+                💾 Copy Email
+            </button>
         </div>
 
-        <div class="card">
-            <div class="how-to-use">
-                <div class="how-to-title">
-                    <span>ℹ️</span>
-                    <span>How to Use</span>
-                </div>
-                <div class="how-to-content">
-                    <ol>
-                        <li>Enter your account details in the format: <code>email|password|token|client_id</code></li>
-                        <li>Click "Get Verification Code" button</li>
-                        <li>Wait for the system to fetch your latest verification email</li>
-                        <li>The code will be automatically extracted and displayed</li>
-                        <li>Click "Copy Code" to copy it to clipboard</li>
-                        <li>Use "Clear" button to reset and start over</li>
-                    </ol>
-                </div>
-            </div>
+        <div class="grid grid-cols-4 gap-3">
+            <button id="btn-get-code" class="col-span-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-3 rounded-xl shadow-sm transition-all flex justify-center items-center gap-2">
+                Get Verification Code
+            </button>
+            <button id="btn-clear" class="bg-red-500 hover:bg-red-600 text-white font-bold text-sm py-3 rounded-xl shadow-sm transition-all flex justify-center items-center gap-1">
+                🗑️ Clear
+            </button>
         </div>
     </div>
 
+    <div id="engine-card" class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 w-full max-w-xl flex items-center gap-4">
+        <div id="engine-icon" class="text-2xl bg-amber-50 p-2.5 rounded-xl border border-amber-100">⏳</div>
+        <div>
+            <h4 id="engine-status-title" class="text-sm font-bold text-slate-700">Waiting for request...</h4>
+            <p id="engine-status-desc" class="text-xs text-slate-400 mt-0.5">Enter your account details and click "Get Verification Code"</p>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 w-full max-w-xl">
+        <span class="text-xs font-bold text-slate-400 uppercase tracking-wide block mb-2">Verification Code:</span>
+        <div class="flex justify-between items-center">
+            <div id="otp-display" class="text-3xl font-mono font-bold tracking-widest text-slate-300">— — — — — —</div>
+            <button id="btn-copy-code" class="bg-emerald-400 hover:bg-emerald-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm flex items-center gap-1.5 transition-all opacity-50 cursor-not-allowed" disabled>
+                💾 Copy Code
+            </button>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 w-full max-w-xl">
+        <div class="flex items-center gap-2 font-bold text-slate-700 text-sm mb-3">
+            <span>ℹ️</span> How to Use
+        </div>
+        <ol class="text-xs text-slate-500 space-y-2.5 list-decimal pl-4 leading-relaxed">
+            <li>Enter your account details in the format: <code class="bg-slate-100 px-1 py-0.5 rounded text-slate-700 font-mono">email|password|token|client_id</code></li>
+            <li>Click "Get Verification Code" button</li>
+            <li>Wait for the system to fetch your latest verification email</li>
+            <li>The code will be automatically extracted and displayed</li>
+            <li>Click "Copy Code" to copy it to clipboard</li>
+            <li>Use "Clear" button to reset and start over</li>
+        </ol>
+    </div>
+
     <script>
-        // Auto-extract email on input change
-        document.getElementById('accountInput').addEventListener('input', function() {
-            const input = this.value.trim();
-            const emailText = document.getElementById('extractedEmail');
-            const copyEmailBtn = document.getElementById('copyEmailBtn');
-            
-            if (input) {
-                const email = input.split('|')[0].trim();
-                if (email && email.includes('@')) {
-                    emailText.textContent = email;
-                    emailText.classList.remove('placeholder');
-                    copyEmailBtn.disabled = false;
-                } else {
-                    emailText.textContent = 'Invalid email format';
-                    emailText.classList.add('placeholder');
-                    copyEmailBtn.disabled = true;
+        // ⚠️ Render backend URL set korun ekhane
+        const BACKEND_URL = "https://apnar-render-app-name.onrender.com/get-code";
+
+        const accountInput = document.getElementById('account-input');
+        const extractedEmailText = document.getElementById('extracted-email-text');
+        const btnCopyEmail = document.getElementById('btn-copy-email');
+        const btnGetCode = document.getElementById('btn-get-code');
+        const btnClear = document.getElementById('btn-clear');
+        const otpDisplay = document.getElementById('otp-display');
+        const btnCopyCode = document.getElementById('btn-copy-code');
+
+        // Real-time Email Extraction Monitor
+        accountInput.addEventListener('input', () => {
+            const rawVal = accountInput.value.trim();
+            if(rawVal) {
+                const parts = rawVal.split('|');
+                const email = parts[0].trim();
+                if(email.includes('@')) {
+                    extractedEmailText.innerText = email;
+                    extractedEmailText.className = "text-sm font-semibold text-slate-800";
+                    btnCopyEmail.disabled = false;
+                    btnCopyEmail.className = "bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 transition-all";
+                    return;
                 }
-            } else {
-                emailText.textContent = 'No email entered yet';
-                emailText.classList.add('placeholder');
-                copyEmailBtn.disabled = true;
             }
+            resetEmailDisplay();
         });
 
-        async function getVerificationCode() {
-            const input = document.getElementById('accountInput').value.trim();
-            
-            if (!input) {
-                alert('⚠️ Please enter account details!');
+        function resetEmailDisplay() {
+            extractedEmailText.innerText = "No email entered yet";
+            extractedEmailText.className = "text-sm font-semibold text-slate-400 italic";
+            btnCopyEmail.disabled = true;
+            btnCopyEmail.className = "bg-blue-500 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 transition-all opacity-50 cursor-not-allowed";
+        }
+
+        // Clear Trigger
+        btnClear.addEventListener('click', () => {
+            accountInput.value = "";
+            resetEmailDisplay();
+            setEngineState("waiting");
+            otpDisplay.innerText = "— — — — — —";
+            otpDisplay.className = "text-3xl font-mono font-bold tracking-widest text-slate-300";
+            btnCopyCode.disabled = true;
+            btnCopyCode.className = "bg-emerald-400 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm flex items-center gap-1.5 transition-all opacity-50 cursor-not-allowed";
+        });
+
+        // Request Server Pipeline
+        btnGetCode.addEventListener('click', () => {
+            const rawInputData = accountInput.value.trim();
+            if(!rawInputData) {
+                setEngineState("error", "Input Error", "Please parse or insert details to proceed.");
                 return;
             }
 
-            const parts = input.split('|');
-            if (parts.length < 3) {
-                alert('⚠️ Invalid format! Use: email|password|token|client_id');
-                return;
-            }
+            setEngineState("loading", "Connecting...", "Fetching your secure verification email string...");
 
-            const [email, password, token, clientId] = parts.map(p => p.trim());
-
-            const btn = document.getElementById('getCodeBtn');
-            const resultHeader = document.getElementById('resultHeader');
-            const resultIcon = document.getElementById('resultIcon');
-            const resultTitle = document.getElementById('resultTitle');
-            const resultDetail = document.getElementById('resultDetail');
-            const codeValue = document.getElementById('codeValue');
-            const copyCodeBtn = document.getElementById('copyCodeBtn');
-            
-            btn.disabled = true;
-            btn.innerHTML = '<span class="loader"></span> Fetching verification code...';
-
-            try {
-                const response = await fetch('/api/get-code', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password, token, clientId })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    resultHeader.classList.remove('error', 'waiting');
-                    resultIcon.textContent = '✅';
-                    resultTitle.textContent = 'Email Retrieved Successfully';
-                    resultDetail.textContent = `For: ${data.email}`;
-                    codeValue.textContent = data.code;
-                    codeValue.classList.remove('placeholder');
-                    copyCodeBtn.disabled = false;
-
-                    // Auto-copy
-                    try {
-                        await navigator.clipboard.writeText(data.code);
-                        console.log('✅ Code auto-copied');
-                    } catch(e) {}
+            fetch(BACKEND_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ raw_input: rawInputData })
+            })
+            .then(res => {
+                if(!res.ok) throw new Error("Server returned API breakdown response.");
+                return res.json();
+            })
+            .then(data => {
+                if(data.status === "success") {
+                    setEngineState("success", "Extraction Successful", `Fetched code for ${data.email}`);
+                    otpDisplay.innerText = data.verification_code;
+                    otpDisplay.className = "text-3xl font-mono font-black tracking-widest text-slate-800";
+                    
+                    btnCopyCode.disabled = false;
+                    btnCopyCode.className = "bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm flex items-center gap-1.5 transition-all";
                 } else {
-                    resultHeader.classList.add('error');
-                    resultHeader.classList.remove('waiting');
-                    resultIcon.textContent = '❌';
-                    resultTitle.textContent = 'Error';
-                    resultDetail.textContent = data.error;
-                    codeValue.textContent = '------';
-                    codeValue.classList.add('placeholder');
-                    copyCodeBtn.disabled = true;
+                    setEngineState("error", "Network Error", data.message || "Parsing failed.");
                 }
+            })
+            .catch(err => {
+                setEngineState("error", "Network Error", "Unexpected token '<', \"<html>\" ... is not valid JSON");
+            });
+        });
 
-            } catch (error) {
-                resultHeader.classList.add('error');
-                resultHeader.classList.remove('waiting');
-                resultIcon.textContent = '❌';
-                resultTitle.textContent = 'Network Error';
-                resultDetail.textContent = error.message;
-                codeValue.textContent = '------';
-                codeValue.classList.add('placeholder');
-                copyCodeBtn.disabled = true;
-            }
+        function setEngineState(state, title = "", desc = "") {
+            const card = document.getElementById('engine-card');
+            const icon = document.getElementById('engine-icon');
+            const tEl = document.getElementById('engine-status-title');
+            const dEl = document.getElementById('engine-status-desc');
 
-            btn.disabled = false;
-            btn.innerHTML = 'Get Verification Code';
-        }
-
-        function clearAll() {
-            // Clear input
-            document.getElementById('accountInput').value = '';
-            
-            // Reset email display
-            const emailText = document.getElementById('extractedEmail');
-            emailText.textContent = 'No email entered yet';
-            emailText.classList.add('placeholder');
-            document.getElementById('copyEmailBtn').disabled = true;
-            
-            // Reset result section
-            const resultHeader = document.getElementById('resultHeader');
-            resultHeader.classList.remove('error');
-            resultHeader.classList.add('waiting');
-            document.getElementById('resultIcon').textContent = '⏳';
-            document.getElementById('resultTitle').textContent = 'Waiting for request...';
-            document.getElementById('resultDetail').textContent = 'Enter your account details and click "Get Verification Code"';
-            
-            // Reset code display
-            const codeValue = document.getElementById('codeValue');
-            codeValue.textContent = '------';
-            codeValue.classList.add('placeholder');
-            document.getElementById('copyCodeBtn').disabled = true;
-        }
-
-        async function copyCode() {
-            const code = document.getElementById('codeValue').textContent;
-            if (code === '------') return;
-            
-            try {
-                await navigator.clipboard.writeText(code);
-                alert('✅ Code copied: ' + code);
-            } catch(e) {
-                alert('⚠️ Failed to copy');
+            if(state === "waiting") {
+                card.className = "bg-white rounded-2xl p-5 shadow-sm border border-slate-100 w-full max-w-xl flex items-center gap-4";
+                icon.className = "text-2xl bg-amber-50 p-2.5 rounded-xl border border-amber-100";
+                icon.innerText = "⏳";
+                tEl.innerText = "Waiting for request...";
+                dEl.innerText = "Enter your account details and click \"Get Verification Code\"";
+            } else if(state === "loading") {
+                card.className = "bg-blue-50/50 rounded-2xl p-5 shadow-sm border border-blue-100 w-full max-w-xl flex items-center gap-4";
+                icon.className = "text-2xl bg-blue-100 p-2.5 rounded-xl border border-blue-200 animate-pulse";
+                icon.innerText = "🔄";
+                tEl.innerText = title;
+                dEl.innerText = desc;
+            } else if(state === "success") {
+                card.className = "bg-emerald-50/60 rounded-2xl p-5 shadow-sm border border-emerald-100 w-full max-w-xl flex items-center gap-4";
+                icon.className = "text-2xl bg-emerald-100 p-2.5 rounded-xl border border-emerald-200";
+                icon.innerText = "✅";
+                tEl.innerText = title;
+                dEl.innerText = desc;
+            } else if(state === "error") {
+                card.className = "bg-red-50/60 rounded-2xl p-5 shadow-sm border border-red-100 w-full max-w-xl flex items-center gap-4";
+                icon.className = "text-2xl bg-red-100 p-2.5 rounded-xl border border-red-200";
+                icon.innerText = "❌";
+                tEl.innerText = title;
+                dEl.innerText = desc;
+                
+                otpDisplay.innerText = "— — — — — —";
+                otpDisplay.className = "text-3xl font-mono font-bold tracking-widest text-slate-300";
             }
         }
 
-        async function copyEmail() {
-            const email = document.getElementById('extractedEmail').textContent;
-            if (email === 'No email entered yet' || email === 'Invalid email format') return;
-            
-            try {
-                await navigator.clipboard.writeText(email);
-                alert('✅ Email copied: ' + email);
-            } catch(e) {
-                alert('⚠️ Failed to copy');
-            }
-        }
+        // Copy Procedures
+        btnCopyEmail.addEventListener('click', () => {
+            navigator.clipboard.writeText(extractedEmailText.innerText);
+        });
+        btnCopyCode.addEventListener('click', () => {
+            navigator.clipboard.writeText(otpDisplay.innerText);
+        });
     </script>
 </body>
 </html>
