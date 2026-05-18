@@ -1,4 +1,5 @@
 import os
+import re
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -6,51 +7,55 @@ app = Flask(__name__)
 # 🌐 ব্রাউজারের CORS কানেকশন ব্লক সমস্যা দূর করার জন্য
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-@app.route('/get-code',彻 methods=['POST'])
+# 🎯 স্ট্রিংয়ের ভেতর থেকে নিখুঁতভাবে ইমেইল খুঁজে বের করার রেজেক্স ফাংশন
+def extract_email(text):
+    email_regex = r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+    match = re.search(email_regex, text)
+    return match.group(0).strip() if match else None
+
+@app.route('/get-code', methods=['POST'])
 def get_code():
     try:
         data = request.get_json()
         if not data:
             return jsonify({"status": "error", "message": "No JSON data received!"}), 400
-            
+
         raw_input = data.get("raw_input", "").strip()
         mode = data.get("mode", "facebook").strip()
 
         if not raw_input:
             return jsonify({"status": "error", "message": "Input data is empty!"}), 400
 
-        # 📋 পাইপ (|) সিম্বল দিয়ে ডেটা আলাদা করা
+        # 🔍 স্মার্টলি আসল ইমেইল বের করা হচ্ছে
+        detected_email = extract_email(raw_input)
+        
+        if not detected_email:
+            return jsonify({"status": "error", "message": "No valid email found in data!"}), 400
+
+        # 📋 পাইপ (|) দিয়ে বাকি ডাটা আলাদা করা (যদি পাসওয়ার্ড বা অন্য কিছু লাগে)
         parts = raw_input.split('|')
-        email = parts[0].strip() if len(parts) > 0 else ""
         password = parts[1].strip() if len(parts) > 1 else ""
         token = parts[2].strip() if len(parts) > 2 else ""
-        uid = parts[3].strip() if len(parts) > 3 else ""
 
-        # 🔍 মোড অনুযায়ী আপনার ওটিপি এক্সট্রাকশন লজিক এখানে কাজ করবে
-        extracted_otp = ""
+        # =========================================================
+        # 🔥 এখানে আপনার OTP বা কোড বের করার আসল লজিকটি কাজ করবে
+        # উদাহরণস্বরূপ নিচে একটি ডেমো সাকসেস রেসপন্স দেওয়া হলো:
+        # =========================================================
         
-        if mode == "facebook":
-            # 🔵 এখানে আপনার ফেসবুক ওটিপি বের করার আসল স্ক্রিপ্ট/লজিক বসাবেন
-            extracted_otp = "FB-123456"  # টেস্ট ডামি ওটিপি
-            
-        elif mode == "instagram":
-            # 🔮 এখানে আপনার ইনস্টাগ্রাম ওটিপি বের করার আসল স্ক্রিপ্ট/লজিক বসাবেন
-            extracted_otp = "IG-654321"  # টেস্ট ডামি ওটিপি
-        else:
-            return jsonify({"status": "error", "message": "Invalid platform mode!"}), 400
+        # আপনার আসল কাজ শেষে ভেরিফিকেশন কোডটি এখানে পাস করবেন:
+        extracted_otp = "123456" # <--- এখানে আপনার স্ক্রিপ্টের আসল ওটিপি বসবে
 
-        # সবকিছু সফল হলে ফ্রন্টএন্ডে পাঠানো
         return jsonify({
             "status": "success",
+            "email": detected_email,
             "code": extracted_otp,
-            "email": email,
-            "uid": uid
+            "message": "OTP fetched successfully!"
         })
 
     except Exception as e:
-        return jsonify({"status": "error", "message": f"Server Error: {str(e)}"}), 500
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == '__main__':
-    # রেন্ডার পোর্টের সাথে ম্যাচ করানোর জন্য
+    # 🚀 রেন্ডারের ডায়নামিক পোর্ট ডিটেক্ট করার জন্য
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
