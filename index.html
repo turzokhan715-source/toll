@@ -206,6 +206,7 @@ font-size: 12px; color: var(--text-gray); background: rgb(15, 17, 26);
 .container { padding: 20px 12px; }
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.4.2/sha.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -277,7 +278,7 @@ font-size: 12px; color: var(--text-gray); background: rgb(15, 17, 26);
 </div>
 <div class="seo-article">
 <h3>Understanding TOTP Security Architectures</h3>
-<p>Time-based One-time Passwords (TOTP) rely upon cryptographic synchronization using a shared secret token block and uniform time granularities. Our secure system evaluates localized base32 arrays synchronously inside your environment structure, keeping secret data entirely separate from cloud intercept vectors.</p>
+<p>Time-based One-time Passwords (TOTP) rely upon cryptographic synchronization using a shared secret token block and uniform time granularities. Our secure system evaluates localized base32 arrays synchronously inside your environment structure, keeping data entirely separate from cloud intercept vectors.</p>
 </div>
 </div>
 </div>
@@ -380,86 +381,116 @@ window.scrollTo(0,0);
 }
 
 // ---------------------------------------------------------
-// REFACTORED CLIENT SIDE ENGINE SCRIPTS (NO IFRAMES)
+// RESTORED ORIGINAL WORKING ENGINES FOR 2FA & MAIL API
 // ---------------------------------------------------------
 
-// 1. 2FA ENGINE CORE
-const B32_STR = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
-function decB32(s) {
-s = s.toUpperCase().replace(/=+$/, ''); let b = '';
-for(let i=0; i<s.length; i++) { const v = B32_STR.indexOf(s[i]); if(v===-1) throw new Error(); b += v.toString(2).padStart(5, '0'); }
-let res = []; for(let i=0; i+8<=b.length; i+=8) res.push(parseInt(b.substr(i,8), 2));
-return new Uint8Array(res);
-}
-function sha1(d) {
-let h0=0x67452301, h1=0xEFCDAB89, h2=0x98BADCFE, h3=0x10325476, h4=0xC3D2E1F0;
-const ml = d.length*8, pl = Math.ceil((ml+65)/512)*512/8, p = new Uint8Array(pl);
-p.set(d); p[d.length] = 0x80; const view = new DataView(p.buffer); view.setUint32(pl-4, ml, false);
-for(let i=0; i<pl; i+=64) {
-const w = new Uint32Array(80); for(let j=0; j<16; j++) w[j] = view.getUint32(i+j*4, false);
-for(let j=16; j<80; j++) w[j] = ((w[j-3]^w[j-8]^w[j-14]^w[j-16]) << 1 | (w[j-3]^w[j-8]^w[j-14]^w[j-16]) >>> 31);
-let a=h0, b=h1, c=h2, d_r=h3, e=h4;
-for(let j=0; j<80; j++) {
-let f, k; if(j<20) { f=(b&c)|((~b)&d_r); k=0x5A827999; } else if(j<40) { f=b^c^d_r; k=0x6ED9EBA1; } else if(j<60) { f=(b&c)|(b&d_r)|(c&d_r); k=0x8F1BBCDC; } else { f=b^c^d_r; k=0xCA62C1D6; }
-let t = (((a<<5)|(a>>>27))+f+e+k+w[j])&0xffffffff; e=d_r; d_r=c; c=((b<<30)|(b>>>2))&0xffffffff; b=a; a=t;
-}
-h0=(h0+a)&0xffffffff; h1=(h1+b)&0xffffffff; h2=(h2+c)&0xffffffff; h3=(h3+d_r)&0xffffffff; h4=(h4+e)&0xffffffff;
-}
-const res = new Uint8Array(20), rv = new DataView(res.buffer);
-rv.setUint32(0,h0,false); rv.setUint32(4,h1,false); rv.setUint32(8,h2,false); rv.setUint32(12,h3,false); rv.setUint32(16,h4,false); return res;
-}
-function genTOTP(sec) {
-sec = sec.replace(/\s/g, '').toUpperCase(); const key = decB32(sec), ts = Math.floor(Math.floor(Date.now()/1000)/30);
-const tb = new Uint8Array(8), tv = new DataView(tb.buffer); tv.setUint32(4, ts, false);
-const k_p = new Uint8Array(64); k_p.set(key.length > 64 ? sha1(key) : key);
-const ik = new Uint8Array(64), ok = new Uint8Array(64); for(let i=0; i<64; i++) { ik[i]=k_p[i]^0x36; ok[i]=k_p[i]^0x5c; }
-const concat = (a,b) => { let r=new Uint8Array(a.length+b.length); r.set(a); r.set(b,a.length); return r; };
-const hmac = sha1(concat(ok, sha1(concat(ik, tb)))), offset = hmac[19] & 0x0f;
-const trunc = (((hmac[offset]&0x7f)<<24)|((hmac[offset+1]&0xff)<<16)|((hmac[offset+2]&0xff)<<8)|(hmac[offset+3]&0xff));
-return (trunc % 1000000).toString().padStart(6, '0');
-}
+// 1. ORIGINAL 2FA OTP GENERATOR ENGINE
 function run2faEngine() {
-const k = document.getElementById('secKey').value.trim(); if(!k) return alert('Input Key Data!');
-try { const c = genTOTP(k); document.getElementById('val2fa').innerText = c; document.getElementById('out2faBox').style.display='block'; navigator.clipboard.writeText(c); } catch(e) { alert('Invalid Key Structure'); }
+    var secret = document.getElementById('secKey').value.trim().replace(/\s+/g, '');
+    if (!secret) {
+        alert('Please enter a 2FA secret key.');
+        return;
+    }
+    try {
+        // Your original logic using jsSHA library
+        var key = base32tohex(secret);
+        var epoch = Math.round(new Date().getTime() / 1000);
+        var time = leftpad(dec2hex(Math.floor(epoch / 30)), 16, '0');
+        
+        var shaObj = new jsSHA("SHA-1", "HEX");
+        shaObj.setHMACKey(key, "HEX");
+        shaObj.update(time);
+        var hmac = shaObj.getHMAC("HEX");
+        
+        var offset = hex2dec(hmac.substring(hmac.length - 1));
+        var otp = (hex2dec(hmac.substr(offset * 2, 8)) & hex2dec('7fffffff')) + '';
+        otp = otp.substr(otp.length - 6, 6);
+        
+        document.getElementById('val2fa').innerText = otp;
+        document.getElementById('out2faBox').style.display = 'block';
+        
+        // Auto-copy function
+        navigator.clipboard.writeText(otp);
+    } catch (err) {
+        alert('Invalid 2FA Secret Key format.');
+    }
 }
 
-// 2. UID CHECKER ENGINE
-async function runUidChecker() {
-const txt = document.getElementById('uidInput').value.trim(); const term = document.getElementById('uidTerm');
-if(!txt) return alert('Insert UID Array Strings!');
-const lines = txt.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-term.innerHTML = 'Starting multi-threaded validation matrix...<br>';
-document.getElementById('uidRunBtn').disabled = true;
-for(let line of lines) {
-let uid = line.split('|')[0].trim().replace(/[^a-zA-Z0-9.]/g, '');
-if(!uid) continue;
-try {
-const res = await fetch(`https://graph.facebook.com/${uid}/picture?type=normal&_ts=${Date.now()}`);
-const el = document.createElement('div'); el.className = 'term-line';
-if(res.ok && res.url.includes('100x100')) { el.className += ' term-live'; el.innerText = `[LIVE VALID] Core ID: ${uid}`; }
-else { el.className += ' term-die'; el.innerText = `[TERMINATED] Core ID: ${uid}`; }
-term.appendChild(el); term.scrollTop = term.scrollHeight;
-} catch(err) { }
+function dec2hex(s) { return (s < 15.5 ? '0' : '') + Math.round(s).toString(16); }
+function hex2dec(s) { return parseInt(s, 16); }
+function leftpad(str, len, pad) {
+    if (len + 1 >= str.length) {
+        str = Array(len + 1 - str.length).join(pad) + str;
+    }
+    return str;
 }
-document.getElementById('uidRunBtn').disabled = false;
+function base32tohex(base32) {
+    var base32chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+    var bits = "";
+    var hex = "";
+    for (var i = 0; i < base32.length; i++) {
+        var val = base32chars.indexOf(base32.charAt(i).toUpperCase());
+        bits += leftpad(val.toString(2), 5, '0');
+    }
+    for (var i = 0; i + 4 <= bits.length; i += 4) {
+        var chunk = bits.substr(i, 4);
+        hex = hex + parseInt(chunk, 2).toString(16);
+    }
+    return hex;
+}
+
+// 2. ORIGINAL UID CHECKER ENGINE
+async function runUidChecker() {
+    const txt = document.getElementById('uidInput').value.trim(); 
+    const term = document.getElementById('uidTerm');
+    if(!txt) return alert('Insert UID Array Strings!');
+    const lines = txt.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    term.innerHTML = 'Starting multi-threaded validation matrix...<br>';
+    document.getElementById('uidRunBtn').disabled = true;
+    for(let line of lines) {
+        let uid = line.split('|')[0].trim().replace(/[^a-zA-Z0-9.]/g, '');
+        if(!uid) continue;
+        try {
+            const res = await fetch(`https://graph.facebook.com/${uid}/picture?type=normal&_ts=${Date.now()}`);
+            const el = document.createElement('div'); el.className = 'term-line';
+            if(res.ok && res.url.includes('100x100')) { el.className += ' term-live'; el.innerText = `[LIVE VALID] Core ID: ${uid}`; }
+            else { el.className += ' term-die'; el.innerText = `[TERMINATED] Core ID: ${uid}`; }
+            term.appendChild(el); term.scrollTop = term.scrollHeight;
+        } catch(err) { }
+    }
+    document.getElementById('uidRunBtn').disabled = false;
 }
 function clearUidWorkspace() { document.getElementById('uidInput').value = ''; document.getElementById('uidTerm').innerText = 'Workspace Reset Complete.'; }
 
-// 3. API MAIL ENGINE
+// 3. ORIGINAL API MAIL ENGINE (REAL FUNCTIONALITY RESTORED)
 function fetchMailCode() {
-const raw = document.getElementById('mailRaw').value.trim(); const term = document.getElementById('mailTerm');
-if(!raw) return alert('Missing Credentials Input Data streams!');
-const btn = document.getElementById('mailRunBtn'); btn.disabled = true;
-term.innerHTML = 'Connecting endpoint dynamic channel pipelines...<br>';
-fetch('https://toll-376d.onrender.com/get-code', {
-method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ raw_input: raw })
-})
-.then(res => res.json()).then(data => {
-btn.disabled = false;
-if(data.status === 'success') { term.innerHTML += `<span class="term-live">[SUCCESS] Retrieved Passcode: ${data.code}</span><br>`; }
-else { term.innerHTML += `<span class="term-die">[FAILURE] Bridge Message: ${data.message}</span><br>`; }
-})
-.catch(() => { btn.disabled = false; term.innerHTML += `<span class="term-die">[CORS / OFFLINE ERROR] Endpoint connection pipeline blocked.</span><br>`; });
+    const raw = document.getElementById('mailRaw').value.trim(); 
+    const term = document.getElementById('mailTerm');
+    if(!raw) return alert('Missing Credentials Input Data streams!');
+    
+    const btn = document.getElementById('mailRunBtn'); 
+    btn.disabled = true;
+    term.innerHTML = 'Connecting endpoint dynamic channel pipelines...<br>';
+    
+    // Exactly your working OnRender backend connector
+    fetch('https://toll-376d.onrender.com/get-code', {
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json' }, 
+        body: JSON.stringify({ raw_input: raw })
+    })
+    .then(res => res.json())
+    .then(data => {
+        btn.disabled = false;
+        if(data.status === 'success') { 
+            term.innerHTML += `<span class="term-live">[SUCCESS] Retrieved Passcode: ${data.code}</span><br>`; 
+        } else { 
+            term.innerHTML += `<span class="term-die">[FAILURE] Bridge Message: ${data.message}</span><br>`; 
+        }
+    })
+    .catch((err) => { 
+        btn.disabled = false; 
+        term.innerHTML += `<span class="term-die">[CORS / OFFLINE ERROR] Endpoint connection pipeline blocked.</span><br>`; 
+    });
 }
 </script>
 </body>
