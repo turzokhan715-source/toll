@@ -4,8 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Longisir VIP Portal - Free Tools</title>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
 --primary: rgb(168, 85, 247);
@@ -25,1006 +27,797 @@ display: flex;
 flex-direction: column;
 }
 
+/* Navbar Styles */
+.navbar {
+background: rgba(21, 23, 37, 0.7);
+backdrop-filter: blur(12px);
+border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+padding: 15px 25px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+position: sticky;
+top: 0;
+z-index: 100;
+}
+
+.brand {
+font-size: 20px;
+font-weight: 800;
+background: linear-gradient(135deg, #fff 30%, var(--primary));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+
+.nav-links {
+display: flex;
+gap: 15px;
+}
+
+.nav-link {
+background: transparent;
+border: none;
+color: var(--text-gray);
+font-size: 13px;
+font-weight: 700;
+padding: 8px 16px;
+border-radius: 10px;
+cursor: pointer;
+transition: all 0.2s;
+display: flex;
+align-items: center;
+gap: 6px;
+}
+
+.nav-link:hover {
+color: #fff;
+background: rgba(255, 255, 255, 0.03);
+}
+
+.nav-link.active {
+color: #fff;
+background: var(--btn-grad);
+box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+}
+
+/* Sections Configuration */
 .section {
 display: none;
 width: 100%;
+padding: 40px 15px;
+flex: 1;
 }
 
 .section.active {
 display: block;
 }
 
-.top-nav {
-background: rgba(15, 17, 26, 0.95);
-backdrop-filter: blur(10px);
-border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-padding: 15px 0;
-position: sticky;
-top: 0;
-z-index: 1000;
+/* --- TOOL 1: CHAKER (UID CHECKER) STYLES --- */
+.main-panel {
 width: 100%;
-}
-
-.nav-container {
-max-width: 1200px;
-margin: 0 auto;
-padding: 0 20px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-flex-wrap: wrap;
-gap: 15px;
-}
-
-.logo {
-display: flex;
-align-items: center;
-gap: 10px;
-font-size: 20px;
-font-weight: 800;
-color: var(--primary);
-cursor: pointer;
-}
-
-.logo i { font-size: 24px; }
-
-.nav-links {
-display: flex;
-gap: 10px;
-align-items: center;
-flex-wrap: wrap;
-}
-
-.nav-links a {
-color: var(--text-gray);
-text-decoration: none;
-font-weight: 600;
-font-size: 13px;
-transition: all 0.3s;
-cursor: pointer;
-padding: 8px 12px;
-border-radius: 8px;
-}
-
-.nav-links a:hover,
-.nav-links a.active {
-color: rgb(255, 255, 255);
-background: rgba(168, 85, 247, 0.1);
-}
-
-.container {
-max-width: 1100px;
-margin: 0 auto;
-padding: 40px 20px;
-width: 100%;
-flex: 1;
-}
-
-.hero {
-text-align: center;
-margin-bottom: 40px;
-}
-
-.hero h1 {
-font-size: clamp(24px, 5vw, 54px);
-font-weight: 800;
-margin-bottom: 8px;
-}
-
-.hero p {
-color: var(--text-gray);
-letter-spacing: 3px;
-font-size: 11px;
-font-weight: 600;
-text-transform: uppercase;
-margin-bottom: 20px;
-}
-
-.hero-desc {
-color: var(--text-gray);
-font-size: 15px;
-max-width: 700px;
-margin: 0 auto 30px auto;
-line-height: 1.6;
-text-transform: none;
-}
-
-.home-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-gap: 20px;
-margin-bottom: 40px;
-width: 100%;
-}
-
-.h-card {
-background: var(--card-bg);
-border: 1px solid rgba(255,255,255,0.05);
-padding: 40px 20px;
-border-radius: 20px;
-text-align: center;
-transition: 0.3s ease;
-cursor: pointer;
-}
-
-.h-card i {
-font-size: 40px;
-color: var(--primary);
-margin-bottom: 15px;
-display: block;
-filter: drop-shadow(0 0 15px rgba(168, 85, 247, 0.5));
-}
-
-.h-card h3 {
-font-size: 18px;
-font-weight: 800;
-margin-bottom: 8px;
-}
-
-.h-card p {
-font-size: 13px;
-color: var(--text-gray);
-}
-
-.h-card:hover {
-transform: translateY(-6px);
-border-color: rgba(168, 85, 247, 0.3);
-background: rgb(26, 29, 46);
-}
-
-.page-header {
-text-align: center;
-margin-bottom: 40px;
-}
-
-.page-header h1 {
-font-size: 36px;
-font-weight: 800;
-margin-bottom: 10px;
-color: var(--primary);
-}
-
-.page-header p {
-color: var(--text-gray);
-font-size: 15px;
-}
-
-.content-box {
-background: var(--card-bg);
-padding: 30px;
-border-radius: 20px;
-border: 1px solid rgba(255, 255, 255, 0.05);
-margin-bottom: 25px;
-}
-
-.content-box h2 {
-color: var(--primary);
-margin-bottom: 15px;
-font-size: 22px;
-font-weight: 800;
-}
-
-.content-box p {
-color: var(--text-gray);
-font-size: 14px;
-line-height: 1.6;
-}
-
-.tool-wrapper {
-width: 100%;
-min-height: calc(100vh - 70px);
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: flex-start;
-}
-
-.responsive-iframe {
-width: 100%;
-flex-grow: 1;
-min-height: calc(100vh - 70px);
-border: none;
-display: block;
-}
-
-/* Footer Styles */
-.site-footer {
-background: rgba(15, 17, 26, 0.8);
-border-top: 1px solid rgba(255, 255, 255, 0.05);
-padding: 30px 20px;
-margin-top: auto;
-width: 100%;
-text-align: center;
-}
-.footer-container {
-max-width: 1100px;
-margin: 0 auto;
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 20px;
-}
-.footer-links {
-display: flex;
-gap: 25px;
-flex-wrap: wrap;
-justify-content: center;
-}
-.footer-links a {
-color: var(--text-gray);
-text-decoration: none;
-font-size: 12px;
-font-weight: 600;
-text-transform: uppercase;
-letter-spacing: 1px;
-transition: color 0.2s;
-cursor: pointer;
-}
-.footer-links a:hover {
-color: var(--primary);
-}
-.footer-seo-box {
-background: rgba(255, 255, 255, 0.02);
-border: 1px solid rgba(255, 255, 255, 0.04);
-border-radius: 14px;
-padding: 15px 20px;
 max-width: 800px;
-text-align: left;
-}
-.footer-seo-box h4 {
-font-size: 11px;
-color: #e2e8f0;
-text-transform: uppercase;
-letter-spacing: 1px;
-margin-bottom: 6px;
-font-weight: 800;
-}
-.footer-seo-box p {
-font-size: 11px;
-color: rgba(156, 163, 175, 0.8);
-line-height: 1.6;
-}
-.copyright-text {
-font-size: 11px;
-color: rgba(156, 163, 175, 0.4);
+background: #111827;
+border-radius: 16px;
+padding: 25px;
+box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+border: 1px solid rgba(255, 255, 255, 0.05);
+margin: 0 auto;
 }
 
-@media (max-width: 768px) {
-.top-nav { padding: 10px 0; }
-.nav-container { flex-direction: column; align-items: center; text-align: center; gap: 10px; }
-.nav-links { width: 100%; justify-content: center; gap: 4px; }
-.nav-links a { font-size: 11px; padding: 6px 8px; }
-.container { padding: 20px 12px; }
-.home-grid { grid-template-columns: 1fr; }
-.responsive-iframe { min-height: calc(100vh - 120px); }
-.tool-wrapper { min-height: calc(100vh - 120px); }
+.panel-title {
+font-size: 24px;
+font-weight: 700;
+color: #818cf8;
+margin-bottom: 20px;
+text-align: center;
+letter-spacing: 0.5px;
 }
+
+.input-area-wrapper { margin-bottom: 15px; }
+
+.main-panel textarea {
+width: 100%;
+height: 160px;
+background: #1f2937;
+border: 1px solid #374151;
+border-radius: 12px;
+padding: 15px;
+font-size: 14px;
+color: #f3f4f6;
+outline: none;
+resize: vertical;
+font-weight: 500;
+line-height: 1.5;
+overflow-y: auto;
+}
+
+.main-panel textarea:focus {
+border-color: #6366f1;
+box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.action-row { display: flex; gap: 12px; margin-bottom: 18px; }
+
+.btn-start {
+flex: 1;
+background: linear-gradient(135deg, #4f46e5, #3b82f6);
+color: white;
+border: none;
+padding: 16px;
+border-radius: 12px;
+font-size: 15px;
+font-weight: 700;
+letter-spacing: 0.5px;
+cursor: pointer;
+text-transform: uppercase;
+box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
+}
+
+.btn-clear {
+background: #dc2626;
+color: white;
+border: none;
+padding: 0 25px;
+border-radius: 12px;
+font-size: 15px;
+font-weight: 700;
+cursor: pointer;
+text-transform: uppercase;
+box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.console-box {
+width: 100%;
+height: 260px;
+background: #030712;
+border-radius: 12px;
+padding: 15px;
+font-family: 'Courier New', Courier, monospace;
+font-size: 13px;
+color: #34d399;
+overflow-y: auto;
+margin-bottom: 20px;
+border: 1px solid #1f2937;
+box-shadow: inset 0 4px 12px rgba(0,0,0,0.6);
+line-height: 1.6;
+}
+
+.console-log { margin-bottom: 4px; word-break: break-all; }
+.log-live { color: #34d399; font-weight: 600; }
+.log-die { color: #f87171; }
+
+.footer-row { display: flex; flex-direction: column; gap: 15px; align-items: center; }
+@media (min-width: 600px) { .footer-row { flex-direction: row; justify-content: space-between; } }
+
+.stats-group { display: flex; gap: 10px; width: 100%; }
+@media (min-width: 600px) { .stats-group { width: auto; } }
+
+.stat-card {
+background: #1f2937;
+border: 1px solid #374151;
+border-radius: 10px;
+padding: 10px 15px;
+text-align: center;
+flex: 1;
+min-width: 85px;
+}
+
+.stat-num { font-size: 15px; font-weight: 700; display: block; margin-bottom: 2px; }
+.stat-label { font-size: 10px; color: #9ca3af; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.total-color { color: #e5e7eb; }
+.live-color { color: #34d399; }
+.die-color { color: #f87171; }
+
+.btn-download {
+width: 100%;
+background: #059669;
+color: white;
+border: none;
+padding: 15px 28px;
+border-radius: 12px;
+font-size: 14px;
+font-weight: 700;
+cursor: pointer;
+box-shadow: 0 4px 14px rgba(5, 150, 105, 0.4);
+text-align: center;
+text-transform: uppercase;
+}
+@media (min-width: 600px) { .btn-download { width: auto; } }
+.btn-download:hover { background: #047857; }
+
+
+/* --- TOOL 2: 2FA AUTHENTICATOR STYLES --- */
+.tfa-container { max-width: 520px; width: 100%; margin: 0 auto; }
+.tfa-card { background: var(--card-bg); border-radius: 24px; padding: 40px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 24px; }
+.tfa-header { text-align: center; margin-bottom: 32px; }
+.tfa-header h1 { font-size: 1.85rem; font-weight: 800; background: linear-gradient(135deg, #fff 40%, var(--text-gray)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+.tfa-input-group { margin-bottom: 24px; }
+.tfa-label { display: block; font-weight: 600; margin-bottom: 10px; color: #e2e8f0; font-size: 0.875rem; }
+.tfa-input { width: 100%; padding: 16px; border: 2px solid #1e293b; border-radius: 14px; font-size: 1rem; color: #fff; background: #111726; font-family: 'Courier New', monospace; font-weight: 600; }
+.tfa-input:focus { outline: none; border-color: var(--primary); }
+.tfa-btn { width: 100%; padding: 16px; background: var(--btn-grad); color: #fff; border: none; border-radius: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3); }
+.tfa-code-box { background: linear-gradient(135deg, #111827 0%, #030712 100%); border: 2px solid #1e293b; border-radius: 14px; padding: 24px; text-align: center; margin-bottom: 12px; }
+.tfa-code-label { font-size: 0.8rem; color: var(--primary); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
+.tfa-totp { font-size: 2.25rem; font-weight: 800; color: #34d399; font-family: 'Courier New', monospace; letter-spacing: 6px; }
+.tfa-hint { text-align: center; color: #34d399; font-weight: 700; font-size: 0.875rem; display: none; }
+.tfa-history { background: var(--card-bg); border-radius: 24px; padding: 32px; border: 1px solid rgba(255, 255, 255, 0.05); }
+.tfa-hist-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.tfa-hist-list { overflow-y: auto; max-height: 250px; }
+.tfa-hist-item { padding: 16px; background: #111726; border-radius: 14px; margin-bottom: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: center; }
+
+
+/* --- TOOL 3: MAIL API (OTP EXTRACTOR) STYLES --- */
+.neon-card { background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(51, 65, 85, 0.5); box-shadow: 0 25px 70px -10px rgba(0, 0, 0, 0.8); border-radius: 28px; width: 100%; max-width: 850px; margin: 0 auto; }
+.neon-bracket { border-left: 3px solid #6366f1; border-right: 3px solid #6366f1; border-radius: 14px; }
+
+
+/* Footer Layout */
+footer {
+background: rgb(15, 16, 27);
+border-top: 1px solid rgba(255, 255, 255, 0.05);
+padding: 40px 20px;
+margin-top: auto;
+text-align: center;
+}
+.footer-links { display: flex; justify-content: center; gap: 20px; margin-bottom: 15px; }
+.footer-links a { color: var(--text-gray); font-size: 12px; text-decoration: none; font-weight: 600; cursor: pointer; }
+.footer-seo-box { max-width: 700px; margin: 0 auto 20px; }
+.footer-seo-box h4 { font-size: 13px; color: #fff; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+.footer-seo-box p { font-size: 11px; color: var(--text-gray); line-height: 1.6; }
+.copyright-text { font-size: 11px; color: rgba(255,255,255,0.2); }
 </style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-<nav class="top-nav">
-<div class="nav-container">
-<div class="logo" onclick="showSection('home')">
-<i class="fa-solid fa-cube"></i>
-<span>LONGISIR</span>
-</div>
-
+<nav class="navbar">
+<div class="brand"><i class="fas fa-bolt"></i> Longisir VIP</div>
 <div class="nav-links">
-<a onclick="showSection('home')" class="nav-link active" data-section="home">Home</a>
-<a onclick="showSection('tool-2fa')" class="nav-link" data-section="tool-2fa">2FA AUTH</a>
-<a onclick="showSection('tool-mail')" class="nav-link" data-section="tool-mail">API MAIL</a>
-<a onclick="showSection('tool-uid')" class="nav-link" data-section="tool-uid">UID CHECKER</a>
-</div>
+<button class="nav-link active" data-section="home" onclick="showSection('home')"><i class="fas fa-shield-alt"></i> UID Checker</button>
+<button class="nav-link" data-section="tfa" onclick="showSection('tfa')"><i class="fas fa-key"></i> 2FA Auth</button>
+<button class="nav-link" data-section="mail" onclick="showSection('mail')"><i class="fas fa-envelope"></i> Mail API</button>
 </div>
 </nav>
 
 <div id="home" class="section active">
-<div class="container">
-<header class="hero">
-<h1>Longisir VIP Portal:</h1>
-<p>THE NEXT GEN AUTOMATION HUB</p>
-<p class="hero-desc">Your unified solution for all security and productivity tools. Professionally built for efficiency, speed, and reliability. 100% FREE!</p>
-</header>
+    <div class="main-panel">
+        <div class="panel-title">Bulk UID Checker Pro</div>
+        
+        <div class="input-area-wrapper">
+            <textarea id="inputData" placeholder="Paste data here... (Supports UID|PASS|2FA or Space/Tab separated formats)"></textarea>
+        </div>
 
-<main class="home-grid">
-<div class="h-card" onclick="showSection('tool-2fa')">
-<i class="fa-solid fa-shield-halved"></i>
-<h3>2FA AUTH</h3>
-<p>Fast Code Gen</p>
-</div>
+        <div class="action-row">
+            <button class="btn-start" id="startBtn" onclick="startScanner()">Start Scanner</button>
+            <button class="btn-clear" onclick="clearTool()">Clear</button>
+        </div>
 
-<div class="h-card" onclick="showSection('tool-mail')">
-<i class="fa-solid fa-envelope"></i>
-<h3>API MAIL</h3>
-<p>Email Scraper</p>
-</div>
+        <div class="console-box" id="consoleScreen">Console ready...</div>
 
-<div class="h-card" onclick="showSection('tool-uid')">
-<i class="fa-solid fa-bolt"></i>
-<h3>UID CHECKER</h3>
-<p>Bulk Validator</p>
-</div>
-</main>
-</div>
-</div>
-
-<div id="about" class="section">
-<div class="container">
-<div class="page-header">
-<h1>About Longisir VIP</h1>
-<p>The Next Generation Automation Hub</p>
-</div>
-<div class="content-box">
-<h2>Our Mission & Ecosystem</h2>
-<p>Longisir VIP provides top-tier automation tools for professionals. Our infrastructure is optimized for multi-threaded performance, ensuring that your data processing is not only fast but also secure and reliable. All tools are 100% FREE with no limitations!</p>
-</div>
-</div>
-</div>
-
-<div id="privacy" class="section">
-<div class="container">
-<div class="page-header">
-<h1>Privacy Policy</h1>
-<p>Data Isolation and Integrity Framework</p>
-</div>
-<div class="content-box">
-<h2>Information Processing Statement</h2>
-<p>At Longisir VIP, user security and privacy are of utmost priority. We handle standard multi-protocol API verification structures designed explicitly for legitimate administrative account recovery operations. Our infrastructure operates completely stateless. When an account data line parameter is deployed through our client interface, the query parameters are securely packed and pushed immediately to the target validation node. Zero state sequences, logs, authorization tokens, or structural data arrays are intercepted or persistent inside our global servers.</p>
-</div>
-</div>
-</div>
-
-<div id="terms" class="section">
-<div class="container">
-<div class="page-header">
-<h1>Terms of Service</h1>
-<p>User Agreement and Operating Compliance</p>
-</div>
-<div class="content-box">
-<h2>Terms of Services Framework</h2>
-<p>Users are strictly bound to operate these automation workflows exclusively on configurations they legally own or manage. Automated distributed denial operations or raw packet request overload through unauthorized endpoints is actively protected and prohibited by default.</p>
-</div>
-</div>
-</div>
-
-<div id="tool-mail" class="section">
-<div class="tool-wrapper">
-<iframe id="iframe-mail" class="responsive-iframe" srcdoc="
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <title>FB & IG OTP Extractor - Responsive Pro</title>
-    <script src='https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4'></script>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css'>
-    <style>
-        .neon-card {
-            background: rgba(15, 23, 42, 0.95);
-            border: 1px solid rgba(51, 65, 85, 0.5);
-            box-shadow: 0 25px 70px -10px rgba(0, 0, 0, 0.8), 0 0 30px rgba(99, 102, 241, 0.05);
-            border-radius: 28px;
-        }
-        .neon-bracket {
-            border-left: 3px solid #6366f1;
-            border-right: 3px solid #6366f1;
-            border-radius: 14px;
-            box-shadow: inset 10px 0 15px -10px rgba(99, 102, 241, 0.1), inset -10px 0 15px -10px rgba(99, 102, 241, 0.1);
-        }
-        textarea::-webkit-scrollbar { width: 6px; }
-        textarea::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.5); }
-        textarea::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
-    </style>
-</head>
-<body class='bg-[#030712] text-slate-200 min-h-screen flex flex-col justify-center items-center p-4 sm:p-6 font-sans select-none'>
-    <div class='w-full max-w-4xl neon-card p-6 sm:p-8 min-h-[auto] md:min-h-[500px] flex flex-col justify-between transition-all duration-300'>
-        <div>
-            <div class='flex flex-col items-center mb-6 border-b border-slate-800 pb-5'>
-                <div class='flex items-center space-x-3 text-2xl sm:text-3xl font-black tracking-tight'>
-                    <i class='fas fa-cube text-indigo-500 animate-pulse'></i>
-                    <h1 class='bg-gradient-to-r from-white via-slate-200 to-indigo-400 bg-clip-text text-transparent'>FB & IG OTP Extractor</h1>
+        <div class="footer-row">
+            <div class="stats-group">
+                <div class="stat-card">
+                    <span class="stat-num total-color" id="totalCount">0</span>
+                    <span class="stat-label">Total</span>
                 </div>
-                <p class='text-[10px] text-indigo-400/70 font-bold uppercase tracking-widest mt-1'>Cloud Automation Hub</p>
-                <div id='modeBadge' class='mt-3 inline-flex items-center space-x-1.5 bg-amber-500/10 border border-amber-500/30 px-5 py-1 rounded-full shadow-sm'>
-                    <i class='fas fa-shield-alt text-amber-400 text-[10px]'></i>
-                    <span id='badgeText' class='text-[10px] font-black text-amber-400 tracking-wider uppercase'>Facebook Priority Mode</span>
+                <div class="stat-card">
+                    <span class="stat-num live-color" id="livePercent">0% LIVE</span>
+                    <span class="stat-label">Live</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-num die-color" id="diePercent">0% DIE</span>
+                    <span class="stat-label">Die</span>
                 </div>
             </div>
-            <div class='grid grid-cols-1 md:grid-cols-2 gap-6 items-start'>
-                <div class='space-y-5'>
-                    <div class='bg-slate-950 p-1.5 rounded-2xl flex space-x-1.5 border border-slate-800/80'>
-                        <button onclick='setPlatform(&quot;fb&quot;)' id='fbBtn' class='flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-[11px] sm:text-xs font-black py-3 px-3 rounded-xl flex justify-center items-center transition-all duration-300 shadow-lg cursor-pointer'>
-                            <i class='fab fa-facebook mr-1.5 text-xs'></i> Facebook <span class='ml-1 bg-amber-400 text-slate-950 text-[9px] font-black px-1.5 py-0.5 rounded-md'>1st</span>
-                        </button>
-                        <button onclick='setPlatform(&quot;ig&quot;)' id='igBtn' class='flex-1 bg-transparent text-slate-500 hover:text-slate-300 text-[11px] sm:text-xs font-bold py-3 px-3 rounded-xl flex justify-center items-center transition-all duration-300 cursor-pointer'>
-                            <i class='fab fa-instagram mr-1.5 text-xs'></i> Instagram <span class='ml-1 bg-slate-800 text-slate-400 text-[9px] font-bold px-1.5 py-0.5 rounded-md'>2nd</span>
-                        </button>
+            
+            <button class="btn-download" onclick="downloadLiveCSV()">Download Live Accounts</button>
+        </div>
+    </div>
+</div>
+
+<div id="tfa" class="section">
+    <div class="tfa-container">
+        <div class="tfa-card">
+            <div class="tfa-header">
+                <h1>🔐 2FA Authenticator Pro</h1>
+                <p style="font-size:0.85rem; color:var(--text-gray)">Secure Time-based One-Time Password Generator</p>
+            </div>
+            <div class="tfa-input-group">
+                <label class="tfa-label">Enter your 2FA Secret Key:</label>
+                <input type="text" id="secretKey" class="tfa-input" placeholder="JBSWY3DPEHPK3PXP" autocomplete="off">
+            </div>
+            <button class="tfa-btn" onclick="generateCode()">
+                <span>🔑</span> <span>Generate Code</span>
+            </button>
+            <div id="codeDisplay" class="tfa-code-box" style="display: none;">
+                <div class="tfa-code-label">Your Code:</div>
+                <div id="totpCode" class="tfa-totp">------</div>
+            </div>
+            <p class="tfa-hint" id="copyHint">✓ Code copied to clipboard!</p>
+        </div>
+        <div class="tfa-history">
+            <div class="tfa-hist-header">
+                <h2 class="font-bold">📋 Recent Codes</h2>
+                <span id="historyCount" style="font-size:0.75rem; color:#c084fc; background:rgba(168,85,247,0.15); padding:4px 10px; border-radius:20px;">0 saved</span>
+            </div>
+            <div id="historyList" class="tfa-hist-list">
+                <p style="text-align:center; color:var(--text-gray); font-size:0.9rem; padding:20px;">No codes generated yet</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mail" class="section">
+    <div class="neon-card p-6 sm:p-8">
+        <div class="flex flex-col items-center mb-6 border-b border-slate-800 pb-4">
+            <div class="flex items-center space-x-3 text-xl sm:text-2xl font-black">
+                <i class="fas fa-cube text-indigo-500 animate-pulse"></i>
+                <h1 class="bg-gradient-to-r from-white to-indigo-400 bg-clip-text text-transparent">FB & IG OTP Extractor</h1>
+            </div>
+            <div id="modeBadge" class="mt-2 inline-flex items-center space-x-1.5 bg-amber-500/10 border border-amber-500/30 px-4 py-0.5 rounded-full">
+                <span id="badgeText" class="text-[10px] font-black text-amber-400 uppercase tracking-wider">Facebook Priority Mode</span>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-4">
+                <div class="bg-slate-950 p-1 rounded-xl flex space-x-1 border border-slate-800">
+                    <button onclick="setPlatform('fb')" id="fbBtn" class="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-black py-2.5 rounded-lg flex justify-center items-center shadow-lg">Facebook</button>
+                    <button onclick="setPlatform('ig')" id="igBtn" class="flex-1 bg-transparent text-slate-500 text-xs font-bold py-2.5 rounded-lg flex justify-center items-center">Instagram</button>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="loadAccount(1)" class="flex-1 bg-slate-900 border border-slate-800 text-slate-400 text-xs py-2 rounded-lg">Account 1</button>
+                    <button onclick="loadAccount(2)" class="flex-1 bg-slate-900 border border-slate-800 text-slate-400 text-xs py-2 rounded-lg">Account 2</button>
+                </div>
+                <div class="px-3 py-2 neon-bracket bg-slate-950/40">
+                    <label class="block text-[11px] font-bold text-indigo-300 uppercase mb-1">Input Account Data Line:</label>
+                    <textarea id="rawData" class="w-full h-24 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs font-mono text-cyan-400 focus:outline-none resize-none" placeholder="email|password|refresh_token"></textarea>
+                </div>
+                <button onclick="getOtpCode()" id="actionBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-lg text-xs uppercase tracking-wider"><i class="fas fa-bolt mr-2"></i> Extract OTP Code</button>
+            </div>
+            
+            <div class="bg-slate-950 border border-slate-800/80 rounded-2xl p-5 flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-3 text-xs font-bold uppercase tracking-wider text-slate-400">
+                        <span>Output Status</span>
+                        <span id="statusDot" class="text-emerald-400">Idle</span>
                     </div>
-                    <div class='flex space-x-2'>
-                        <button onclick='loadAccount(1)' class='flex-1 bg-slate-900/60 hover:bg-slate-800/80 text-slate-400 hover:text-white text-xs font-bold py-2.5 px-3 rounded-xl border border-slate-800 transition cursor-pointer flex justify-center items-center'>
-                            <i class='fas fa-user-shield mr-1.5 text-blue-400'></i> Account 1
-                        </button>
-                        <button onclick='loadAccount(2)' class='flex-1 bg-slate-900/60 hover:bg-slate-800/80 text-slate-400 hover:text-white text-xs font-bold py-2.5 px-3 rounded-xl border border-slate-800 transition cursor-pointer flex justify-center items-center'>
-                            <i class='fas fa-user-shield mr-1.5 text-purple-400'></i> Account 2
-                        </button>
-                    </div>
-                    <div id='inputBracket' class='relative px-4 neon-bracket'>
-                        <label class='block text-[11px] font-black text-indigo-300 tracking-wider mb-2 uppercase flex items-center'>
-                            <i class='fas fa-terminal mr-1.5 text-indigo-400'></i> Input Account Data Line:
-                        </label>
-                        <textarea id='rawData' class='w-full h-32 bg-slate-950/80 border border-slate-800 rounded-xl p-3 text-xs font-mono text-cyan-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-inner transition resize-none' placeholder='email|password|refresh_token|client_id'></textarea>
-                    </div>
-                    <div class='flex space-x-2'>
-                        <button onclick='getOtpCode()' id='actionBtn' class='flex-[2] bg-slate-900 hover:bg-slate-800 text-slate-300 font-black py-3.5 px-4 rounded-xl border border-slate-800 transition-all duration-200 flex justify-center items-center text-xs tracking-wider uppercase shadow-md'>
-                            <span id='btnText'><i class='fas fa-bolt mr-2 text-indigo-400'></i> Extract OTP Code</span>
-                        </button>
-                        <button onclick='clearAll()' class='flex-1 bg-slate-900/40 hover:bg-slate-900 text-slate-500 hover:text-red-400 font-bold py-3.5 px-4 rounded-xl border border-slate-800/60 transition flex justify-center items-center text-xs uppercase'>
-                            <i class='fas fa-eraser mr-1.5'></i> Clear
-                        </button>
+                    <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800/50 text-center">
+                        <div id="otpOutput" class="text-3xl font-black text-indigo-400 font-mono tracking-widest">XXXXXX</div>
+                        <div id="successMsg" class="text-[10px] text-slate-500 font-medium mt-1">Waiting for API request...</div>
                     </div>
                 </div>
-                <div class='space-y-5 h-full flex flex-col justify-between'>
-                    <div id='detectInfo' class='px-4 border-l-3 border-r-3 border-indigo-500 flex justify-between items-center bg-slate-950/60 py-4 rounded-xl border border-slate-800/50 min-h-[96px]'>
-                        <div class='max-w-[200px] sm:max-w-[240px]'>
-                            <div class='flex items-center text-xs font-black text-indigo-300 tracking-wide'>
-                                <i id='statusDot' class='fas fa-circle-notch text-indigo-400 mr-1.5 text-xs'></i>
-                                <span id='successMsg'>System Standing By</span>
-                            </div>
-                            <div class='text-[11px] text-slate-500 mt-2 font-mono break-all leading-tight'>
-                                Target: <span id='displayEmail' class='text-slate-400 font-bold'>No Account Loaded</span>
-                            </div>
-                        </div>
-                        <button onclick='copyEmail()' id='copyEmailBtn' class='bg-indigo-950/80 text-indigo-400 hover:bg-indigo-900 hover:text-indigo-200 border border-indigo-800/50 px-3 py-2.5 rounded-xl text-[11px] font-black transition flex items-center shadow-md shrink-0'>
-                            <i class='fas fa-copy mr-1 text-xs'></i> Copy Email
-                        </button>
-                    </div>
-                    <div class='bg-slate-950 p-5 rounded-xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-inner'>
-                        <div class='text-center sm:text-left'>
-                            <span id='codeTitle' class='text-[9px] font-black text-slate-500 block mb-1 uppercase tracking-widest'>Verification Code:</span>
-                            <span id='otpOutput' class='text-4xl sm:text-5xl font-black tracking-widest text-slate-700 font-mono transition-all'>XXXXXX</span>
-                        </div>
-                        <button onclick='copyCode()' class='w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-3 rounded-xl text-xs font-black transition shadow-lg flex justify-center items-center border border-indigo-500/30'>
-                            <i class='fas fa-clone mr-1.5'></i> Copy Code
-                        </button>
-                    </div>
-                    <div class='text-[10px] text-slate-600 font-mono text-center md:text-right pt-2'>
-                        <span>● Live Server Connection: Secured</span>
-                    </div>
+                <div class="flex space-x-2 mt-4">
+                    <button onclick="copyEmail()" class="flex-1 bg-slate-900 text-slate-300 py-2.5 rounded-lg text-xs font-bold border border-slate-800"><i class="fas fa-copy mr-1.5"></i> Copy Mail</button>
+                    <button onclick="copyCode()" class="flex-1 bg-slate-900 text-slate-300 py-2.5 rounded-lg text-xs font-bold border border-slate-800"><i class="fas fa-check mr-1.5"></i> Copy OTP</button>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        let currentPlatform = 'fb';
-        const account1_data = 'email1@outlook.com|pass1|refresh_token_1|client_id_1';
-        const account2_data = 'email2@outlook.com|pass2|refresh_token_2|client_id_2';
-        const API_URL = 'https://toll-376d.onrender.com/get-code';
-        document.getElementById('rawData').addEventListener('input', function(e) {
-            const val = e.target.value.trim();
-            document.getElementById('displayEmail').innerText = val.includes('|') ? val.split('|')[0] : 'No Account Loaded';
-        });
-        function setPlatform(platform) {
-            currentPlatform = platform;
-            const fbBtn = document.getElementById('fbBtn');
-            const igBtn = document.getElementById('igBtn');
-            const modeBadge = document.getElementById('modeBadge');
-            const badgeText = document.getElementById('badgeText');
-            if (platform === 'fb') {
-                fbBtn.className = 'flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-[11px] sm:text-xs font-black py-3 px-3 rounded-xl flex justify-center items-center transition-all duration-300 shadow-lg cursor-pointer';
-                igBtn.className = 'flex-1 bg-transparent text-slate-500 hover:text-slate-300 text-[11px] sm:text-xs font-bold py-3 px-3 rounded-xl flex justify-center items-center transition-all duration-300 cursor-pointer';
-                modeBadge.className = 'mt-3 inline-flex items-center space-x-1.5 bg-amber-500/10 border border-amber-500/30 px-5 py-1 rounded-full shadow-sm';
-                badgeText.innerText = 'Facebook Priority Mode';
-            } else {
-                igBtn.className = 'flex-1 bg-gradient-to-r from-pink-600 to-rose-600 text-white text-[11px] sm:text-xs font-black py-3 px-3 rounded-xl flex justify-center items-center transition-all duration-300 shadow-lg cursor-pointer';
-                fbBtn.className = 'flex-1 bg-transparent text-slate-500 hover:text-slate-300 text-[11px] sm:text-xs font-bold py-3 px-3 rounded-xl flex justify-center items-center transition-all duration-300 cursor-pointer';
-                modeBadge.className = 'mt-3 inline-flex items-center space-x-1.5 bg-pink-500/10 border border-pink-500/30 px-5 py-1 rounded-full shadow-sm';
-                badgeText.innerText = 'Instagram Priority Mode';
-            }
-        }
-
-        function loadAccount(num) {
-            const field = document.getElementById('rawData');
-            if(num === 1) field.value = account1_data;
-            if(num === 2) field.value = account2_data;
-            document.getElementById('displayEmail').innerText = field.value.split('|')[0];
-            document.getElementById('successMsg').innerText = 'Account ' + num + ' Loaded';
-        }
-
-        function clearAll() {
-            document.getElementById('rawData').value = '';
-            document.getElementById('displayEmail').innerText = 'No Account Loaded';
-            document.getElementById('otpOutput').innerText = 'XXXXXX';
-            document.getElementById('otpOutput').className = 'text-4xl sm:text-5xl font-black tracking-widest text-slate-700 font-mono transition-all';
-            document.getElementById('successMsg').innerText = 'System Standing By';
-            resetButton();
-        }
-
-        function getOtpCode() {
-            const rawData = document.getElementById('rawData').value.trim();
-            const actionBtn = document.getElementById('actionBtn');
-            const btnText = document.getElementById('btnText');
-            const otpOutput = document.getElementById('otpOutput');
-            const successMsg = document.getElementById('successMsg');
-            const statusDot = document.getElementById('statusDot');
-            if (!rawData) {
-                successMsg.innerText = 'Please input credentials first!';
-                return;
-            }
-
-            actionBtn.disabled = true;
-            actionBtn.className = 'flex-[2] bg-slate-950 text-slate-600 font-black py-3.5 px-4 rounded-xl border border-slate-900/40 flex justify-center items-center cursor-not-allowed text-xs tracking-wider uppercase';
-            btnText.innerHTML = '<i class=&quot;fas fa-circle-notch animate-spin mr-2 text-indigo-500&quot;></i> Connecting Mail Box...';
-            statusDot.className = 'fas fa-circle-notch animate-spin text-indigo-500 mr-1.5 text-xs';
-            successMsg.innerText = 'Extracting OTP Engine Core...';
-            otpOutput.innerText = 'SEARCHING';
-            otpOutput.className = 'text-xl sm:text-2xl font-black text-indigo-400 font-mono tracking-normal animate-pulse';
-            fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({ 'raw_data': rawData })
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Server Error Connection Failed');
-                return res.json();
-            })
-            .then(data => {
-                resetButton();
-                if (data.status === 'success' && data.code) {
-                    otpOutput.innerText = data.code;
-                    otpOutput.className = 'text-4xl sm:text-5xl font-black tracking-widest text-emerald-400 font-mono transition-all animate-bounce';
-                    successMsg.innerText = 'Code Extracted Successfully';
-                    statusDot.className = 'fas fa-check-circle text-emerald-400 mr-1.5 text-xs';
-                } else {
-                    otpOutput.innerText = 'ERROR';
-                    otpOutput.className = 'text-2xl font-black text-rose-500 font-mono tracking-normal';
-                    successMsg.innerText = data.message || 'Failed to Parse Stream';
-                    statusDot.className = 'fas fa-times-circle text-rose-500 mr-1.5 text-xs';
-                }
-            })
-            .catch(err => {
-                resetButton();
-                otpOutput.innerText = 'CORS ERR';
-                otpOutput.className = 'text-xl font-black text-amber-500 font-mono tracking-normal';
-                successMsg.innerText = 'CORS Blocked or Endpoint Offline.';
-                statusDot.className = 'fas fa-exclamation-triangle text-amber-500 mr-1.5 text-xs';
-            });
-        }
-
-        function resetButton() {
-            const actionBtn = document.getElementById('actionBtn');
-            const btnText = document.getElementById('btnText');
-            actionBtn.disabled = false;
-            actionBtn.className = 'flex-[2] bg-slate-900 hover:bg-slate-800 text-slate-300 font-black py-3.5 px-4 rounded-xl border border-slate-800 transition-all duration-200 flex justify-center items-center text-xs tracking-wider uppercase shadow-md';
-            btnText.innerHTML = '<i class=&quot;fas fa-bolt mr-2 text-indigo-400&quot;></i> Extract OTP Code';
-        }
-
-        function copyEmail() {
-            const text = document.getElementById('rawData').value.split('|')[0];
-            if(text) { navigator.clipboard.writeText(text); alert('Email Copied: ' + text); }
-        }
-
-        function copyCode() {
-            const code = document.getElementById('otpOutput').innerText;
-            if(code && code !== 'XXXXXX' && code !== 'ERROR' && code !== 'CORS ERR') { navigator.clipboard.writeText(code); alert('OTP Code Copied: ' + code); }
-        }
-    </script>
-</body>
-</html>
-"></iframe>
-</div>
 </div>
 
-<div id="tool-2fa" class="section">
-<div class="tool-wrapper">
-<iframe id="iframe-2fa" class="responsive-iframe" srcdoc="
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;500;600;700;800&amp;display=swap');
-        :root {
-            --bg: rgb(10, 11, 18);
-            --card-bg: rgb(21, 23, 37);
-            --input-bg: rgb(15, 17, 26);
-            --primary: rgb(168, 85, 247);
-            --primary-glow: rgba(168, 85, 247, 0.3);
-            --btn-grad: linear-gradient(135deg, rgb(168, 85, 247), rgb(59, 130, 246));
-            --text-gray: rgb(148, 163, 184);
-            --border: rgba(255, 255, 255, 0.05);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: #fff; min-height: 100vh; padding: 20px 12px; display: flex; justify-content: center; align-items: flex-start; }
-        .container { max-width: 520px; width: 100%; margin: 0 auto; }
-        .main-card { background: var(--card-bg); border-radius: 24px; padding: 30px 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid var(--border); margin-bottom: 24px; }
-        .card-header { text-align: center; margin-bottom: 24px; }
-        .card-header h1 { font-size: clamp(1.3rem, 4vw, 1.7rem); font-weight: 800; background: linear-gradient(135deg, #fff 40%, var(--text-gray)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; line-height: 1.3; }
-        .card-header p { font-size: 0.8rem; color: var(--text-gray); }
-        .input-group { margin-bottom: 20px; }
-        label { display: block; font-weight: 600; margin-bottom: 10px; color: #e2e8f0; font-size: 0.875rem; }
-        input[type='text'] { width: 100%; padding: 14px; border: 2px solid rgb(30, 41, 59); border-radius: 14px; font-size: 0.95rem; color: #fff; background: var(--input-bg); font-family: 'Courier New', monospace; font-weight: 600; }
-        input[type='text']:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
-        button { width: 100%; padding: 14px; background: var(--btn-grad); color: #fff; border: none; border-radius: 14px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3); }
-        button:hover { transform: translateY(-2px); opacity: 0.95; }
-        .code-display { background: linear-gradient(135deg, rgb(17, 24, 39) 0%, rgb(3, 7, 18) 100%); border: 2px solid rgb(30, 41, 59); border-radius: 14px; padding: 20px; text-align: center; margin-bottom: 12px; cursor: pointer; }
-        .code-label { font-size: 0.8rem; color: var(--primary); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
-        .totp-code { font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 800; color: rgb(52, 211, 153); font-family: 'Courier New', monospace; letter-spacing: 4px; }
-        .copy-hint { text-align: center; color: rgb(52, 211, 153); font-weight: 700; font-size: 0.85rem; opacity: 0; transition: opacity 0.3s; }
-        .copy-hint.show { opacity: 1; }
-        .history-card { background: var(--card-bg); border-radius: 24px; padding: 24px 20px; border: 1px solid var(--border); max-height: 350px; display: flex; flex-direction: column; width: 100%; }
-        .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
-        .history-header h2 { font-size: 1.05rem; color: #f1f5f9; font-weight: 800; }
-        #historyCount { font-size: 0.7rem; color: rgb(192, 132, 252); background: rgba(168, 85, 247, 0.15); padding: 4px 10px; border-radius: 20px; }
-        .history-list { overflow-y: auto; padding-right: 4px; }
-        .history-list::-webkit-scrollbar { width: 6px; }
-        .history-list::-webkit-scrollbar-thumb { background: rgb(30, 41, 59); border-radius: 10px; }
-        .empty-state { text-align: center; color: var(--text-gray); padding: 30px 10px; font-style: italic; font-size: 0.85rem; }
-        .history-item { padding: 12px; background: rgb(17, 23, 38); border-radius: 14px; margin-bottom: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border: 1px solid rgba(255, 255, 255, 0.02); }
-        .hist-info { display: flex; flex-direction: column; justify-content: center; }
-        .hist-secret { font-size: 0.75rem; color: var(--text-gray); font-family: monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px; }
-        .hist-time { font-size: 0.65rem; color: rgba(148, 163, 184, 0.4); margin-top: 2px; }
-        .hist-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
-        .hist-code-btn { background: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.2); color: rgb(52, 211, 153); padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; font-family: monospace; cursor: pointer; transition: all 0.2s; }
-        .hist-code-btn:hover { background: rgb(52, 211, 153); color: #000; }
-        .hist-del-btn { background: transparent; border: none; color: rgba(239, 68, 68, 0.4); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; }
-        .hist-del-btn:hover { color: rgb(239, 68, 68); background: rgba(239, 68, 68, 0.1); }
-        @media (max-width: 480px) { .main-card { padding: 20px 15px; border-radius: 20px; } .history-card { padding: 20px 15px; border-radius: 20px; } }
-    </style>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'>
-</head>
-<body>
-    <div class='container'>
-        <div class='main-card'>
-            <div class='card-header'>
-                <h1>2FA Authentication</h1>
-                <p>Generate high-speed high-security TOTP tokens safely</p>
-            </div>
-            <div class='input-group'>
-                <label for='secretInput'>Enter 2FA Secret Key / Token:</label>
-                <input type='text' id='secretInput' placeholder='JBSWY3DPEHPK3PXP...' autocomplete='off'>
-            </div>
-            <button id='btnGenerate'><i class='fa-solid fa-bolt'></i> Get Authentication Code</button>
-            <div class='code-display' id='codeBox'>
-                <div class='code-label'>Active Security Token</div>
-                <div class='totp-code' id='codeOutput'>------</div>
-            </div>
-            <div class='copy-hint' id='copyHint'>Token copied to clipboard successfully!</div>
-        </div>
-        <div class='history-card'>
-            <div class='history-header'>
-                <h2>Operation Logs / History</h2>
-                <span id='historyCount'>0 Keys</span>
-            </div>
-            <div class='history-list' id='historyList'>
-                <div class='empty-state'>No active session histories recorded yet.</div>
-            </div>
-        </div>
-    </div>
-    
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jsotp/1.0.0/jsotp.min.js'></script>
-    <script>
-        const secretInput = document.getElementById('secretInput');
-        const btnGenerate = document.getElementById('btnGenerate');
-        const codeOutput = document.getElementById('codeOutput');
-        const codeBox = document.getElementById('codeBox');
-        const copyHint = document.getElementById('copyHint');
-        const historyList = document.getElementById('historyList');
-        const historyCount = document.getElementById('historyCount');
-        let sessionHistory = [];
-
-        // বাটনে ক্লিক লজিক একদম অ্যাক্টিভ ও ফিক্সড করা হলো
-        btnGenerate.addEventListener('click', () => {
-            const secret = secretInput.value.replace(/\s+/g, '').toUpperCase();
-            if (!secret) { alert('Please fill inside the active secret key array first!'); return; }
-            try {
-                const totp = jsOTP.totp();
-                const code = totp.getOTP(secret);
-                if(!code || isNaN(code)) { throw new Error('Invalid Struct'); }
-                codeOutput.textContent = code;
-                saveToHistory(secret, code);
-            } catch (err) {
-                alert('Invalid 2FA Secret Key! Please verify token parameters.');
-                codeOutput.textContent = '------';
-            }
-        });
-
-        // পুরো কোড ডিসপ্লে বক্সে ক্লিক করলেই কপি হবে
-        codeBox.addEventListener('click', () => {
-            const code = codeOutput.textContent;
-            if (code && code !== '------') {
-                navigator.clipboard.writeText(code);
-                showCopyHint();
-            }
-        });
-
-        function showCopyHint() {
-            copyHint.classList.add('show');
-            setTimeout(() => copyHint.classList.remove('show'), 2000);
-        }
-
-        function saveToHistory(secret, lastCode) {
-            const timestamp = new Date().toLocaleTimeString();
-            const exists = sessionHistory.find(item => item.secret === secret);
-            if (exists) {
-                exists.code = lastCode;
-                exists.time = timestamp;
-            } else {
-                sessionHistory.unshift({ secret, code: lastCode, time: timestamp });
-            }
-            renderHistory();
-        }
-
-        function renderHistory() {
-            if (sessionHistory.length === 0) {
-                historyList.innerHTML = `<div class='empty-state'>No active session histories recorded yet.</div>`;
-                historyCount.textContent = '0 Keys';
-                return;
-            }
-            historyCount.textContent = `${sessionHistory.length} Key${sessionHistory.length !== 1 ? 's' : ''}`;
-            historyList.innerHTML = '';
-            sessionHistory.forEach((item, idx) => {
-                const div = document.createElement('div');
-                div.className = 'history-item';
-                div.innerHTML = `
-                    <div class='hist-info'>
-                        <div class='hist-secret'>${item.secret}</div>
-                        <div class='hist-time'>Generated at ${item.time}</div>
-                    </div>
-                    <div class='hist-actions'>
-                        <button class='hist-code-btn' onclick='copyHistoryCode(&quot;${item.code}&quot;)'>${item.code}</button>
-                        <button class='hist-del-btn' onclick='deleteHistory(${idx})'><i class='fa-solid fa-trash-can'></i></button>
-                    </div>
-                `;
-                historyList.appendChild(div);
-            });
-        }
-
-        function copyHistoryCode(code) {
-            navigator.clipboard.writeText(code);
-            alert(`Code ${code} copied successfully!`);
-        }
-
-        function deleteHistory(index) {
-            sessionHistory.splice(index, 1);
-            renderHistory();
-        }
-    </script>
-</body>
-</html>
-"></iframe>
-</div>
-</div>
-
-<div id="tool-uid" class="section">
-<div class="tool-wrapper">
-<iframe id="iframe-uid" class="responsive-iframe" srcdoc="
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <title>Premium Bulk UID Checker Panel</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        body { background-color: #0b0f19; color: #f1f5f9; min-height: 100vh; padding: 30px 15px; display: flex; flex-direction: column; align-items: center; }
-        .main-panel { width: 100%; max-width: 800px; background: #111827; border-radius: 16px; padding: 25px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 30px; }
-        .panel-title { font-size: 24px; font-weight: 700; color: #818cf8; margin-bottom: 20px; text-align: center; letter-spacing: 0.5px; }
-        .input-area-wrapper { margin-bottom: 15px; }
-        textarea { width: 100%; height: 160px; background: #1f2937; border: 1px solid #374151; border-radius: 12px; padding: 15px; font-size: 14px; color: #f3f4f6; outline: none; resize: vertical; font-weight: 500; line-height: 1.5; overflow-y: auto; }
-        textarea:focus { border-color: #6366f1; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
-        .action-row { display: flex; gap: 12px; margin-bottom: 18px; }
-        .btn-start { flex: 1; background: linear-gradient(135deg, #4f46e5, #3b82f6); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; text-transform: uppercase; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4); }
-        .btn-clear { background: #dc2626; color: white; border: none; padding: 0 25px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; text-transform: uppercase; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); }
-        .console-box { width: 100%; height: 260px; background: #030712; border-radius: 12px; padding: 15px; font-family: 'Courier New', Courier, monospace; font-size: 13px; color: #34d399; overflow-y: auto; margin-bottom: 20px; border: 1px solid #1f2937; box-shadow: inset 0 4px 12px rgba(0,0,0,0.6); line-height: 1.6; }
-        .console-log { margin-bottom: 4px; word-break: break-all; }
-        .log-live { color: #34d399; font-weight: 600; }
-        .log-die { color: #f87171; }
-        .footer-row { display: flex; flex-direction: column; gap: 15px; align-items: center; }
-        @media (min-width: 600px) { .footer-row { flex-direction: row; justify-content: space-between; } }
-        .stats-group { display: flex; gap: 10px; width: 100%; }
-        @media (min-width: 600px) { .stats-group { width: auto; } }
-        .stat-card { background: #1f2937; border: 1px solid #374151; border-radius: 10px; padding: 10px 15px; text-align: center; flex: 1; min-width: 85px; }
-        .stat-num { font-size: 15px; font-weight: 700; display: block; margin-bottom: 2px; }
-        .stat-label { font-size: 10px; color: #9ca3af; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-        .total-color { color: #e5e7eb; }
-        .live-color { color: #34d399; }
-        .die-color { color: #f87171; }
-        .btn-download { width: 100%; background: #059669; color: white; border: none; padding: 15px 28px; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(5, 150, 105, 0.4); text-align: center; text-transform: uppercase; }
-        @media (min-width: 600px) { .btn-download { width: auto; } }
-        .btn-download:hover { background: #047857; }
-    </style>
-</head>
-<body>
-    <div class='main-panel'>
-        <div class='panel-title'>Bulk UID Checker Pro</div>
-        <div class='input-area-wrapper'>
-            <textarea id='inputData' placeholder='Paste data here... (Supports UID|PASS|2FA or Space/Tab separated formats)' autocomplete='off'></textarea>
-        </div>
-        <div class='action-row'>
-            <button class='btn-start' id='startBtn' onclick='startScanner()'>Start Scanner</button>
-            <button class='btn-clear' onclick='clearTool()'>Clear</button>
-        </div>
-        <div class='console-box' id='consoleScreen'>Console ready...</div>
-        <div class='footer-row'>
-            <div class='stats-group'>
-                <div class='stat-card'>
-                    <span class='stat-num total-color' id='totalCount'>0</span>
-                    <span class='stat-label'>Total</span>
-                </div>
-                <div class='stat-card'>
-                    <span class='stat-num live-color' id='livePercent'>0% LIVE</span>
-                    <span class='stat-label'>Live</span>
-                </div>
-                <div class='stat-card'>
-                    <span class='stat-num die-color' id='diePercent'>0% DIE</span>
-                    <span class='stat-label'>Die</span>
-                </div>
-            </div>
-            <button class='btn-download' onclick='downloadLiveCSV()'>Download Live Accounts</button>
-        </div>
-    </div>
-    <script>
-        let liveAccounts = []; 
-        const CONCURRENCY_LIMIT = 5; 
-
-        async function checkFacebookUID(uid) {
-            try {
-                const cleanUID = uid.trim().replace(/[^a-zA-Z0-9.]/g, '');
-                if(!cleanUID) return 'DEAD ❌';
-                const response = await fetch(`https://graph.facebook.com/${cleanUID}/picture?type=normal&_ts=${Date.now()}`);
-                if (response.ok && response.url.includes('100x100')) {
-                    return 'LIVE ✅';
-                } else {
-                    return 'DEAD ❌';
-                }
-            } catch (error) {
-                return 'ERROR ⚠️';
-            }
-        }
-
-        async function startScanner() {
-            const inputStr = document.getElementById('inputData').value.trim();
-            const consoleScreen = document.getElementById('consoleScreen');
-            const startBtn = document.getElementById('startBtn');
-            if (!inputStr) { alert('Please paste your UID data first!'); return; }
-            const lines = inputStr.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-            consoleScreen.innerHTML = 'Initializing fast multi-threaded engine...<br>';
-            liveAccounts = [];
-            let total = lines.length;
-            let live = 0;
-            let die = 0;
-            document.getElementById('totalCount').innerText = total;
-            startBtn.disabled = true;
-            startBtn.innerText = 'Scanning Fast...';
-
-            function updateStats() {
-                const livePct = total > 0 ? Math.round((live / total) * 100) : 0;
-                const diePct = total > 0 ? Math.round((die / total) * 100) : 0;
-                document.getElementById('livePercent').innerText = `${livePct}% LIVE`;
-                document.getElementById('diePercent').innerText = `${diePct}% DIE`;
-            }
-
-            const queue = [...lines];
-            async function worker() {
-                while (queue.length > 0) {
-                    const currentLine = queue.shift();
-                    if (!currentLine) continue;
-                    let uid = ''; let pass = ''; let twoFA = '';
-                    if (currentLine.includes('|')) {
-                        const parts = currentLine.split('|');
-                        uid = parts[0] ? parts[0].trim() : '';
-                        pass = parts[1] ? parts[1].trim() : '';
-                        twoFA = parts.slice(2).join('|').trim();
-                    } else {
-                        const parts = currentLine.split(/\s+/);
-                        uid = parts[0] ? parts[0].trim() : '';
-                        pass = parts[1] ? parts[1].trim() : '';
-                        if (parts.length > 2) {
-                            twoFA = currentLine.substring(currentLine.indexOf(pass) + pass.length).trim();
-                        }
-                    }
-                    if (!uid) continue;
-                    const result = await checkFacebookUID(uid);
-                    const logLine = document.createElement('div');
-                    if (result === 'LIVE ✅') {
-                        logLine.className = 'console-log log-live';
-                        logLine.innerText = `[LIVE] ID: ${uid}`;
-                        live++;
-                        liveAccounts.push({ uid, pass, twoFA });
-                    } else {
-                        logLine.className = 'console-log log-die';
-                        logLine.innerText = `[DIE] ID: ${uid}`;
-                        die++;
-                    }
-                    consoleScreen.appendChild(logLine);
-                    consoleScreen.scrollTop = consoleScreen.scrollHeight; 
-                    updateStats();
-                }
-            }
-            const workers = [];
-            const activeThreads = Math.min(CONCURRENCY_LIMIT, queue.length);
-            for (let i = 0; i < activeThreads; i++) { workers.push(worker()); }
-            await Promise.all(workers);
-            const finalLog = document.createElement('div');
-            finalLog.style.color = '#818cf8'; finalLog.style.paddingTop = '10px'; finalLog.style.fontWeight = 'bold';
-            finalLog.innerText = `⚡ Completed! Total Live: ${live}, Total Die: ${die}`;
-            consoleScreen.appendChild(finalLog);
-            consoleScreen.scrollTop = consoleScreen.scrollHeight;
-            startBtn.disabled = false; startBtn.innerText = 'Start Scanner';
-        }
-
-        function downloadLiveCSV() {
-            if (liveAccounts.length === 0) { alert('No live accounts found to download!'); return; }
-            let csvRows = ['UID,PASSWORD,2FA'];
-            liveAccounts.forEach(account => {
-                csvRows.push(`${account.uid},${account.pass},${account.twoFA}`);
-            });
-            const csvString = csvRows.join('\n');
-            const blobContent = '\ufeff' + csvString;
-            const blob = new Blob([blobContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.setAttribute('href', url);
-            link.setAttribute('download', 'live_accounts.csv');
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            setTimeout(() => URL.revokeObjectURL(url), 100);
-        }
-
-        function clearTool() {
-            document.getElementById('inputData').value = '';
-            document.getElementById('consoleScreen').innerHTML = 'Console ready...';
-            document.getElementById('totalCount').innerText = '0';
-            document.getElementById('livePercent').innerText = '0% LIVE';
-            document.getElementById('diePercent').innerText = '0% DIE';
-            liveAccounts = [];
-        }
-    </script>
-</body>
-</html>
-"></iframe>
-</div>
-</div>
-
-<footer class="site-footer">
+<footer>
 <div class="footer-container">
 <div class="footer-links">
-<a onclick="showSection('privacy')">Privacy Policy</a>
-<a onclick="showSection('terms')">Terms of Service</a>
+<a href="#">Privacy Policy</a>
+<a href="#">Terms of Service</a>
 <a onclick="showSection('home')" style="color: var(--primary);">Home Dashboard</a>
 </div>
-
 <div class="footer-seo-box">
 <h4>Ecosystem Framework & Analytical Utility Terminal</h4>
-<p>
-Welcome to our integrated multi-threaded web automation engine console. This portal provides system configurations for evaluating real-time secure hash token arrays, automated verification codes (TOTP protocol), and parsing live query endpoints across distributed networks. Completely stateless and built with privacy-first standards, it is optimized to perform low-latency cross-origin data validation loops for active administrative account management workflows.
-</p>
+<p>Welcome to our integrated multi-threaded web automation engine console. This portal provides system configurations for evaluating real-time secure hash token arrays, automated verification codes (TOTP protocol), and parsing live query endpoints across distributed networks.</p>
 </div>
-
-<p class="copyright-text">© 2026 Cloud Automation Hub. All rights reserved. Managed for Optimal Core Processing Response.</p>
+<p class="copyright-text">© 2026 Cloud Automation Hub. All rights reserved.</p>
 </div>
 </footer>
 
 <script>
+// ================= SECTION CONTROLLER =================
 function showSection(sectionId) {
     document.querySelectorAll('.section').forEach(section => { section.classList.remove('active'); });
     const targetSection = document.getElementById(sectionId);
-    if(targetSection) {
-        targetSection.classList.add('active');
-    }
+    if(targetSection) { targetSection.classList.add('active'); }
 
     document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.remove('active');
-        if (link.getAttribute('data-section') === sectionId) {
-            link.classList.add('active');
-        }
+        if (link.getAttribute('data-section') === sectionId) { link.classList.add('active'); }
     });
-    
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ==================== ENGINE 1: CHAKER (UID CHECKER) ====================
+let liveAccounts = []; 
+const CONCURRENCY_LIMIT = 5; 
+
+async function checkFacebookUID(uid) {
+    try {
+        const cleanUID = uid.trim().replace(/[^a-zA-Z0-9.]/g, "");
+        if(!cleanUID) return "DEAD ❌";
+        
+        const response = await fetch(`https://graph.facebook.com/${cleanUID}/picture?type=normal&_ts=${Date.now()}`);
+        if (response.ok && response.url.includes('100x100')) {
+            return "LIVE ✅";
+        } else {
+            return "DEAD ❌";
+        }
+    } catch (error) {
+        return "ERROR ⚠️";
+    }
+}
+
+async function startScanner() {
+    const inputStr = document.getElementById('inputData').value.trim();
+    const consoleScreen = document.getElementById('consoleScreen');
+    const startBtn = document.getElementById('startBtn');
+    
+    if (!inputStr) {
+        alert("Please paste your UID data first!");
+        return;
+    }
+
+    const lines = inputStr.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+    
+    consoleScreen.innerHTML = "Initializing fast multi-threaded engine...<br>";
+    liveAccounts = [];
+    let total = lines.length;
+    let live = 0;
+    let die = 0;
+
+    document.getElementById('totalCount').innerText = total;
+    startBtn.disabled = true;
+    startBtn.innerText = "Scanning Fast...";
+
+    function updateStats() {
+        const livePct = total > 0 ? Math.round((live / total) * 100) : 0;
+        const diePct = total > 0 ? Math.round((die / total) * 100) : 0;
+        document.getElementById('livePercent').innerText = `${livePct}% LIVE`;
+        document.getElementById('diePercent').innerText = `${diePct}% DIE`;
+    }
+
+    const queue = [...lines];
+    
+    async function worker() {
+        while (queue.length > 0) {
+            const currentLine = queue.shift();
+            if (!currentLine) continue;
+
+            let uid = '';
+            let pass = '';
+            let twoFA = '';
+
+            if (currentLine.includes('|')) {
+                const parts = currentLine.split('|');
+                uid = parts[0] ? parts[0].trim() : '';
+                pass = parts[1] ? parts[1].trim() : '';
+                twoFA = parts.slice(2).join('|').trim();
+            } else {
+                const parts = currentLine.split(/\s+/);
+                uid = parts[0] ? parts[0].trim() : '';
+                pass = parts[1] ? parts[1].trim() : '';
+                
+                if (parts.length > 2) {
+                    const rawAfterPass = currentLine.substring(currentLine.indexOf(pass) + pass.length).trim();
+                    twoFA = rawAfterPass;
+                }
+            }
+
+            if (!uid) continue;
+
+            const result = await checkFacebookUID(uid);
+            const logLine = document.createElement('div');
+            logLine.className = 'console-log';
+
+            if (result === "LIVE ✅") {
+                logLine.className += ' log-live';
+                logLine.innerText = `[LIVE] ID: ${uid}`;
+                live++;
+                liveAccounts.push({ uid, pass, twoFA });
+            } else {
+                logLine.className += ' log-die';
+                logLine.innerText = `[DIE] ID: ${uid}`;
+                die++;
+            }
+
+            consoleScreen.appendChild(logLine);
+            consoleScreen.scrollTop = consoleScreen.scrollHeight; 
+            updateStats();
+        }
+    }
+
+    const workers = [];
+    const activeThreads = Math.min(CONCURRENCY_LIMIT, queue.length);
+    
+    for (let i = 0; i < activeThreads; i++) {
+        workers.push(worker());
+    }
+
+    await Promise.all(workers);
+
+    const finalLog = document.createElement('div');
+    finalLog.style.color = '#818cf8';
+    finalLog.style.paddingTop = '10px';
+    finalLog.style.fontWeight = 'bold';
+    finalLog.innerText = `⚡ Completed! Total Live: ${live}, Total Die: ${die}`;
+    consoleScreen.appendChild(finalLog);
+    consoleScreen.scrollTop = consoleScreen.scrollHeight;
+    
+    startBtn.disabled = false;
+    startBtn.innerText = "Start Scanner";
+}
+
+// এই ফাংশনটি এখন কোনো প্রকার (') বা (") চিহ্ণ ছাড়াই পিওর ডেটা ডাউনলোড করবে
+function downloadLiveCSV() {
+    if (liveAccounts.length === 0) {
+        alert("No live accounts found to download!");
+        return;
+    }
+
+    let csvRows = ["UID,PASSWORD,2FA"];
+
+    liveAccounts.forEach(account => {
+        // এখানে কোনো প্রকার এক্সট্রা কোটেশন মার্ক ("") বা ('') ব্যবহার না করে সরাসরি পিওর র টেক্সট বসানো হয়েছে
+        csvRows.push(`${account.uid},${account.pass},${account.twoFA}`);
+    });
+
+    const csvString = csvRows.join("\n");
+    const contentWithBOM = "\ufeff" + csvString;
+    
+    const blob = new Blob([contentWithBOM], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "live_accounts.csv");
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    setTimeout(() => URL.revokeObjectURL(url), 100);
+}
+
+function clearTool() {
+    document.getElementById('inputData').value = '';
+    document.getElementById('consoleScreen').innerHTML = 'Console ready...';
+    document.getElementById('totalCount').innerText = '0';
+    document.getElementById('livePercent').innerText = '0% LIVE';
+    document.getElementById('diePercent').innerText = '0% DIE';
+    liveAccounts = [];
+}
+
+// ==================== ENGINE 2: 2FA AUTHENTICATOR ====================
+const BASE32_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+function base32Decode(base32) {
+    base32 = base32.toUpperCase().replace(/=+$/, '').replace(/\s+/g, '');
+    let bits = '';
+    for (let i = 0; i < base32.length; i++) {
+        const val = BASE32_CHARS.indexOf(base32[i]);
+        if (val === -1) throw new Error('Invalid base32 character');
+        bits += val.toString(2).padStart(5, '0');
+    }
+    const bytes = [];
+    for (let i = 0; i + 8 <= bits.length; i += 8) {
+        bytes.push(parseInt(bits.substr(i, 8), 2));
+    }
+    return new Uint8Array(bytes);
+}
+
+function hmacSha1Sync(key, message) {
+    const blockSize = 64;
+    if (key.length > blockSize) { key = sha1(key); }
+    if (key.length < blockSize) {
+        const padded = new Uint8Array(blockSize);
+        padded.set(key);
+        key = padded;
+    }
+    const innerKey = new Uint8Array(blockSize);
+    const outerKey = new Uint8Array(blockSize);
+    for (let i = 0; i < blockSize; i++) {
+        innerKey[i] = key[i] ^ 0x36;
+        outerKey[i] = key[i] ^ 0x5c;
+    }
+    const innerMessage = new Uint8Array(blockSize + message.length);
+    innerMessage.set(innerKey);
+    innerMessage.set(message, blockSize);
+    const innerHash = sha1(innerMessage);
+    const outerMessage = new Uint8Array(blockSize + innerHash.length);
+    outerMessage.set(outerKey);
+    outerMessage.set(innerHash, blockSize);
+    return sha1(outerMessage);
+}
+
+function sha1(bytes) {
+    let words = [];
+    for (let i = 0; i < bytes.length; i++) {
+        words[i >> 2] |= bytes[i] << (24 - (i % 4) * 8);
+    }
+    const len = bytes.length * 8;
+    words[len >> 5] |= 0x80 << (24 - (len % 32));
+    words[(((len + 64) >> 9) << 4) + 15] = len;
+    let w = new Array(80);
+    let a = 1732584193, b = -271733879, c = -1732584194, d = 271733878, e = -100945456;
+    for (let i = 0; i < words.length; i += 16) {
+        let olda = a, oldb = b, oldc = c, oldd = d, olde = e;
+        for (let j = 0; j < 80; j++) {
+            if (j < 16) w[j] = words[i + j] || 0;
+            else w[j] = rol(w[j - 3] ^ w[j - 8] ^ w[j - 14] ^ w[j - 16], 1);
+            let t = safeAdd(safeAdd(rol(a, 5), sha1Ft(j, b, c, d)), safeAdd(safeAdd(e, w[j]), sha1Kt(j)));
+            e = d; d = c; c = rol(b, 30); b = a; a = t;
+        }
+        a = safeAdd(a, olda); b = safeAdd(b, oldb); c = safeAdd(c, oldc); d = safeAdd(d, oldd); e = safeAdd(e, olde);
+    }
+    const result = new Uint8Array(20);
+    for (let i = 0; i < 20; i++) {
+        result[i] = (words[i >> 2] >> (24 - (i % 4) * 8)) & 0xff;
+    }
+    return result;
+}
+
+function sha1Ft(t, b, c, d) { if (t < 20) return (b & c) | ((~b) & d); if (t < 40) return b ^ c ^ d; if (t < 60) return (b & c) | (b & d) | (c & d); return b ^ c ^ d; }
+function sha1Kt(t) { return (t < 20) ? 1518500249 : (t < 40) ? 1859775393 : (t < 60) ? -1894007588 : -899497514; }
+function safeAdd(x, y) { const lsw = (x & 0xFFFF) + (y & 0xFFFF); const msw = (x >> 16) + (y >> 16) + (lsw >> 16); return (msw << 16) | (lsw & 0xFFFF); }
+function rol(num, cnt) { return (num << cnt) | (num >>> (32 - cnt)); }
+
+function generateCode() {
+    const secret = document.getElementById('secretKey').value.trim();
+    if (!secret) { alert('Please enter 2FA Secret Key'); return; }
+    try {
+        const decodedKey = base32Decode(secret);
+        const epoch = Math.floor(Date.now() / 1000);
+        const timeStep = Math.floor(epoch / 30);
+        const buffer = new Uint8Array(8);
+        let temp = timeStep;
+        for (let i = 7; i >= 0; i--) { buffer[i] = temp & 0xff; temp >>= 8; }
+        const hmac = hmacSha1Sync(decodedKey, buffer);
+        const offset = hmac[hmac.length - 1] & 0xf;
+        let codeValue = ((hmac[offset] & 0x7f) << 24) | ((hmac[offset + 1] & 0xff) << 16) | ((hmac[offset + 2] & 0xff) << 8) | (hmac[offset + 3] & 0xff);
+        codeValue = codeValue % 1000000;
+        const finalCode = codeValue.toString().padStart(6, '0');
+        
+        document.getElementById('totpCode').innerText = finalCode;
+        document.getElementById('codeDisplay').style.display = 'block';
+        
+        navigator.clipboard.writeText(finalCode);
+        const hint = document.getElementById('copyHint');
+        hint.style.display = 'block';
+        setTimeout(() => { hint.style.display = 'none'; }, 2000);
+        
+        addTfaHistory(secret, finalCode);
+    } catch (e) {
+        alert('Invalid Base32 Secret Key!');
+    }
+}
+
+let historyArray = [];
+function addTfaHistory(key, code) {
+    historyArray.unshift({ key, code, time: new Date().toLocaleTimeString() });
+    if(historyArray.length > 20) historyArray.pop();
+    
+    document.getElementById('historyCount').innerText = `${historyArray.length} saved`;
+    const container = document.getElementById('historyList');
+    container.innerHTML = '';
+    
+    historyArray.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'tfa-hist-item';
+        div.innerHTML = `
+            <div style="font-size:1.25rem; font-weight:700; color:#38bdf8; font-family:'Courier New';">${item.code}</div>
+            <div style="text-align:right;">
+                <div style="font-size:0.75rem; color:var(--text-gray); font-family:'Courier New'; word-break:break-all;">${item.key.substring(0,8)}...</div>
+                <div style="font-size:0.7rem; color:#64748b;">${item.time}</div>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+// ==================== ENGINE 3: MAIL API EXTRACTOR ====================
+let currentPlatform = 'fb';
+const accountsConfig = {
+    1: "ur_email_1@domain.com|password_here|refresh_token_1|client_id_1",
+    2: "ur_email_2@domain.com|password_here|refresh_token_2|client_id_2"
+};
+
+function setPlatform(platform) {
+    currentPlatform = platform;
+    const fbBtn = document.getElementById('fbBtn');
+    const igBtn = document.getElementById('igBtn');
+    const badgeText = document.getElementById('badgeText');
+    const modeBadge = document.getElementById('modeBadge');
+    
+    if (platform === 'fb') {
+        fbBtn.className = "flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-black py-2.5 rounded-lg flex justify-center items-center shadow-lg";
+        igBtn.className = "flex-1 bg-transparent text-slate-500 text-xs font-bold py-2.5 rounded-lg flex justify-center items-center";
+        badgeText.innerText = "Facebook Priority Mode";
+        modeBadge.className = "mt-2 inline-flex items-center space-x-1.5 bg-amber-500/10 border border-amber-500/30 px-4 py-0.5 rounded-full";
+    } else {
+        igBtn.className = "flex-1 bg-gradient-to-r from-pink-600 to-purple-600 text-white text-xs font-black py-2.5 rounded-lg flex justify-center items-center shadow-lg";
+        fbBtn.className = "flex-1 bg-transparent text-slate-500 text-xs font-bold py-2.5 rounded-lg flex justify-center items-center";
+        badgeText.innerText = "Instagram Priority Mode";
+        modeBadge.className = "mt-2 inline-flex items-center space-x-1.5 bg-pink-500/10 border border-pink-500/30 px-4 py-0.5 rounded-full";
+    }
+}
+
+function loadAccount(num) {
+    if(accountsConfig[num]) {
+        document.getElementById('rawData').value = accountsConfig[num];
+    }
+}
+
+function getOtpCode() {
+    const rawData = document.getElementById('rawData').value.trim();
+    if(!rawData) { alert("Please input or load account data line!"); return; }
+    
+    const actionBtn = document.getElementById('actionBtn');
+    const statusDot = document.getElementById('statusDot');
+    const otpOutput = document.getElementById('otpOutput');
+    const successMsg = document.getElementById('successMsg');
+    
+    actionBtn.disabled = true;
+    actionBtn.innerText = "Extracting Code...";
+    statusDot.className = "text-amber-400";
+    statusDot.innerText = "Processing";
+    
+    const parts = rawData.split('|');
+    const email = parts[0] ? parts[0].trim() : '';
+    const refreshToken = parts[2] ? parts[2].trim() : '';
+    const clientId = parts[3] ? parts[3].trim() : '';
+    
+    if(!email || !refreshToken) {
+        alert("Invalid input format! Must contain email and refresh token.");
+        resetMailButton();
+        return;
+    }
+    
+    const apiUrl = `https://mail-api-nine.vercel.app/get-otp?email=${encodeURIComponent(email)}&refresh_token=${encodeURIComponent(refreshToken)}&client_id=${encodeURIComponent(clientId)}&platform=${currentPlatform}`;
+    
+    fetch(apiUrl)
+    .then(res => res.json())
+    .then(data => {
+        resetMailButton();
+        if(data.success && data.otp) {
+            otpOutput.innerText = data.otp;
+            statusDot.className = "text-emerald-400";
+            statusDot.innerText = "Success";
+            successMsg.innerText = data.message || "OTP Extracted Successfully.";
+        } else {
+            otpOutput.innerText = "ERROR";
+            statusDot.className = "text-rose-500";
+            statusDot.innerText = "Failed";
+            successMsg.innerText = data.error || "No valid code found in recent emails.";
+        }
+    })
+    .catch(err => {
+        resetMailButton();
+        otpOutput.innerText = "CORS ERR";
+        statusDot.className = "text-rose-500";
+        statusDot.innerText = "Offline";
+        successMsg.innerText = "CORS Blocked or Endpoint Offline.";
+    });
+}
+
+function resetMailButton() {
+    const actionBtn = document.getElementById('actionBtn');
+    actionBtn.disabled = false;
+    actionBtn.innerHTML = '<i class="fas fa-bolt mr-2"></i> Extract OTP Code';
+}
+
+function copyEmail() {
+    const text = document.getElementById('rawData').value.split('|')[0];
+    if(text) {
+        navigator.clipboard.writeText(text.trim());
+        alert("Email Copied: " + text.trim());
+    }
+}
+
+function copyCode() {
+    const code = document.getElementById('otpOutput').innerText;
+    if(code && code !== "XXXXXX" && code !== "ERROR" && code !== "CORS ERR") {
+        navigator.clipboard.writeText(code);
+        alert("OTP Copied: " + code);
+    }
 }
 </script>
 </body>
