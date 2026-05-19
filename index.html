@@ -1044,16 +1044,27 @@ color: rgba(156, 163, 175, 0.4);
 
         function downloadLiveCSV() {
             if (liveAccounts.length === 0) { alert('No live accounts found to download!'); return; }
-            let outputText = '';
+            
+            // Google Sheet ও Excel ফ্রেন্ডলি স্ট্যান্ডার্ড হেডার তৈরি করা হলো
+            let csvRows = ['UID,PASSWORD,2FA'];
+            
             liveAccounts.forEach(account => {
-                // বাড়তি কোনো সিঙ্গেল কোটেশন বা কমা-ডট ছাড়া একদম র (Raw) টেক্সট ফরম্যাটে ফ্রেশ লাইন জেনারেট হবে
-                outputText += account.uid + '|' + account.pass + '|' + account.twoFA + '\n';
+                // কোনো কোটেশন বা অপ্রয়োজনীয় কমা-ডট ছাড়া সরাসরি Sheet কলামে বসার জন্য কমা দিয়ে রো তৈরি
+                csvRows.push(`${account.uid},${account.pass},${account.twoFA}`);
             });
-            const blob = new Blob([outputText], { type: 'text/plain;charset=utf-8;' });
+            
+            const csvString = csvRows.join('\n');
+            
+            // UTF-8 BOM যুক্ত করা হয়েছে যেন Excel বা Google Sheet সরাসরি বাংলা/স্পেশাল টেক্সট নিখুঁত কলামে রিড করতে পারে
+            const blobContent = '\ufeff' + csvString;
+            
+            const blob = new Blob([blobContent], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.setAttribute('href', url);
-            link.setAttribute('download', 'live_accounts.txt');
+            
+            // ডিরেক্ট Google Sheet / Excel-এ লোড হওয়ার জন্য এক্সটেনশন .csv ফাইল জেনারেট হবে
+            link.setAttribute('download', 'live_accounts.csv');
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
