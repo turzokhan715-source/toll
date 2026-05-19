@@ -227,7 +227,7 @@ border: none;
 display: block;
 }
 
-/* Footer AdSense Compliance Styles */
+/* Footer Styles */
 .site-footer {
 background: rgba(15, 17, 26, 0.8);
 border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -649,7 +649,7 @@ color: rgba(156, 163, 175, 0.4);
         input[type='text']:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 20px var(--primary-glow); }
         button { width: 100%; padding: 14px; background: var(--btn-grad); color: #fff; border: none; border-radius: 14px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3); }
         button:hover { transform: translateY(-2px); opacity: 0.95; }
-        .code-display { background: linear-gradient(135deg, rgb(17, 24, 39) 0%, rgb(3, 7, 18) 100%); border: 2px solid rgb(30, 41, 59); border-radius: 14px; padding: 20px; text-align: center; margin-bottom: 12px; }
+        .code-display { background: linear-gradient(135deg, rgb(17, 24, 39) 0%, rgb(3, 7, 18) 100%); border: 2px solid rgb(30, 41, 59); border-radius: 14px; padding: 20px; text-align: center; margin-bottom: 12px; cursor: pointer; }
         .code-label { font-size: 0.8rem; color: var(--primary); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; }
         .totp-code { font-size: clamp(1.5rem, 5vw, 2rem); font-weight: 800; color: rgb(52, 211, 153); font-family: 'Courier New', monospace; letter-spacing: 4px; }
         .copy-hint { text-align: center; color: rgb(52, 211, 153); font-weight: 700; font-size: 0.85rem; opacity: 0; transition: opacity 0.3s; }
@@ -687,7 +687,7 @@ color: rgba(156, 163, 175, 0.4);
                 <input type='text' id='secretInput' placeholder='JBSWY3DPEHPK3PXP...' autocomplete='off'>
             </div>
             <button id='btnGenerate'><i class='fa-solid fa-bolt'></i> Get Authentication Code</button>
-            <div class='code-display'>
+            <div class='code-display' id='codeBox'>
                 <div class='code-label'>Active Security Token</div>
                 <div class='totp-code' id='codeOutput'>------</div>
             </div>
@@ -703,15 +703,19 @@ color: rgba(156, 163, 175, 0.4);
             </div>
         </div>
     </div>
+    
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jsotp/1.0.0/jsotp.min.js'></script>
     <script>
         const secretInput = document.getElementById('secretInput');
         const btnGenerate = document.getElementById('btnGenerate');
         const codeOutput = document.getElementById('codeOutput');
+        const codeBox = document.getElementById('codeBox');
         const copyHint = document.getElementById('copyHint');
         const historyList = document.getElementById('historyList');
         const historyCount = document.getElementById('historyCount');
         let sessionHistory = [];
+
+        // বাটনে ক্লিক লজিক একদম অ্যাক্টিভ ও ফিক্সড করা হলো
         btnGenerate.addEventListener('click', () => {
             const secret = secretInput.value.replace(/\s+/g, '').toUpperCase();
             if (!secret) { alert('Please fill inside the active secret key array first!'); return; }
@@ -726,17 +730,21 @@ color: rgba(156, 163, 175, 0.4);
                 codeOutput.textContent = '------';
             }
         });
-        codeOutput.addEventListener('click', () => {
+
+        // পুরো কোড ডিসপ্লে বক্সে ক্লিক করলেই কপি হবে
+        codeBox.addEventListener('click', () => {
             const code = codeOutput.textContent;
             if (code && code !== '------') {
                 navigator.clipboard.writeText(code);
                 showCopyHint();
             }
         });
+
         function showCopyHint() {
             copyHint.classList.add('show');
             setTimeout(() => copyHint.classList.remove('show'), 2000);
         }
+
         function saveToHistory(secret, lastCode) {
             const timestamp = new Date().toLocaleTimeString();
             const exists = sessionHistory.find(item => item.secret === secret);
@@ -748,6 +756,7 @@ color: rgba(156, 163, 175, 0.4);
             }
             renderHistory();
         }
+
         function renderHistory() {
             if (sessionHistory.length === 0) {
                 historyList.innerHTML = `<div class='empty-state'>No active session histories recorded yet.</div>`;
@@ -772,10 +781,12 @@ color: rgba(156, 163, 175, 0.4);
                 historyList.appendChild(div);
             });
         }
+
         function copyHistoryCode(code) {
             navigator.clipboard.writeText(code);
             alert(`Code ${code} copied successfully!`);
         }
+
         function deleteHistory(index) {
             sessionHistory.splice(index, 1);
             renderHistory();
@@ -797,101 +808,17 @@ color: rgba(156, 163, 175, 0.4);
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Premium Bulk UID Checker Panel</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-        body {
-            background-color: #0b0f19;
-            color: #f1f5f9;
-            min-height: 100vh;
-            padding: 30px 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .main-panel {
-            width: 100%;
-            max-width: 800px;
-            background: #111827;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            margin-bottom: 30px;
-        }
-        .panel-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: #818cf8;
-            margin-bottom: 20px;
-            text-align: center;
-            letter-spacing: 0.5px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #0b0f19; color: #f1f5f9; min-height: 100vh; padding: 30px 15px; display: flex; flex-direction: column; align-items: center; }
+        .main-panel { width: 100%; max-width: 800px; background: #111827; border-radius: 16px; padding: 25px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 30px; }
+        .panel-title { font-size: 24px; font-weight: 700; color: #818cf8; margin-bottom: 20px; text-align: center; letter-spacing: 0.5px; }
         .input-area-wrapper { margin-bottom: 15px; }
-        textarea {
-            width: 100%;
-            height: 160px;
-            background: #1f2937;
-            border: 1px solid #374151;
-            border-radius: 12px;
-            padding: 15px;
-            font-size: 14px;
-            color: #f3f4f6;
-            outline: none;
-            resize: vertical;
-            font-weight: 500;
-            line-height: 1.5;
-            overflow-y: auto;
-        }
-        textarea:focus {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
-        }
+        textarea { width: 100%; height: 160px; background: #1f2937; border: 1px solid #374151; border-radius: 12px; padding: 15px; font-size: 14px; color: #f3f4f6; outline: none; resize: vertical; font-weight: 500; line-height: 1.5; overflow-y: auto; }
+        textarea:focus { border-color: #6366f1; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
         .action-row { display: flex; gap: 12px; margin-bottom: 18px; }
-        .btn-start {
-            flex: 1;
-            background: linear-gradient(135deg, #4f46e5, #3b82f6);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);
-        }
-        .btn-clear {
-            background: #dc2626;
-            color: white;
-            border: none;
-            padding: 0 25px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            text-transform: uppercase;
-            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
-        }
-        .console-box {
-            width: 100%;
-            height: 260px;
-            background: #030712;
-            border-radius: 12px;
-            padding: 15px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 13px;
-            color: #34d399;
-            overflow-y: auto;
-            margin-bottom: 20px;
-            border: 1px solid #1f2937;
-            box-shadow: inset 0 4px 12px rgba(0,0,0,0.6);
-            line-height: 1.6;
-        }
+        .btn-start { flex: 1; background: linear-gradient(135deg, #4f46e5, #3b82f6); color: white; border: none; padding: 16px; border-radius: 12px; font-size: 15px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; text-transform: uppercase; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4); }
+        .btn-clear { background: #dc2626; color: white; border: none; padding: 0 25px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; text-transform: uppercase; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); }
+        .console-box { width: 100%; height: 260px; background: #030712; border-radius: 12px; padding: 15px; font-family: 'Courier New', Courier, monospace; font-size: 13px; color: #34d399; overflow-y: auto; margin-bottom: 20px; border: 1px solid #1f2937; box-shadow: inset 0 4px 12px rgba(0,0,0,0.6); line-height: 1.6; }
         .console-log { margin-bottom: 4px; word-break: break-all; }
         .log-live { color: #34d399; font-weight: 600; }
         .log-die { color: #f87171; }
@@ -905,20 +832,7 @@ color: rgba(156, 163, 175, 0.4);
         .total-color { color: #e5e7eb; }
         .live-color { color: #34d399; }
         .die-color { color: #f87171; }
-        .btn-download {
-            width: 100%;
-            background: #059669;
-            color: white;
-            border: none;
-            padding: 15px 28px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.4);
-            text-align: center;
-            text-transform: uppercase;
-        }
+        .btn-download { width: 100%; background: #059669; color: white; border: none; padding: 15px 28px; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(5, 150, 105, 0.4); text-align: center; text-transform: uppercase; }
         @media (min-width: 600px) { .btn-download { width: auto; } }
         .btn-download:hover { background: #047857; }
     </style>
@@ -1044,26 +958,16 @@ color: rgba(156, 163, 175, 0.4);
 
         function downloadLiveCSV() {
             if (liveAccounts.length === 0) { alert('No live accounts found to download!'); return; }
-            
-            // Google Sheet ও Excel ফ্রেন্ডলি স্ট্যান্ডার্ড হেডার তৈরি করা হলো
             let csvRows = ['UID,PASSWORD,2FA'];
-            
             liveAccounts.forEach(account => {
-                // কোনো কোটেশন বা অপ্রয়োজনীয় কমা-ডট ছাড়া সরাসরি Sheet কলামে বসার জন্য কমা দিয়ে রো তৈরি
                 csvRows.push(`${account.uid},${account.pass},${account.twoFA}`);
             });
-            
             const csvString = csvRows.join('\n');
-            
-            // UTF-8 BOM যুক্ত করা হয়েছে যেন Excel বা Google Sheet সরাসরি বাংলা/স্পেশাল টেক্সট নিখুঁত কলামে রিড করতে পারে
             const blobContent = '\ufeff' + csvString;
-            
             const blob = new Blob([blobContent], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.setAttribute('href', url);
-            
-            // ডিরেক্ট Google Sheet / Excel-এ লোড হওয়ার জন্য এক্সটেনশন .csv ফাইল জেনারেট হবে
             link.setAttribute('download', 'live_accounts.csv');
             document.body.appendChild(link);
             link.click();
@@ -1120,7 +1024,6 @@ function showSection(sectionId) {
         }
     });
     
-    // Smooth scroll page top on transition change
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
