@@ -573,9 +573,10 @@ color: rgba(156, 163, 175, 0.4);
                 if (!res.ok) throw new Error('Server Error Connection Failed');
                 return res.json();
             })
-            .then(data => {
-                resetButton();
-                if (data.status === 'success' && data.code) {
+            // ✅ এটি সঠিক কোড (এইটুকু বসিয়ে দিন):
+.then(data => {
+    resetButton();
+    if (data.status === "success") {
                     otpOutput.innerText = data.code;
                     otpOutput.className = 'text-4xl sm:text-5xl font-black tracking-widest text-emerald-400 font-mono transition-all animate-bounce';
                     successMsg.innerText = 'Code Extracted Successfully';
