@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Longisir VIP Portal - Free Tools</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
 
 :root {
 --primary: rgb(168, 85, 247);
@@ -281,6 +281,141 @@ font-size: 11px;
 color: rgba(156, 163, 175, 0.4);
 }
 
+/* ------------------------------------------------------------- */
+/* RAW SCOPED 2FA INLINE CSS (UNTOUCHED STYLES FROM YOUR BLOCK) */
+/* ------------------------------------------------------------- */
+.tool-2fa-container { 
+    max-width: 800px; 
+    width: 100%;
+}
+
+.tool-card {
+    background: #ffffff;
+    padding: 40px 30px;
+    border-radius: 45px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    width: 100%;
+}
+
+.tool-header h2 {
+    color: #a855f7;
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 30px;
+}
+
+.input-box {
+    width: 100%;
+    padding: 20px;
+    border-radius: 18px;
+    border: 2px solid #f1f5f9;
+    background: #f8fafc;
+    font-weight: 800;
+    font-size: 17px;
+    margin-bottom: 15px;
+    outline: none;
+    text-align: center;
+    color: #1e293b;
+}
+
+.gen-btn {
+    background: linear-gradient(135deg, #a855f7, #3b82f6);
+    color: #fff;
+    border: none;
+    width: 100%;
+    padding: 20px;
+    border-radius: 18px;
+    font-weight: 800;
+    font-size: 17px;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 10px 20px rgba(168, 85, 247, 0.3);
+    margin-bottom: 35px;
+}
+
+.code-box-wrapper { 
+    background: #fff; 
+    border: 3px solid #a855f7; 
+    padding: 15px 45px; 
+    border-radius: 25px; 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 20px; 
+    box-shadow: 0 0 25px rgba(168, 85, 247, 0.4);
+}
+
+.code-display { 
+    font-size: 42px; 
+    font-weight: 800; 
+    color: #000; 
+    letter-spacing: 5px; 
+}
+
+.copy-icon {
+    font-size: 24px;
+    color: #a855f7;
+    cursor: pointer;
+}
+
+.auto-copy-label {
+    margin: 12px 0 30px 0;
+    color: #94a3b8;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.history-section {
+    text-align: left;
+    border-top: 2px dashed #f1f5f9;
+    padding-top: 20px;
+}
+
+.history-section h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 15px;
+}
+
+.history-list {
+    height: 250px;
+    overflow-y: auto;
+    background: #f8fafc;
+    border-radius: 20px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.history-list::-webkit-scrollbar {
+    width: 6px;
+}
+.history-list::-webkit-scrollbar-thumb {
+    background: #a855f7;
+    border-radius: 10px;
+}
+
+.history-item {
+    background: #fff;
+    padding: 15px;
+    border-radius: 15px;
+    font-size: 13px;
+    border-left: 5px solid #a855f7;
+    word-break: break-all;
+    color: #475569;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.history-item b { color: #000; }
+
 @media (max-width: 768px) {
 .top-nav { padding: 10px 0; }
 .nav-container { flex-direction: column; align-items: center; text-align: center; gap: 10px; }
@@ -382,7 +517,32 @@ color: rgba(156, 163, 175, 0.4);
 
 <div id="tool-2fa" class="section">
 <div class="tool-wrapper">
+    <div class="tool-2fa-container">
+        <main class="tool-card">
+            <div class="tool-header">
+                <h2>2FA Authenticator</h2>
+            </div>
+
+            <input type="text" id="secret-key" class="input-box" placeholder="Enter Your 2FA Secret Key">
+            
+            <button class="gen-btn" onclick="generateAndSave()">Generate 6-Digit Code</button>
+
+            <center>
+                <div class="code-box-wrapper">
+                    <span id="2fa-result" class="code-display">(CODE)</span>
+                    <i class="fa-solid fa-copy copy-icon" onclick="copyManual()"></i>
+                </div>
+                <p class="auto-copy-label">Auto code generated & copied!</p>
+            </center>
+
+            <div class="history-section">
+                <h3>Historey</h3>
+                <div id="history-container" class="history-list">
+                    </div>
+            </div>
+        </main>
     </div>
+</div>
 </div>
 
 <div id="tool-mail" class="section">
@@ -428,6 +588,55 @@ function showSection(sectionId) {
     });
     
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// -------------------------------------------------------------
+// RAW SCOPED 2FA JAVASCRIPT (UNTOUCHED LOGIC FROM YOUR BLOCK)
+// -------------------------------------------------------------
+const MAX_HISTORY = 20;
+
+function generateAndSave() {
+    const keyInput = document.getElementById('secret-key');
+    const key = keyInput.value.trim();
+    
+    if(!key) return;
+
+    // Code Generation
+    const code = Math.floor(100000 + Math.random() * 900000);
+    document.getElementById('2fa-result').innerText = code;
+    
+    // Auto Copy
+    navigator.clipboard.writeText(code.toString());
+
+    // Save to History
+    addToHistory(key, code);
+
+    // Clear Input
+    keyInput.value = "";
+}
+
+function addToHistory(key, code) {
+    const container = document.getElementById('history-container');
+    
+    // নতুন আইটেম তৈরি
+    const item = document.createElement('div');
+    item.className = 'history-item';
+    item.innerHTML = `<b>CODE: ${code}</b> | <span style="opacity:0.7">KEY: ${key}</span>`;
+    
+    // সবার উপরে অ্যাড করা
+    container.insertBefore(item, container.firstChild);
+
+    // ২০টির বেশি হলে সবশেষে থাকা পুরনো হিস্ট্রি ডিলিট করা
+    const currentItems = container.getElementsByClassName('history-item');
+    if (currentItems.length > MAX_HISTORY) {
+        container.removeChild(container.lastChild);
+    }
+}
+
+function copyManual() {
+    const code = document.getElementById('2fa-result').innerText;
+    if(code === "(CODE)") return;
+    navigator.clipboard.writeText(code);
 }
 </script>
 </body>
