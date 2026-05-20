@@ -1,79 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Longisir VIP Portal</title>
-<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-    /* ... (আপনার আগের CSS গুলো এখানে থাকবে) ... */
-    /* নতুন টুলের জন্য CSS ক্লাস */
-    .neon-card { background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(51, 65, 85, 0.5); box-shadow: 0 25px 70px -10px rgba(0, 0, 0, 0.8); border-radius: 28px; }
-    .neon-bracket { border-left: 3px solid #6366f1; border-right: 3px solid #6366f1; border-radius: 14px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Longisir VIP Portal - Free Tools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        :root { --primary: rgb(168, 85, 247); --bg: rgb(10, 11, 18); --card-bg: rgb(21, 23, 37); }
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg); color: #fff; }
+        .section { display: none; }
+        .section.active { display: block; }
+        /* OTP Tool Specific Styles */
+        .neon-card { background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(51, 65, 85, 0.5); border-radius: 28px; }
+        .neon-bracket { border-left: 3px solid #6366f1; border-right: 3px solid #6366f1; border-radius: 14px; }
+    </style>
 </head>
-<body class="bg-[#0a0b12] text-white">
+<body>
 
-<div id="tool-mail" class="section">
-    <div class="tool-wrapper p-4 flex justify-center items-center min-h-screen">
-        <div class="w-full max-w-4xl neon-card p-8 flex flex-col justify-between">
-            <div class="flex flex-col items-center mb-8 border-b border-slate-800 pb-5">
-                <h1 class="text-3xl font-black text-indigo-400">FB & IG OTP Extractor</h1>
-                <p class="text-[10px] text-indigo-400/70 uppercase tracking-widest mt-1">Cloud Automation Hub</p>
+    <nav class="p-5 border-b border-white/5 sticky top-0 bg-[#0a0b12]/90 backdrop-blur">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <div class="text-indigo-400 font-black text-xl"><i class="fa-solid fa-cube"></i> LONGISIR</div>
+            <div class="flex gap-4">
+                <a onclick="showSection('home')" class="cursor-pointer text-sm font-bold">Home</a>
+                <a onclick="showSection('tool-mail')" class="cursor-pointer text-sm font-bold text-indigo-400">OTP Extractor</a>
             </div>
-            
+        </div>
+    </nav>
+
+    <div id="home" class="section active p-10 text-center"><h1>Welcome to Longisir VIP Dashboard</h1></div>
+
+    <div id="tool-mail" class="section p-4">
+        <div class="max-w-4xl mx-auto neon-card p-6 md:p-8 mt-10">
+            <div class="flex flex-col items-center mb-8 border-b border-slate-800 pb-5">
+                <h1 class="text-2xl font-black bg-gradient-to-r from-white to-indigo-400 bg-clip-text text-transparent">FB & IG OTP Extractor</h1>
+                <div id="modeBadge" class="mt-3 bg-amber-500/10 border border-amber-500/30 px-5 py-1 rounded-full">
+                    <span id="badgeText" class="text-[10px] font-black text-amber-400 uppercase">Facebook Priority Mode</span>
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="space-y-5">
-                    <div class="bg-slate-950 p-1.5 rounded-2xl flex space-x-1.5 border border-slate-800">
-                        <button onclick="setPlatform('fb')" class="flex-1 bg-indigo-600 py-3 rounded-xl font-black text-xs">FACEBOOK</button>
-                        <button onclick="setPlatform('ig')" class="flex-1 bg-transparent py-3 rounded-xl font-bold text-xs">INSTAGRAM</button>
+                    <div class="bg-slate-950 p-1.5 rounded-2xl flex border border-slate-800">
+                        <button onclick="setPlatform('fb')" id="fbBtn" class="flex-1 bg-indigo-600 text-white text-xs font-black py-3 rounded-xl">Facebook</button>
+                        <button onclick="setPlatform('ig')" id="igBtn" class="flex-1 text-slate-500 text-xs font-bold py-3 rounded-xl">Instagram</button>
                     </div>
-                    <div class="neon-bracket p-4">
-                        <textarea id="rawData" class="w-full h-32 bg-slate-900 border-none focus:ring-0 text-cyan-400 font-mono text-xs" placeholder="email|password|refresh_token|client_id"></textarea>
+                    <div class="relative px-4 neon-bracket">
+                        <textarea id="rawData" class="w-full h-32 bg-slate-950/80 border-none rounded-xl p-3 text-xs font-mono text-cyan-400 focus:ring-0" placeholder="email|password|refresh_token|client_id"></textarea>
                     </div>
-                    <button onclick="getOtpCode()" class="w-full bg-indigo-600 hover:bg-indigo-500 py-4 rounded-xl font-black text-xs uppercase tracking-widest">Extract OTP Code</button>
+                    <button onclick="getOtpCode()" id="actionBtn" class="w-full bg-slate-900 hover:bg-slate-800 py-4 rounded-xl font-black text-xs uppercase">Extract OTP Code</button>
                 </div>
-                
-                <div class="bg-slate-950 p-6 rounded-xl border border-slate-800 flex flex-col justify-center items-center">
-                    <span id="codeTitle" class="text-[9px] font-black text-slate-500 uppercase">Verification Code:</span>
-                    <span id="otpOutput" class="text-5xl font-black tracking-widest text-slate-700 font-mono my-4">XXXXXX</span>
-                </div>
-            </div>
-            </div>
-    </div>
-</div>
 
-<script>
-    // আপনার আগের সব ফাংশন...
-    
-    // নতুন টুলের লজিক
-    function getOtpCode() {
-        const rawData = document.getElementById('rawData').value.trim();
-        const otpOutput = document.getElementById('otpOutput');
-        
-        if (!rawData) { alert('Data needed!'); return; }
-        
-        otpOutput.innerText = "LOADING...";
-        fetch("https://toll-376d.onrender.com/get-code", {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ raw_input: rawData })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === "success") {
-                otpOutput.innerText = data.code;
-                otpOutput.style.color = "#34d399"; // Success Green
-            } else {
-                otpOutput.innerText = "ERROR";
-                otpOutput.style.color = "#f43f5e"; // Error Red
-            }
-        })
-        .catch(() => {
-            otpOutput.innerText = "OFFLINE";
-        });
-    }
-</script>
+                <div class="bg-slate-950 p-5 rounded-xl border border-slate-800 flex flex-col justify-center items-center">
+                    <span class="text-[9px] font-black text-slate-500 mb-2 uppercase">Verification Code:</span>
+                    <span id="otpOutput" class="text-5xl font-black text-slate-700 font-mono">XXXXXX</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        let currentPlatform = 'fb';
+        const API_URL = "https://toll-376d.onrender.com/get-code";
+
+        function setPlatform(platform) {
+            currentPlatform = platform;
+            document.getElementById('fbBtn').className = (platform === 'fb') ? "flex-1 bg-indigo-600 text-white text-xs font-black py-3 rounded-xl" : "flex-1 text-slate-500 text-xs font-bold py-3 rounded-xl";
+            document.getElementById('igBtn').className = (platform === 'ig') ? "flex-1 bg-indigo-600 text-white text-xs font-black py-3 rounded-xl" : "flex-1 text-slate-500 text-xs font-bold py-3 rounded-xl";
+            document.getElementById('badgeText').innerText = (platform === 'fb') ? "Facebook Priority Mode" : "Instagram Priority Mode";
+        }
+
+        function getOtpCode() {
+            const rawData = document.getElementById('rawData').value.trim();
+            const btn = document.getElementById('actionBtn');
+            const output = document.getElementById('otpOutput');
+            
+            if (!rawData) { alert("Input credentials!"); return; }
+            
+            btn.innerText = "Extracting...";
+            fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ raw_input: rawData })
+            })
+            .then(res => res.json())
+            .then(data => {
+                btn.innerText = "Extract OTP Code";
+                if(data.status === "success") {
+                    output.innerText = data.code;
+                    output.className = "text-5xl font-black text-emerald-400 font-mono";
+                } else {
+                    output.innerText = "ERROR";
+                    output.className = "text-5xl font-black text-rose-500 font-mono";
+                }
+            })
+            .catch(() => {
+                btn.innerText = "Extract OTP Code";
+                output.innerText = "OFFLINE";
+            });
+        }
+    </script>
 </body>
 </html>
